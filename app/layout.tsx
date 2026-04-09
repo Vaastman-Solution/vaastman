@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "./typography.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ToastContainer, Slide } from 'react-toastify';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +40,20 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <ToastContainer
+          position="top-right"
+          stacked
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition={Slide}
+        />
       </body>
     </html>
   );
