@@ -1,0 +1,47 @@
+model Candidate_Personal {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  phone       String
+  fatherName  String
+  profilePhoto String 
+  gender      Gender
+  dateOfBirth DateTime
+
+  candidateEducations Candidate_Education[]
+  candidateCertifications Candidate_Certification[]
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+model Candidate_Education {
+  id                    String   @id @default(cuid())
+  candidateId           String
+  universityRoll        String
+  grade                 String
+  marks                 Float
+  college_name          String
+  duration              String
+  domainOrmainSubject   String
+  mjcSubject            String
+  candidate   Candidate_Personal @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  
+}
+
+model Candidate_Certification {
+  id                    String   @id @default(cuid())
+  QRCode                String
+  certificationName     String
+  certificateNumber    String
+  issuedAt  DateTime
+  expiresAt DateTime
+  // relation of candidate
+  candidateId           String
+  candidate   Candidate_Personal @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+
+}
