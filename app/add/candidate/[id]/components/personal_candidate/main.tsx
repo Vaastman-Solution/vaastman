@@ -17,6 +17,7 @@ import {
   addCandidatePersonalSchema,
 } from "@/lib/zod-type/candidate_personal";
 import { FirstTwoRow } from "./first-2-row";
+import { SecondTwoRow } from "./second-2-row";
 
 export function AddCandidatePersonalForm({
   candidateId,
@@ -36,12 +37,12 @@ export function AddCandidatePersonalForm({
     },
   });
 
-  const onSubmit = async (data: AddCandidatePersonalSchema) => {
-    console.log("candidate personal", { candidateId, ...data });
+  const onSubmit = (data: AddCandidatePersonalSchema) => {
+    console.log(data)
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
+    <form onSubmit={form.handleSubmit(onSubmit, (errors) => console.log("Validation errors:", errors))}>
       <Card>
         <CardHeader className="gap-2">
           <CardTitle className="max-w-none">
@@ -53,6 +54,7 @@ export function AddCandidatePersonalForm({
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             <FirstTwoRow form={form} />
+            <SecondTwoRow form={form} />
           </div>
         </CardContent>
         <CardFooter className="justify-center">
