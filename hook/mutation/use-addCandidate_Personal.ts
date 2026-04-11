@@ -1,12 +1,12 @@
 import { addCandidatePersonalAction } from "@/lib/actions/mutation/add_candidate";
 import { AddCandidatePersonalSchema } from "@/lib/zod-type/candidate_personal";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 export function useAddCandidatePersonal({ candidateId }: { candidateId: string }) {
 
-
-
+	const router = useRouter();
 	return useMutation({
 		mutationFn: async (data: AddCandidatePersonalSchema) => {
 
@@ -18,6 +18,8 @@ export function useAddCandidatePersonal({ candidateId }: { candidateId: string }
 		},
 		onSuccess: () => {
 			toast.success("Personal details saved.");
+			router.push(`/add/candidate/${candidateId}?tab=education`);
+
 		},
 		onError: (error) => {
 			toast.error(error.message);

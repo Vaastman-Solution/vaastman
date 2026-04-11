@@ -2,18 +2,51 @@
 
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { AddCandidateEducationForm } from "./components/education_candidate/main";
 import { AddCandidatePersonalForm } from "./components/personal_candidate/main";
+import { useEffect } from "react";
+
+// Valid tab values
+const VALID_TABS = ["personal", "education"] as const
+type ValidTab = (typeof VALID_TABS)[number]
+
+// Simple CUID2 validation (checks basic format)
+export function isValidCuid(id: string): boolean {
+  // CUID2 format: lowercase alphanumeric, starts with a letter, 24-32 chars
+  return /^[a-z][a-z0-9]{23,31}$/.test(id)
+}
 
 export default function Page() {
+  const router = useRouter()
   const params = useParams();
+  const searchParams = useSearchParams()
 
   const candidateId = params.id as string;
+
+  const tabParam = searchParams.get("tab")
+
+  // Validate tab - fallback to "patient" if invalid
+  const currentTab: ValidTab =
+    tabParam && VALID_TABS.includes(tabParam as ValidTab)
+      ? (tabParam as ValidTab)
+      : "personal"
+
+
+  // Validate patientId and redirect if invalid
+  useEffect(() => {
+    if (!candidateId || !isValidCuid(candidateId)) {
+      // Redirect to parent /add route which will generate a new valid CUID
+      window.location.href = "/add/candidate"
+    } else if (tabParam !== currentTab) {
+      // If tab was invalid, update URL to show correct tab
+      router.replace(`/add/candidate/${candidateId}?tab=${currentTab}`)
+    }
+  }, [candidateId, tabParam, currentTab, router.replace])
 
   return (
     <div className="mx-auto flex w-full flex-col gap-4 p-4 sm:p-6 md:p-8">
@@ -34,12 +67,12 @@ export default function Page() {
         <div className="hidden h-10 w-[85px] sm:block" aria-hidden="true" />
       </div>
 
-      <Tabs defaultValue="personal" className="gap-4">
+      <Tabs value={currentTab} className="gap-4">
         <TabsList className="grid h-auto w-full grid-cols-2 rounded-2xl p-1">
-          <TabsTrigger value="personal" className="min-w-0 px-3">
+          <TabsTrigger disabled={currentTab !== "personal"} value="personal" className="min-w-0 px-3">
             Personal
           </TabsTrigger>
-          <TabsTrigger value="education" className="min-w-0 px-3">
+          <TabsTrigger disabled={currentTab !== "education"} value="education" className="min-w-0 px-3">
             Education
           </TabsTrigger>
         </TabsList>
