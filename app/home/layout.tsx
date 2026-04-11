@@ -6,7 +6,7 @@ export default function NavbarLayout({
 	children: React.ReactNode
 }) {
 	return (
-		<div className="mx-auto w-[90%]">
+		<div className="mx-auto w-[90%]" suppressHydrationWarning>
 			<Navbar1 />
 			{children}
 		</div>

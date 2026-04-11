@@ -1,11 +1,34 @@
 <!-- BEGIN:nextjs-agent-rules -->
 # This is NOT the Next.js you know
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
+This project uses Next.js 16.x, which has breaking changes compared with older versions.
+Read the relevant guide in `node_modules/next/dist/docs/` before writing or changing Next.js code.
+Heed deprecation notices and prefer current project conventions over remembered defaults.
 <!-- END:nextjs-agent-rules -->
 
-# Commit Rules
+# Project Stack
 
-- Stage and commit only the files related to the task.
-- Do not use broad staging commands such as `git add .` or `git add -A`.
-- Create local commits only unless the user explicitly asks to push.
+- Use Bun for everything: installing dependencies, running scripts, and invoking project tooling.
+- This repo uses the App Router under `app/`.
+- TypeScript is strict and uses the `@/*` path alias.
+- Use Biome for formatting and linting via the existing package scripts.
+
+# UI Rules
+
+- When installing or generating UI components, follow the existing `components.json` configuration.
+- Preserve the current shadcn setup and alias structure.
+
+## Icons Rules
+- Use **Tabler Icons** for all icons.
+- Prefer **filled variants** by default.
+- keep size-5 in classname for icons
+
+# Command Rules
+
+- Prefer Bun commands such as `bun install`, `bun run dev`, `bun run lint`, and `bun run format`.
+- Do not introduce npm, pnpm, or yarn commands unless the user explicitly asks for them.
+
+
+# Tooling Rules (Package Manager)
+
+- Use Bun for everything: installing dependencies, running scripts, and invoking project tooling.

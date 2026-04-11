@@ -1,7 +1,8 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,7 +11,6 @@ import { AddCandidatePersonalForm } from "./components/personal_candidate/main";
 
 export default function Page() {
 	const params = useParams();
-	const router = useRouter();
 
 	const candidateId = params.id as string;
 
@@ -18,13 +18,14 @@ export default function Page() {
 		<div className="mx-auto flex w-full flex-col gap-4 p-4 sm:p-6 md:p-8">
 			<div className="flex w-full flex-col items-center gap-2 sm:grid sm:grid-cols-[85px_1fr_85px] sm:gap-4">
 				<Button
-					type="button"
+					asChild
 					variant="link"
-					onClick={() => router.back()}
 					className="w-fit self-start gap-2 px-0 text-muted-foreground hover:bg-transparent hover:text-foreground sm:self-auto"
 				>
-					<ArrowLeft className="size-4" />
-					Back
+					<Link href="/home">
+						<ArrowLeft className="size-4" />
+						Back
+					</Link>
 				</Button>
 
 				<h3 className="m-0 w-full text-center">
