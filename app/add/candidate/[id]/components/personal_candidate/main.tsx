@@ -2,12 +2,12 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -18,6 +18,8 @@ import {
 } from "@/lib/zod-type/candidate_personal";
 import { FirstTwoRow } from "./first-2-row";
 import { SecondTwoRow } from "./second-2-row";
+import { useAddCandidatePersonal } from "@/hook/mutation/use-addCandidate_Personal";
+import { LoadingSwap } from "@/components/ui/loading-swap";
 
 export function AddCandidatePersonalForm({
   candidateId,
@@ -27,6 +29,7 @@ export function AddCandidatePersonalForm({
   const form = useForm<AddCandidatePersonalSchema>({
     resolver: zodResolver(addCandidatePersonalSchema),
     defaultValues: {
+      id: candidateId,
       name: "",
       email: "",
       phone: "",
@@ -37,18 +40,20 @@ export function AddCandidatePersonalForm({
     },
   });
 
+  const { mutateAsync: addCandidatePersonal, isPending } = useAddCandidatePersonal({ candidateId });
+
   const onSubmit = (data: AddCandidatePersonalSchema) => {
-    console.log(data)
+    addCandidatePersonal(data);
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit, (errors) => console.log("Validation errors:", errors))}>
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+    >
       <Card>
         <CardHeader className="gap-2">
           <CardTitle className="max-w-none">
-            <h4>
-              Personal Details
-            </h4>
+            <h4>Personal Details</h4>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -58,8 +63,14 @@ export function AddCandidatePersonalForm({
           </div>
         </CardContent>
         <CardFooter className="justify-center">
-          <Button type="submit" size="lg" className="px-8 text-base">
-            Save Personal Details
+          <Button
+            type="submit"
+            size="lg"
+            className="px-8 text-base"
+          >
+            <LoadingSwap isLoading={isPending}>
+              Save Personal Details
+            </LoadingSwap>
           </Button>
         </CardFooter>
       </Card>

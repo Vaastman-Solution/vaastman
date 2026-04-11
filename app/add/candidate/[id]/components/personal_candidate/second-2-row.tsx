@@ -122,7 +122,7 @@ export function SecondTwoRow({
                         setSelectedFile(null);
                         field.onChange(uploadedUrl);
                         form.clearErrors("profilePhoto");
-                        toast.success("Image uploaded");
+                        toast.success("Image uploaded", { autoClose: 1200 });
 
                         if (fileInputRef.current) {
                           fileInputRef.current.value = "";
