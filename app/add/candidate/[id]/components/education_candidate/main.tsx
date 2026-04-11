@@ -11,6 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { LoadingSwap } from "@/components/ui/loading-swap";
+import { useAddCandidateEducation } from "@/hook/mutation/use-addCandidate_Education";
 import {
   type AddCandidateEducationSchema,
   addCandidateEducationSchema,
@@ -26,6 +28,7 @@ export function AddCandidateEducationForm({
   const form = useForm<AddCandidateEducationSchema>({
     resolver: zodResolver(addCandidateEducationSchema),
     defaultValues: {
+      id: candidateId,
       universityRoll: "",
       grade: "",
       marks: "",
@@ -36,16 +39,15 @@ export function AddCandidateEducationForm({
     },
   });
 
+  const { mutateAsync: addCandidateEducation, isPending } =
+    useAddCandidateEducation({ candidateId });
+
   const onSubmit = (data: AddCandidateEducationSchema) => {
-    console.log({ candidateId, ...data });
+    addCandidateEducation(data);
   };
 
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit, (errors) =>
-        console.log("Validation errors:", errors),
-      )}
-    >
+    <form onSubmit={form.handleSubmit(onSubmit)}>
       <Card>
         <CardHeader className="gap-2">
           <CardTitle className="max-w-none">
@@ -60,7 +62,9 @@ export function AddCandidateEducationForm({
         </CardContent>
         <CardFooter className="justify-center">
           <Button className="px-8 text-base" size="lg" type="submit">
-            Save Education Details
+            <LoadingSwap isLoading={isPending}>
+              Save Education Details
+            </LoadingSwap>
           </Button>
         </CardFooter>
       </Card>
