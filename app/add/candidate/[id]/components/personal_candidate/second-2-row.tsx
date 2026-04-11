@@ -1,138 +1,144 @@
+"use client";
+
+import { IconPhotoFilled } from "@tabler/icons-react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, type UseFormReturn } from "react-hook-form";
+import { toast } from "react-toastify";
 
 import {
-	Field,
-	FieldContent,
-	FieldError,
-	FieldLabel,
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import type { AddCandidatePersonalSchema } from "@/lib/zod-type/candidate_personal";
-
-const genderOptions = [
-	{ label: "Male", value: "MALE" },
-	{ label: "Female", value: "FEMALE" },
-	{ label: "Other", value: "OTHER" },
-] as const;
+import {
+  ACCEPTED_IMAGE_TYPES,
+  isAcceptedImageType,
+  uploadProfilePhoto,
+} from "./profile-photo-upload-helpers";
+import { ProfilePhotoPreviewButton } from "./profile-photo-preview-button";
+import { ProfilePhotoUploadButton } from "./profile-photo-upload-button";
 
 export function SecondTwoRow({
-	form,
+  form,
 }: {
-	form: UseFormReturn<AddCandidatePersonalSchema>;
+  form: UseFormReturn<AddCandidatePersonalSchema>;
 }) {
-	return (
-		<>
-			<Controller
-				control={form.control}
-				name="profilePhoto"
-				render={({ field, fieldState }) => (
-					<Field>
-						<FieldLabel requiredLable>Profile</FieldLabel>
-						<FieldContent>
-							<Input
-								{...field}
-								aria-invalid={fieldState.invalid}
-								placeholder="Enter profile link"
-							/>
-							<FieldError errors={[fieldState.error]} />
-						</FieldContent>
-					</Field>
-				)}
-			/>
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState(form.getValues("profilePhoto"));
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-			{/* <Controller
-				control={form.control}
-				name="email"
-				render={({ field, fieldState }) => (
-					<Field>
-						<FieldLabel requiredLable>Email</FieldLabel>
-						<FieldContent>
-							<Input
-								{...field}
-								aria-invalid={fieldState.invalid}
-								placeholder="name@example.com"
-								type="email"
-							/>
-							<FieldError errors={[fieldState.error]} />
-						</FieldContent>
-					</Field>
-				)}
-			/>
+  useEffect(() => {
+    const currentValue = form.getValues("profilePhoto");
+    if (currentValue) {
+      setPreviewUrl(currentValue);
+    }
+  }, [form]);
 
-			<Controller
-				control={form.control}
-				name="phone"
-				render={({ field, fieldState }) => (
-					<Field>
-						<FieldLabel requiredLable>Phone</FieldLabel>
-						<FieldContent>
-							<Input
-								{...field}
-								aria-invalid={fieldState.invalid}
-								placeholder="Enter phone number"
-								type="tel"
-							/>
-							<FieldError errors={[fieldState.error]} />
-						</FieldContent>
-					</Field>
-				)}
-			/>
+  return (
+    <Controller
+      control={form.control}
+      name="profilePhoto"
+      render={({ field, fieldState }) => (
+        <Field data-invalid={fieldState.invalid || undefined}>
+          <FieldLabel requiredLable>Profile</FieldLabel>
+          <FieldContent>
+            <InputGroup>
+              <InputGroupAddon align="inline-start">
+                <IconPhotoFilled className="size-5" />
+              </InputGroupAddon>
+              <InputGroupInput
+                accept={ACCEPTED_IMAGE_TYPES.join(",")}
+                aria-invalid={fieldState.invalid}
+                name={field.name}
+                onBlur={field.onBlur}
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
 
-			<Controller
-				control={form.control}
-				name="fatherName"
-				render={({ field, fieldState }) => (
-					<Field>
-						<FieldLabel requiredLable>Father Name</FieldLabel>
-						<FieldContent>
-							<Input
-								{...field}
-								aria-invalid={fieldState.invalid}
-								placeholder="Enter father name"
-							/>
-							<FieldError errors={[fieldState.error]} />
-						</FieldContent>
-					</Field>
-				)}
-			/>
+                  if (!file) {
+                    setSelectedFile(null);
+                    return;
+                  }
 
-			<Controller
-				control={form.control}
-				name="gender"
-				render={({ field, fieldState }) => (
-					<Field>
-						<FieldLabel requiredLable>Gender</FieldLabel>
-						<FieldContent>
-							<select
-								{...field}
-								aria-invalid={fieldState.invalid}
-								className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40"
-							>
-								{genderOptions.map((option) => (
-									<option key={option.value} value={option.value}>
-										{option.label}
-									</option>
-								))}
-							</select>
-							<FieldError errors={[fieldState.error]} />
-						</FieldContent>
-					</Field>
-				)}
-			/>
+                  if (!isAcceptedImageType(file)) {
+                    setSelectedFile(null);
+                    form.setError("profilePhoto", {
+                      type: "validate",
+                      message:
+                        "Please upload a valid image file (JPEG, PNG, JPG, or WebP).",
+                    });
+                    event.target.value = "";
+                    return;
+                  }
 
-			<Controller
-				control={form.control}
-				name="dateOfBirth"
-				render={({ field, fieldState }) => (
-					<Field>
-						<FieldLabel requiredLable>Date of Birth</FieldLabel>
-						<FieldContent>
-							<Input {...field} aria-invalid={fieldState.invalid} type="date" />
-							<FieldError errors={[fieldState.error]} />
-						</FieldContent>
-					</Field>
-				)}
-			/> */}
-		</>
-	);
+                  form.clearErrors("profilePhoto");
+                  setSelectedFile(file);
+                }}
+                ref={(node) => {
+                  field.ref(node);
+                  fileInputRef.current = node;
+                }}
+                type="file"
+              />
+              <InputGroupAddon align="inline-end">
+                {previewUrl && !selectedFile ? (
+                  <ProfilePhotoPreviewButton previewUrl={previewUrl} />
+                ) : (
+                  <ProfilePhotoUploadButton
+                    hasSelectedFile={Boolean(selectedFile)}
+                    isUploading={isUploading}
+                    onUpload={async () => {
+                      if (!selectedFile) {
+                        return;
+                      }
+
+                      setIsUploading(true);
+
+                      try {
+                        const uploadedUrl =
+                          await uploadProfilePhoto(selectedFile);
+
+                        setPreviewUrl(uploadedUrl);
+                        setSelectedFile(null);
+                        field.onChange(uploadedUrl);
+                        form.clearErrors("profilePhoto");
+                        toast.success("Image uploaded");
+
+                        if (fileInputRef.current) {
+                          fileInputRef.current.value = "";
+                        }
+                      } catch (error) {
+                        form.setError("profilePhoto", {
+                          type: "server",
+                          message:
+                            error instanceof Error
+                              ? error.message
+                              : "Failed to upload image.",
+                        });
+                      } finally {
+                        setIsUploading(false);
+                      }
+                    }}
+                  />
+                )}
+              </InputGroupAddon>
+            </InputGroup>
+            <FieldDescription>
+              Choose an image, upload it, then use the preview button after
+              upload.
+            </FieldDescription>
+            <FieldError errors={[fieldState.error]} />
+          </FieldContent>
+        </Field>
+      )}
+    />
+  );
 }
