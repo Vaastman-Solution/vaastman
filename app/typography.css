@@ -44,25 +44,9 @@ h1 {
     @apply mt-6 border-l-2 pl-6 italic;
   }
   
-  /* Lists */
-  ul, ol {
-    @apply my-6 ml-6 list-disc;
-  }
-  
-  ol {
-    @apply list-decimal;
-  }
-  
-  li {
-    @apply mt-2;
-  }
   
   /* Code */
   code {
     @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
   }
   
-  /* Links */
-  a {
-    @apply font-medium underline underline-offset-4;
-  }
