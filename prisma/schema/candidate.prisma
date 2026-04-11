@@ -24,9 +24,9 @@ model Candidate_Education {
   universityRoll        String
   grade                 String
   marks                 Float
-  college_name          String
+  collegeName           String
   duration              String
-  domainOrmainSubject   String
+  domainOrMainSubject   String
   mjcSubject            String
   candidate   Candidate_Personal @relation(fields: [candidateId], references: [id], onDelete: Cascade)
   
