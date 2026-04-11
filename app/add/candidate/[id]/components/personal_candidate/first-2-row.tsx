@@ -7,6 +7,10 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@/components/ui/native-select";
 import type { AddCandidatePersonalSchema } from "@/lib/zod-type/candidate_personal";
 
 const genderOptions = [
@@ -103,17 +107,17 @@ export function FirstTwoRow({
           <Field>
             <FieldLabel requiredLable>Gender</FieldLabel>
             <FieldContent>
-              <select
+              <NativeSelect
                 {...field}
                 aria-invalid={fieldState.invalid}
-                className="flex h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40"
+                className="w-full"
               >
                 {genderOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
+                  <NativeSelectOption key={option.value} value={option.value}>
                     {option.label}
-                  </option>
+                  </NativeSelectOption>
                 ))}
-              </select>
+              </NativeSelect>
               <FieldError errors={[fieldState.error]} />
             </FieldContent>
           </Field>
