@@ -4,6 +4,7 @@ import "./globals.css";
 import "./typography.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ToastContainer, Slide } from 'react-toastify';
+import { QueryProviders } from "@/components/query-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,9 +39,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main>
-            {children}
-          </main>
+          <QueryProviders>
+            <main>
+              {children}
+            </main>
+          </QueryProviders>
         </ThemeProvider>
         <ToastContainer
           position="top-right"
