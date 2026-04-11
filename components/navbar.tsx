@@ -1,5 +1,6 @@
 "use client"
 import { LogOut, Menu } from "lucide-react"
+import Link from "next/link"
 import { RoleBadge, type Role } from "./role-badge"
 
 import {
@@ -35,7 +36,7 @@ import {
 } from "@/components/ui/sheet"
 import { authClient } from "@/lib/auth-client"
 import React from "react"
-import { ThemeSwitcher } from "./kibo-ui/theme-switcher"
+import { ModeToggle } from "@/components/mode-toggle"
 
 interface MenuItem {
 	title: string
@@ -144,29 +145,29 @@ const Navbar1 = ({
 		signin: { title: "Sign In", url: "/signin" },
 	},
 }: Navbar1Props) => {
-	const { data: session } = authClient.useSession()
+	// const { data: session } = authClient.useSession()
 
-	const handleLogout = async () => {
-		await authClient.signOut({
-			fetchOptions: {
-				onSuccess: () => {
-					window.location.href = "/signin"
-				},
-			},
-		})
-	}
+	// const handleLogout = async () => {
+	// 	await authClient.signOut({
+	// 		fetchOptions: {
+	// 			onSuccess: () => {
+	// 				window.location.href = "/signin"
+	// 			},
+	// 		},
+	// 	})
+	// }
 
-	const getInitials = (name?: string) => {
-		if (!name) {
-			return "U"
-		}
-		return name
-			.split(" ")
-			.map((n) => n[0])
-			.join("")
-			.toUpperCase()
-			.slice(0, 2)
-	}
+	// const getInitials = (name?: string) => {
+	// 	if (!name) {
+	// 		return "U"
+	// 	}
+	// 	return name
+	// 		.split(" ")
+	// 		.map((n) => n[0])
+	// 		.join("")
+	// 		.toUpperCase()
+	// 		.slice(0, 2)
+	// }
 
 	return (
 		<section className="mx-auto w-[90%] py-4">
@@ -196,8 +197,8 @@ const Navbar1 = ({
 					</div>
 
 					<div className="flex flex-1 items-center justify-end gap-2">
-						<ThemeSwitcher />
-						{session && (
+						<ModeToggle />
+						{/* {session && (
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<Button
@@ -248,7 +249,7 @@ const Navbar1 = ({
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
-						)}
+						)} */}
 					</div>
 				</nav>
 
@@ -264,8 +265,8 @@ const Navbar1 = ({
 							/>
 						</a>
 						<div className="flex items-center gap-2">
-							<ThemeSwitcher />
-							{session && (
+							<ModeToggle />
+							{/* {session && (
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
 										<Button
@@ -321,7 +322,7 @@ const Navbar1 = ({
 										</DropdownMenuItem>
 									</DropdownMenuContent>
 								</DropdownMenu>
-							)}
+							)} */}
 							<Sheet>
 								<SheetTrigger asChild>
 									<Button variant="outline" size="icon">
@@ -359,6 +360,8 @@ const Navbar1 = ({
 	)
 }
 
+const isInternalUrl = (url: string) => url.startsWith("/")
+
 const renderMenuItem = (item: MenuItem) => {
 	if (item.items) {
 		return (
@@ -378,10 +381,14 @@ const renderMenuItem = (item: MenuItem) => {
 	return (
 		<NavigationMenuItem key={item.title}>
 			<NavigationMenuLink
-				href={item.url}
+				asChild
 				className="bg-background hover:bg-muted hover:text-accent-foreground group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
 			>
-				{item.title}
+				{isInternalUrl(item.url) ? (
+					<Link href={item.url}>{item.title}</Link>
+				) : (
+					<a href={item.url}>{item.title}</a>
+				)}
 			</NavigationMenuLink>
 		</NavigationMenuItem>
 	)
@@ -404,28 +411,45 @@ const renderMobileMenuItem = (item: MenuItem) => {
 	}
 
 	return (
-		<a key={item.title} href={item.url} className="text-md font-semibold">
+		<Link key={item.title} href={item.url} className="text-md font-semibold">
 			{item.title}
-		</a>
+		</Link>
 	)
 }
 
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
 	return (
-		<a
-			className="hover:bg-muted hover:text-accent-foreground flex min-w-80 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none"
-			href={item.url}
-		>
-			<div className="text-foreground">{item.icon}</div>
-			<div>
-				<div className="text-sm font-semibold">{item.title}</div>
-				{item.description && (
-					<p className="text-muted-foreground text-sm leading-snug">
-						{item.description}
-					</p>
-				)}
-			</div>
-		</a>
+		isInternalUrl(item.url) ? (
+			<Link
+				className="hover:bg-muted hover:text-accent-foreground flex min-w-80 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none"
+				href={item.url}
+			>
+				<div className="text-foreground">{item.icon}</div>
+				<div>
+					<div className="text-sm font-semibold">{item.title}</div>
+					{item.description && (
+						<p className="text-muted-foreground text-sm leading-snug">
+							{item.description}
+						</p>
+					)}
+				</div>
+			</Link>
+		) : (
+			<a
+				className="hover:bg-muted hover:text-accent-foreground flex min-w-80 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none"
+				href={item.url}
+			>
+				<div className="text-foreground">{item.icon}</div>
+				<div>
+					<div className="text-sm font-semibold">{item.title}</div>
+					{item.description && (
+						<p className="text-muted-foreground text-sm leading-snug">
+							{item.description}
+						</p>
+					)}
+				</div>
+			</a>
+		)
 	)
 }
 
