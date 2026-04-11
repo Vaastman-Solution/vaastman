@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const addCandidateEducationSchema = z.object({
+  id: z.string(),
   universityRoll: z
     .string()
     .trim()

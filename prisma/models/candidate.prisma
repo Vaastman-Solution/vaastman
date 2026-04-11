@@ -6,7 +6,7 @@ model Candidate_Personal {
   fatherName  String
   profilePhoto String 
   gender      Gender
-  dateOfBirth DateTime
+  dateOfBirth String
 
   candidateEducations Candidate_Education[]
   candidateCertifications Candidate_Certification[]

@@ -48,3 +48,5 @@ CLAUDE.md
 CLAUDE.md
 /.agents
 /skills-lock.json
+
+/lib/generated/prisma

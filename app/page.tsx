@@ -1,6 +1,20 @@
 import { Button } from "@/components/ui/button";
 
-export default function Page() {
+
+import { PrismaClient } from "@/lib/generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
+
+export const prisma = new PrismaClient({ adapter });
+
+export default async function Page() {
+
+  await 
+
+
   return (
     <div>
       <h1>this is h1</h1>
