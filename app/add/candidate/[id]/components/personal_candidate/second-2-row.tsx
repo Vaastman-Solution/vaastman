@@ -18,13 +18,15 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import type { AddCandidatePersonalSchema } from "@/lib/zod-type/candidate_personal";
+import { ProfilePhotoPreviewButton } from "./profile-photo-preview-button";
+import { ProfilePhotoUploadButton } from "./profile-photo-upload-button";
 import {
   ACCEPTED_IMAGE_TYPES,
   isAcceptedImageType,
+  isWithinProfilePhotoSizeLimit,
+  MAX_PROFILE_PHOTO_FILE_SIZE,
   uploadProfilePhoto,
 } from "./profile-photo-upload-helpers";
-import { ProfilePhotoPreviewButton } from "./profile-photo-preview-button";
-import { ProfilePhotoUploadButton } from "./profile-photo-upload-button";
 
 export function SecondTwoRow({
   form,
@@ -74,6 +76,16 @@ export function SecondTwoRow({
                       type: "validate",
                       message:
                         "Please upload a valid image file (JPEG, PNG, JPG, or WebP).",
+                    });
+                    event.target.value = "";
+                    return;
+                  }
+
+                  if (!isWithinProfilePhotoSizeLimit(file)) {
+                    setSelectedFile(null);
+                    form.setError("profilePhoto", {
+                      type: "validate",
+                      message: `File size too large. Maximum size is ${MAX_PROFILE_PHOTO_FILE_SIZE / 1024}KB.`,
                     });
                     event.target.value = "";
                     return;
@@ -131,10 +143,9 @@ export function SecondTwoRow({
                 )}
               </InputGroupAddon>
             </InputGroup>
-            <FieldDescription>
-              Choose an image, upload it, then use the preview button after
-              upload.
-            </FieldDescription>
+            {!fieldState.error ? (
+              <FieldDescription>Choose an image (max 50KB).</FieldDescription>
+            ) : null}
             <FieldError errors={[fieldState.error]} />
           </FieldContent>
         </Field>
