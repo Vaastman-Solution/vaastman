@@ -32,3 +32,10 @@ Heed deprecation notices and prefer current project conventions over remembered 
 # Tooling Rules (Package Manager)
 
 - Use Bun for everything: installing dependencies, running scripts, and invoking project tooling.
+
+# Commit Rules
+
+- Commit only related files together as one logical change set.
+- Do not commit everything at once (avoid `git add .`).
+- Write clear and concise commit messages.
+- Do not push commits unless explicitly requested.
