@@ -71,6 +71,7 @@ const Navbar1 = ({
 	},
 	menu = [
 		{ title: "Candidate Registration", url: "/add/candidate" },
+		{ title: "Sign In", url: "/signin" },
 		// {
 		//   title: "Products",
 		//   url: "#",
