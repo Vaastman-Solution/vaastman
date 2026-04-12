@@ -39,7 +39,7 @@ export const auth = betterAuth({
           if (!allowedEmail) {
             throw new APIError("UNAUTHORIZED", {
               message:
-                "Unauthorized: Only pre-approved staff members can register.",
+                "Unauthorized: Access restricted. Please contact your administrator.",
             })
           }
 
