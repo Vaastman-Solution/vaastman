@@ -12,7 +12,6 @@ export const prisma = new PrismaClient({ adapter });
 
 export default async function Page() {
 
-  await 
 
 
   return (
