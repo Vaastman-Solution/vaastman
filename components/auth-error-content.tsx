@@ -31,7 +31,12 @@ function parseErrorMessage(rawError: string) {
     };
   }
 
-  const decodedError = decodeURIComponent(rawError);
+  let decodedError = rawError;
+  try {
+    decodedError = decodeURIComponent(rawError);
+  } catch (err) {
+    console.error("Failed to decode error parameter:", err);
+  }
   const [rawTitle, ...rest] = decodedError.split(":");
   const title = formatErrorText(rawTitle) || "Authentication Error";
   const description = formatErrorText(rest.join(":"));
