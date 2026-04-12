@@ -1,7 +1,8 @@
 "use client";
 
-import { IconBrandGoogleFilled } from "@tabler/icons-react";
 import { useState } from "react";
+
+import { Google } from "@/components/icons/google";
 
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/ui/loading-swap";
@@ -27,7 +28,7 @@ export function SignInButton() {
       onClick={handleSignin}
     >
       <LoadingSwap className="flex items-center gap-3" isLoading={loading}>
-        <IconBrandGoogleFilled className="size-5" />
+        <Google className="size-5" />
         Sign in with Google
       </LoadingSwap>
     </Button>
