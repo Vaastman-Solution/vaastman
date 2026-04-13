@@ -5,9 +5,17 @@ import {
   addCollegeSchema,
 } from "@/app/college/lib/zod-type/college-info";
 import { Button } from "@/components/ui/button";
+import { LoadingSwap } from "@/components/ui/loading-swap";
+import { useAddCollegeInfo } from "../query/mut-add-collegeInfo";
 import { InputRow1 } from "./input-row1";
 
-export function AddCollegeForm() {
+export function AddCollegeForm({
+  domainOptions,
+  onSuccess,
+}: {
+  domainOptions: string[];
+  onSuccess: () => void;
+}) {
   const form = useForm<AddCollegeSchema>({
     resolver: zodResolver(addCollegeSchema),
     defaultValues: {
@@ -18,15 +26,20 @@ export function AddCollegeForm() {
     },
   });
 
-  const onSubmit = (data: AddCollegeSchema) => {
-    console.log(data);
+  const { mutateAsync: addCollegeInfo, isPending } = useAddCollegeInfo();
+
+  const onSubmit = async (data: AddCollegeSchema) => {
+    await addCollegeInfo(data);
+    onSuccess();
   };
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
-      <InputRow1 form={form} />
+      <InputRow1 domainOptions={domainOptions} form={form} />
       <div className="mt-4 flex justify-end">
-        <Button type="submit">Add College</Button>
+        <Button type="submit">
+          <LoadingSwap isLoading={isPending}>Add College</LoadingSwap>
+        </Button>
       </div>
     </form>
   );

@@ -9,6 +9,16 @@ import { useGetCollegeInfo } from "./query/use-get-collegeInfo";
 export default function CollegePage() {
   const { data, isPending, isError, error } = useGetCollegeInfo();
   const tableData: CollegeInfoRow[] = data ?? [];
+  // get all domains name for auto complete when adding new college
+  const domainOptions = Array.from(
+    new Set(
+      tableData.flatMap((college) =>
+        college.domains
+          .map((domain) => domain.name.trim())
+          .filter((domainName) => domainName.length > 0),
+      ),
+    ),
+  ).sort((a, b) => a.localeCompare(b));
 
   if (isPending) {
     return <LoaderScreen message="Getting colleges list..." />;
@@ -24,7 +34,7 @@ export default function CollegePage() {
 
   return (
     <div className="container mx-auto py-10">
-      <AddCollege />
+      <AddCollege domainOptions={domainOptions} />
       <DataTable
         columns={columns}
         data={tableData}

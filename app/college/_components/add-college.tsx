@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,9 +11,11 @@ import {
 } from "@/components/ui/dialog";
 import { AddCollegeForm } from "./main-form";
 
-export function AddCollege() {
+export function AddCollege({ domainOptions }: { domainOptions: string[] }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog onOpenChange={setIsOpen} open={isOpen}>
       <DialogTrigger asChild>
         <Button>Add College</Button>
       </DialogTrigger>
@@ -26,7 +29,10 @@ export function AddCollege() {
             Fill in the details below to create a new college.
           </DialogDescription>
         </DialogHeader>
-        <AddCollegeForm />
+        <AddCollegeForm
+          domainOptions={domainOptions}
+          onSuccess={() => setIsOpen(false)}
+        />
       </DialogContent>
     </Dialog>
   );

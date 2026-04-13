@@ -8,11 +8,17 @@ import {
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import {
+  MultiSelect,
+  MultiSelectContent,
+  MultiSelectItem,
+  MultiSelectTrigger,
+  MultiSelectValue,
+} from "@/components/ui/multi-select";
 import type { AddCollegeSchema } from "../lib/zod-type/college-info";
 
 function normalizeDomain(value: string) {
@@ -22,98 +28,92 @@ function normalizeDomain(value: string) {
 function DomainsInput({
   field,
   fieldState,
+  domainOptions,
 }: {
   field: ControllerRenderProps<AddCollegeSchema, "domains">;
   fieldState: ControllerFieldState;
+  domainOptions: string[];
 }) {
-  const [domainInput, setDomainInput] = useState("");
   const domains = field.value ?? [];
 
-  const addDomain = (value: string) => {
-    const normalizedDomain = normalizeDomain(value);
-    if (!normalizedDomain) {
+  const [domainItems, setDomainItems] = useState<string[]>(() => {
+    const all = [...domainOptions, ...domains]
+      .map(normalizeDomain)
+      .filter(Boolean);
+    return Array.from(
+      new Map(all.map((domain) => [domain.toLowerCase(), domain])).values(),
+    ).sort((a, b) => a.localeCompare(b));
+  });
+
+  const ensureDomainItems = (values: string[]) => {
+    const normalizedValues = values.map(normalizeDomain).filter(Boolean);
+    if (!normalizedValues.length) {
       return;
     }
 
-    const hasDuplicate = domains.some(
-      (domain) => domain.toLowerCase() === normalizedDomain.toLowerCase(),
-    );
-    if (hasDuplicate) {
-      return;
-    }
-
-    field.onChange([...domains, normalizedDomain]);
-  };
-
-  const removeDomain = (domainToRemove: string) => {
-    field.onChange(domains.filter((domain) => domain !== domainToRemove));
-  };
-
-  const commitInput = () => {
-    if (!domainInput.trim()) {
-      return;
-    }
-
-    addDomain(domainInput);
-    setDomainInput("");
+    setDomainItems((prev) => {
+      const byLower = new Map(
+        prev.map((domain) => [domain.toLowerCase(), domain]),
+      );
+      normalizedValues.forEach((domain) => {
+        byLower.set(domain.toLowerCase(), domain);
+      });
+      return Array.from(byLower.values()).sort((a, b) => a.localeCompare(b));
+    });
   };
 
   return (
     <Field>
       <FieldLabel>Domains</FieldLabel>
       <FieldContent>
-        <Input
-          aria-invalid={fieldState.invalid}
-          onBlur={() => {
-            commitInput();
+        <MultiSelect
+          onValuesChange={(values) => {
+            ensureDomainItems(values);
+            field.onChange(values);
             field.onBlur();
           }}
-          onChange={(event) => setDomainInput(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" || event.key === ",") {
-              event.preventDefault();
-              commitInput();
-              return;
-            }
-
-            if (event.key === "Backspace" && !domainInput && domains.length) {
-              removeDomain(domains[domains.length - 1]);
-            }
-          }}
-          placeholder="Type a domain and press Enter"
-          ref={field.ref}
-          value={domainInput}
-        />
-        <FieldDescription>
-          Press Enter or comma to add a domain. Backspace removes the last one.
-        </FieldDescription>
-        {domains.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-2">
-            {domains.map((domain) => (
-              <span
-                key={domain}
-                className="inline-flex items-center gap-2 rounded-full bg-muted px-3 py-1 text-xs"
-              >
-                {domain}
-                <button
-                  aria-label={`Remove ${domain}`}
-                  className="font-medium text-muted-foreground hover:text-foreground"
-                  onClick={() => removeDomain(domain)}
-                  type="button"
-                >
-                  x
-                </button>
-              </span>
+          values={domains}
+        >
+          <MultiSelectTrigger
+            aria-invalid={fieldState.invalid}
+            className="w-full justify-between"
+          >
+            <MultiSelectValue
+              className="max-w-[90%]"
+              placeholder="Select domains"
+              overflowBehavior="wrap"
+            />
+          </MultiSelectTrigger>
+          <MultiSelectContent
+            creatable={{
+              createLabel: (value) => `Add "${value}"`,
+            }}
+            search={{
+              placeholder: "Search or add domains, by comma separated",
+              emptyMessage: "No domain found. Type to create one.",
+            }}
+            uppercaseSearch
+          >
+            {domainItems.map((domainOption) => (
+              <MultiSelectItem key={domainOption} value={domainOption}>
+                {domainOption}
+              </MultiSelectItem>
             ))}
-          </div>
-        )}
+          </MultiSelectContent>
+        </MultiSelect>
         <FieldError errors={[fieldState.error]} />
       </FieldContent>
     </Field>
   );
 }
 
-export function InputRow1({ form }: { form: UseFormReturn<AddCollegeSchema> }) {
+export function InputRow1({
+  form,
+  domainOptions,
+}: {
+  form: UseFormReturn<AddCollegeSchema>;
+  domainOptions: string[];
+}) {
   return (
     <div className="space-y-4">
       <Controller
@@ -170,7 +170,11 @@ export function InputRow1({ form }: { form: UseFormReturn<AddCollegeSchema> }) {
         control={form.control}
         name="domains"
         render={({ field, fieldState }) => (
-          <DomainsInput field={field} fieldState={fieldState} />
+          <DomainsInput
+            domainOptions={domainOptions}
+            field={field}
+            fieldState={fieldState}
+          />
         )}
       />
     </div>
