@@ -2,12 +2,18 @@ model College {
   id     String   @id @default(cuid())
   name   String
   code 	 String?
-  fees   Decimal
+  fees   String
   domains Domain[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Domain {
   id       String    @id @default(cuid())
   name     String
   colleges College[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
