@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,14 +11,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { LoadingSwap } from "@/components/ui/loading-swap";
+import { useAddCandidatePersonal } from "@/hook/mutation/use-addCandidate_Personal";
 import {
   type AddCandidatePersonalSchema,
   addCandidatePersonalSchema,
 } from "@/lib/zod-type/candidate_personal";
 import { FirstTwoRow } from "./first-2-row";
 import { SecondTwoRow } from "./second-2-row";
-import { useAddCandidatePersonal } from "@/hook/mutation/use-addCandidate_Personal";
-import { LoadingSwap } from "@/components/ui/loading-swap";
 
 export function AddCandidatePersonalForm({
   candidateId,
@@ -40,16 +39,15 @@ export function AddCandidatePersonalForm({
     },
   });
 
-  const { mutateAsync: addCandidatePersonal, isPending } = useAddCandidatePersonal({ candidateId });
+  const { mutateAsync: addCandidatePersonal, isPending } =
+    useAddCandidatePersonal({ candidateId });
 
   const onSubmit = (data: AddCandidatePersonalSchema) => {
     addCandidatePersonal(data);
   };
 
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-    >
+    <form onSubmit={form.handleSubmit(onSubmit)}>
       <Card>
         <CardHeader className="gap-2">
           <CardTitle className="max-w-none">
@@ -63,11 +61,7 @@ export function AddCandidatePersonalForm({
           </div>
         </CardContent>
         <CardFooter className="justify-center">
-          <Button
-            type="submit"
-            size="lg"
-            className="px-8 text-base"
-          >
+          <Button type="submit" size="lg" className="px-8 text-base">
             <LoadingSwap isLoading={isPending}>
               Save Personal Details
             </LoadingSwap>

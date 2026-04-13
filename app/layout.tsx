@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "./typography.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ToastContainer, Slide } from 'react-toastify';
+import { Slide, ToastContainer } from "react-toastify";
 import { QueryProviders } from "@/components/query-provider";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,9 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryProviders>
-            <main>
-              {children}
-            </main>
+            <main>{children}</main>
           </QueryProviders>
         </ThemeProvider>
         <ToastContainer

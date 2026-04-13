@@ -1,14 +1,14 @@
-import { Navbar1 } from "@/components/navbar"
+import { Navbar1 } from "@/components/navbar";
 
 export default function NavbarLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode
+  children: React.ReactNode;
 }) {
-	return (
-		<div className="mx-auto w-[90%]" suppressHydrationWarning>
-			<Navbar1 />
-			{children}
-		</div>
-	)
+  return (
+    <div className="mx-auto w-[90%]" suppressHydrationWarning>
+      <Navbar1 />
+      {children}
+    </div>
+  );
 }
