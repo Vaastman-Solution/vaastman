@@ -1,5 +1,7 @@
 "use client";
 
+import { LoaderScreen } from "@/components/loader-screen";
+import { AddCollege } from "./_components/add-college";
 import { type CollegeInfoRow, columns } from "./_components/column";
 import { DataTable } from "./_components/data-table";
 import { useGetCollegeInfo } from "./query/use-get-collegeInfo";
@@ -9,7 +11,7 @@ export default function CollegePage() {
   const tableData: CollegeInfoRow[] = data ?? [];
 
   if (isPending) {
-    return <div className="container mx-auto py-10">Loading...</div>;
+    return <LoaderScreen message="Getting colleges list..." />;
   }
 
   if (isError) {
@@ -22,6 +24,7 @@ export default function CollegePage() {
 
   return (
     <div className="container mx-auto py-10">
+      <AddCollege />
       <DataTable
         columns={columns}
         data={tableData}
