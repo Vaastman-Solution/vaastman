@@ -6,8 +6,8 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AddCandidateEducationForm } from "./components/education_candidate/main";
-import { AddCandidatePersonalForm } from "./components/personal_candidate/main";
+import { AddCandidateEducationForm } from "./_components/education_candidate/main";
+import { AddCandidatePersonalForm } from "./_components/personal_candidate/main";
 
 // Valid tab values
 const VALID_TABS = ["personal", "education"] as const;

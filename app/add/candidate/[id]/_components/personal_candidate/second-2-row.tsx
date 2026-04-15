@@ -3,7 +3,7 @@
 import { IconPhotoFilled } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { Controller, type UseFormReturn } from "react-hook-form";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 import {
   Field,
@@ -17,7 +17,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import type { AddCandidatePersonalSchema } from "@/lib/zod-type/candidate_personal";
+import type { AddCandidatePersonalSchema } from "../../lib/zod-type/candidate-personal";
 import { ProfilePhotoPreviewButton } from "./profile-photo-preview-button";
 import { ProfilePhotoUploadButton } from "./profile-photo-upload-button";
 import {
@@ -122,7 +122,7 @@ export function SecondTwoRow({
                         setSelectedFile(null);
                         field.onChange(uploadedUrl);
                         form.clearErrors("profilePhoto");
-                        toast.success("Image uploaded", { autoClose: 1200 });
+                        toast.success("Image uploaded", { duration: 1200 });
 
                         if (fileInputRef.current) {
                           fileInputRef.current.value = "";

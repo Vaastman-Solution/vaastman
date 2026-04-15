@@ -11,7 +11,7 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from "@/components/ui/native-select";
-import type { AddCandidatePersonalSchema } from "@/lib/zod-type/candidate_personal";
+import type { AddCandidatePersonalSchema } from "../../lib/zod-type/candidate-personal";
 
 const genderOptions = [
   { label: "Male", value: "MALE" },

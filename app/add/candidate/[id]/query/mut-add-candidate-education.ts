@@ -1,8 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-import { addCandidateEducationAction } from "@/lib/actions/mutation/add_candidate";
-import type { AddCandidateEducationSchema } from "@/lib/zod-type/candidate_education";
+import { toast } from "sonner";
+import { addCandidateEducationAction } from "../lib/actions";
+import type { AddCandidateEducationSchema } from "../lib/zod-type/candidate-education";
 
 export function useAddCandidateEducation({
   candidateId,
@@ -10,6 +10,8 @@ export function useAddCandidateEducation({
   candidateId: string;
 }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (data: AddCandidateEducationSchema) => {
       const res = await addCandidateEducationAction(data);
@@ -19,6 +21,9 @@ export function useAddCandidateEducation({
       return res;
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["candidate-education", candidateId],
+      });
       toast.success("Education details saved.");
       router.push(`/add/candidate/${candidateId}?tab=education`);
     },

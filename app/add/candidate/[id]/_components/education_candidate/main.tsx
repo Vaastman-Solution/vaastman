@@ -12,38 +12,38 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { LoadingSwap } from "@/components/ui/loading-swap";
-import { useAddCandidatePersonal } from "@/hook/mutation/use-addCandidate_Personal";
 import {
-  type AddCandidatePersonalSchema,
-  addCandidatePersonalSchema,
-} from "@/lib/zod-type/candidate_personal";
+  type AddCandidateEducationSchema,
+  addCandidateEducationSchema,
+} from "../../lib/zod-type/candidate-education";
+import { useAddCandidateEducation } from "../../query/mut-add-candidate-education";
 import { FirstTwoRow } from "./first-2-row";
 import { SecondTwoRow } from "./second-2-row";
 
-export function AddCandidatePersonalForm({
+export function AddCandidateEducationForm({
   candidateId,
 }: {
   candidateId: string;
 }) {
-  const form = useForm<AddCandidatePersonalSchema>({
-    resolver: zodResolver(addCandidatePersonalSchema),
+  const form = useForm<AddCandidateEducationSchema>({
+    resolver: zodResolver(addCandidateEducationSchema),
     defaultValues: {
       id: candidateId,
-      name: "",
-      email: "",
-      phone: "",
-      fatherName: "",
-      profilePhoto: "",
-      gender: "MALE",
-      dateOfBirth: "",
+      universityRoll: "",
+      grade: "",
+      marks: "",
+      collegeName: "",
+      duration: "",
+      domainOrMainSubject: "",
+      mjcSubject: "",
     },
   });
 
-  const { mutateAsync: addCandidatePersonal, isPending } =
-    useAddCandidatePersonal({ candidateId });
+  const { mutateAsync: addCandidateEducation, isPending } =
+    useAddCandidateEducation({ candidateId });
 
-  const onSubmit = (data: AddCandidatePersonalSchema) => {
-    addCandidatePersonal(data);
+  const onSubmit = (data: AddCandidateEducationSchema) => {
+    addCandidateEducation(data);
   };
 
   return (
@@ -51,7 +51,7 @@ export function AddCandidatePersonalForm({
       <Card>
         <CardHeader className="gap-2">
           <CardTitle className="max-w-none">
-            <h4>Personal Details</h4>
+            <h4>Education Details</h4>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -61,9 +61,9 @@ export function AddCandidatePersonalForm({
           </div>
         </CardContent>
         <CardFooter className="justify-center">
-          <Button type="submit" size="lg" className="px-8 text-base">
+          <Button className="px-8 text-base" size="lg" type="submit">
             <LoadingSwap isLoading={isPending}>
-              Save Personal Details
+              Save Education Details
             </LoadingSwap>
           </Button>
         </CardFooter>

@@ -7,7 +7,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import type { AddCandidateEducationSchema } from "@/lib/zod-type/candidate_education";
+import type { AddCandidateEducationSchema } from "../../lib/zod-type/candidate-education";
 
 export function FirstTwoRow({
   form,
