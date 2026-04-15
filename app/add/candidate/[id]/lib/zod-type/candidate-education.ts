@@ -15,6 +15,7 @@ export const addCandidateEducationSchema = z.object({
       error: "Marks must be a valid number",
     }),
   collegeName: z.string().trim().min(1, { error: "College name is required" }),
+  collegeFee: z.string({ error: "College fee is required" }),
   duration: z.string().trim().min(1, { error: "Duration is required" }),
   domainOrMainSubject: z
     .string()
@@ -25,4 +26,17 @@ export const addCandidateEducationSchema = z.object({
 
 export type AddCandidateEducationSchema = z.infer<
   typeof addCandidateEducationSchema
+>;
+
+export const candidateEducationCollegeOptionSchema = z.object({
+  name: z.string(),
+  fees: z.string(),
+});
+
+export const candidateEducationCollegeOptionsSchema = z.array(
+  candidateEducationCollegeOptionSchema,
+);
+
+export type CandidateEducationCollegeOption = z.infer<
+  typeof candidateEducationCollegeOptionSchema
 >;

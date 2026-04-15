@@ -25,6 +25,7 @@ model Candidate_Education {
   grade                 String
   marks                 Float
   collegeName           String
+  collegeFee            String
   duration              String
   domainOrMainSubject   String
   mjcSubject            String

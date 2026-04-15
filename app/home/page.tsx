@@ -1,5 +1,5 @@
 "use client";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 export default function Page() {

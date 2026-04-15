@@ -12,7 +12,11 @@ export const columns: ColumnDef<CollegeInfoRow>[] = [
     accessorKey: "name",
     header: "College Name",
     cell: ({ row }) => {
-      return <div>{`${row.original.name} [${row.original.code}]`}</div>;
+      return (
+        <div>
+          {`${row.original.name} ${row.original.code ? `[${row.original.code}]` : ""}`}
+        </div>
+      );
     },
   },
   {

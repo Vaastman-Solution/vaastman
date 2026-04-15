@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "./typography.css";
-import { Slide, ToastContainer } from "react-toastify";
+import { Toaster } from "sonner";
 import { QueryProviders } from "@/components/query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -43,19 +43,13 @@ export default function RootLayout({
             <main>{children}</main>
           </QueryProviders>
         </ThemeProvider>
-        <ToastContainer
+        <Toaster
           position="top-right"
-          stacked
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          transition={Slide}
+          richColors
+          closeButton
+          theme="light"
+          offset={{ top: "8px" }}
+          mobileOffset={{ top: "6px" }}
         />
       </body>
     </html>

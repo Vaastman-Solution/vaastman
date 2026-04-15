@@ -17,6 +17,7 @@ import {
   addCandidateEducationSchema,
 } from "../../lib/zod-type/candidate-education";
 import { useAddCandidateEducation } from "../../query/mut-add-candidate-education";
+import { useGetCollegeOptions } from "../../query/use-get-college-options";
 import { FirstTwoRow } from "./first-2-row";
 import { SecondTwoRow } from "./second-2-row";
 
@@ -33,6 +34,7 @@ export function AddCandidateEducationForm({
       grade: "",
       marks: "",
       collegeName: "",
+      collegeFee: "",
       duration: "",
       domainOrMainSubject: "",
       mjcSubject: "",

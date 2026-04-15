@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { addCollegeInfo } from "@/app/college/lib/actions";
 import type { AddCollegeSchema } from "../lib/zod-type/college-info";
 

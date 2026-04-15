@@ -16,12 +16,6 @@ import {
 export async function addCandidatePersonalAction(
   data: AddCandidatePersonalSchema,
 ) {
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session) {
-    return { success: false, message: "Unauthorized" };
-  }
-
   const parsedData = addCandidatePersonalSchema.safeParse(data);
   if (!parsedData.success) {
     return {
@@ -63,12 +57,6 @@ export async function addCandidatePersonalAction(
 export async function addCandidateEducationAction(
   data: AddCandidateEducationSchema,
 ) {
-  const session = await auth.api.getSession({ headers: await headers() });
-
-  if (!session) {
-    return { success: false, message: "Unauthorized" };
-  }
-
   const parsedData = addCandidateEducationSchema.safeParse(data);
   if (!parsedData.success) {
     return {
@@ -93,6 +81,18 @@ export async function addCandidateEducationAction(
     return { success: false, message: "Candidate education already exists" };
   }
 
+  const selectedCollege = await prisma.college.findFirst({
+    where: { name: parsedData.data.collegeName },
+    select: {
+      name: true,
+      fees: true,
+    },
+  });
+
+  if (!selectedCollege) {
+    return { success: false, message: "Selected college was not found" };
+  }
+
   try {
     const createdEducation = await prisma.candidate_Education.create({
       data: {
@@ -100,7 +100,8 @@ export async function addCandidateEducationAction(
         universityRoll: parsedData.data.universityRoll,
         grade: parsedData.data.grade,
         marks: Number(parsedData.data.marks),
-        collegeName: parsedData.data.collegeName,
+        collegeName: selectedCollege.name,
+        collegeFee: parsedData.data.collegeFee,
         duration: parsedData.data.duration,
         domainOrMainSubject: parsedData.data.domainOrMainSubject,
         mjcSubject: parsedData.data.mjcSubject,
@@ -121,5 +122,23 @@ export async function addCandidateEducationAction(
       success: false,
       message: "Something went wrong while saving candidate details",
     };
+  }
+}
+
+export async function getCandidateEducationColleges() {
+  try {
+    const colleges = await prisma.college.findMany({
+      select: {
+        name: true,
+        fees: true,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    });
+
+    return { success: true, data: colleges };
+  } catch {
+    return { success: false, message: "Failed to fetch colleges" };
   }
 }
