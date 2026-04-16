@@ -127,7 +127,7 @@ function FieldLabel({
       {...props}
     >
       <span className="leading-none">{children}</span>
-      {requiredLable && <span className="form-required">*</span>}
+      {requiredLable && <span className="form-required leading-none">*</span>}
     </Label>
   );
 }
