@@ -4,10 +4,13 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import { ErrorDisplay } from "@/components/error-display";
+import { LoaderScreen } from "@/components/loader-screen";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AddCandidateEducationForm } from "./_components/education_candidate/main";
 import { AddCandidatePersonalForm } from "./_components/personal_candidate/main";
+import { useGetCollegeOptions } from "./query/use-get-college-options";
 
 // Valid tab values
 const VALID_TABS = ["personal", "education"] as const;
@@ -23,6 +26,13 @@ export default function Page() {
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
+
+  // get college data
+  const {
+    data: collegeOptions = [],
+    isPending: isCollegeOptionsPending,
+    error: collegeOptionsError,
+  } = useGetCollegeOptions();
 
   const candidateId = params.id as string;
 
@@ -44,6 +54,14 @@ export default function Page() {
       router.replace(`/add/candidate/${candidateId}?tab=${currentTab}`);
     }
   }, [candidateId, tabParam, currentTab, router.replace]);
+
+  if (isCollegeOptionsPending) {
+    return <LoaderScreen message="Loading..." />;
+  }
+
+  if (collegeOptionsError) {
+    return <ErrorDisplay message={collegeOptionsError.message} />;
+  }
 
   return (
     <div className="mx-auto flex w-full flex-col gap-4 p-4 sm:p-6 md:p-8">

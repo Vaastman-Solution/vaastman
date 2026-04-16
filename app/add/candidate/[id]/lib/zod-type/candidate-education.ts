@@ -6,15 +6,8 @@ export const addCandidateEducationSchema = z.object({
     .string()
     .trim()
     .min(1, { error: "University roll is required" }),
-  grade: z.string().trim().min(1, { error: "Grade is required" }),
-  marks: z
-    .string()
-    .trim()
-    .min(1, { error: "Marks is required" })
-    .refine((value) => !Number.isNaN(Number(value)), {
-      error: "Marks must be a valid number",
-    }),
   collegeName: z.string().trim().min(1, { error: "College name is required" }),
+  session: z.string().trim().min(1, { error: "Session is required" }),
   collegeFee: z.string({ error: "College fee is required" }),
   duration: z.string().trim().min(1, { error: "Duration is required" }),
   domainOrMainSubject: z

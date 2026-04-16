@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,7 +16,6 @@ import {
   addCandidateEducationSchema,
 } from "../../lib/zod-type/candidate-education";
 import { useAddCandidateEducation } from "../../query/mut-add-candidate-education";
-import { useGetCollegeOptions } from "../../query/use-get-college-options";
 import { FirstTwoRow } from "./first-2-row";
 import { SecondTwoRow } from "./second-2-row";
 
@@ -31,8 +29,6 @@ export function AddCandidateEducationForm({
     defaultValues: {
       id: candidateId,
       universityRoll: "",
-      grade: "",
-      marks: "",
       collegeName: "",
       collegeFee: "",
       duration: "",

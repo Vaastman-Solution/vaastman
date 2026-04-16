@@ -85,7 +85,6 @@ export async function addCandidateEducationAction(
     where: { name: parsedData.data.collegeName },
     select: {
       name: true,
-      fees: true,
     },
   });
 
@@ -98,9 +97,10 @@ export async function addCandidateEducationAction(
       data: {
         candidateId: parsedData.data.id,
         universityRoll: parsedData.data.universityRoll,
-        grade: parsedData.data.grade,
-        marks: Number(parsedData.data.marks),
+        // grade: parsedData.data.grade,
+        // marks: Number(parsedData.data.marks),
         collegeName: selectedCollege.name,
+        session: parsedData.data.session,
         collegeFee: parsedData.data.collegeFee,
         duration: parsedData.data.duration,
         domainOrMainSubject: parsedData.data.domainOrMainSubject,
@@ -129,8 +129,25 @@ export async function getCandidateEducationColleges() {
   try {
     const colleges = await prisma.college.findMany({
       select: {
+        id: true,
         name: true,
-        fees: true,
+        sessions: {
+          where: {
+            status: "ACTIVE",
+          },
+          select: {
+            id: true,
+            name: true,
+            fees: true,
+            duration: true,
+          },
+        },
+        domains: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
       orderBy: {
         name: "asc",

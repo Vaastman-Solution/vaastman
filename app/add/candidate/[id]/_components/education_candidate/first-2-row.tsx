@@ -36,34 +36,15 @@ export function FirstTwoRow({
 
       <Controller
         control={form.control}
-        name="grade"
+        name="mjcSubject"
         render={({ field, fieldState }) => (
           <Field>
-            <FieldLabel requiredLable>Grade</FieldLabel>
+            <FieldLabel requiredLable>MJC Subject</FieldLabel>
             <FieldContent>
               <Input
                 {...field}
                 aria-invalid={fieldState.invalid}
-                placeholder="Enter grade"
-              />
-              <FieldError errors={[fieldState.error]} />
-            </FieldContent>
-          </Field>
-        )}
-      />
-
-      <Controller
-        control={form.control}
-        name="marks"
-        render={({ field, fieldState }) => (
-          <Field>
-            <FieldLabel requiredLable>Marks</FieldLabel>
-            <FieldContent>
-              <Input
-                {...field}
-                aria-invalid={fieldState.invalid}
-                placeholder="Enter marks"
-                type="number"
+                placeholder="Enter MJC subject"
               />
               <FieldError errors={[fieldState.error]} />
             </FieldContent>
