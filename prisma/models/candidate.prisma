@@ -22,9 +22,10 @@ model Candidate_Education {
   id                    String   @id @default(cuid())
   candidateId           String
   universityRoll        String
-  grade                 String
-  marks                 Float
+  grade                 String?
+  marks                 Float?
   collegeName           String
+  session               String
   collegeFee            String
   duration              String
   domainOrMainSubject   String

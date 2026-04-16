@@ -1,12 +1,31 @@
 model College {
-  id     String   @id @default(cuid())
-  name   String
-  code 	 String?
-  fees   String
-  domains Domain[]
+  id       String   @id @default(cuid())
+  name     String
+  code     String?
+  sessions CollegeSession[]
+  domains  Domain[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum CollegeSessionStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model CollegeSession {
+  id        String               @id @default(cuid())
+  name      String               
+  fees      String               
+  duration  String
+  status    CollegeSessionStatus @default(ACTIVE)
+  
+  collegeId String
+  college   College              @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
 }
 
 model Domain {
