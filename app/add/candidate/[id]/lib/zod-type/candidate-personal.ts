@@ -4,7 +4,7 @@ import { Gender } from "@/lib/generated/prisma/enums";
 export const addCandidatePersonalSchema = z.object({
   id: z.string(),
   name: z.string().trim().min(1, { error: "Name is required" }),
-  email: z.string().trim().min(1, { error: "Email is required" }),
+  email: z.string().trim().email({ error: "Valid email is required" }),
   phone: z.string().trim().min(1, { error: "Phone is required" }),
   fatherName: z.string().trim().min(1, { error: "Father name is required" }),
   profilePhoto: z

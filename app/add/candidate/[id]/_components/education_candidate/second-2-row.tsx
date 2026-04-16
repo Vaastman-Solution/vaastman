@@ -122,12 +122,7 @@ export function SecondTwoRow({
           <Field>
             <FieldLabel>College Fee</FieldLabel>
             <FieldContent>
-              <Input
-                {...field}
-                disabled
-                aria-invalid={fieldState.invalid}
-                value={selectedSession?.fees ?? ""}
-              />
+              <Input {...field} disabled aria-invalid={fieldState.invalid} />
               <FieldError errors={[fieldState.error]} />
             </FieldContent>
           </Field>
