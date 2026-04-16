@@ -19,6 +19,7 @@ export async function getCollegeInfo() {
     const data = await prisma.college.findMany({
       include: {
         domains: true,
+        sessions: true,
       },
     });
 
@@ -63,11 +64,17 @@ export async function addCollegeInfo(data: AddCollegeSchema) {
       data: {
         name: parsedData.data.collegeName,
         code: parsedData.data.code,
-        fees: parsedData.data.fees,
         domains: {
           create: parsedData.data.domains?.map((domain) => ({
             name: domain,
           })),
+        },
+        sessions: {
+          create: {
+            name: `${parsedData.data.startSession}-${parsedData.data.endSession}`,
+            duration: `${parsedData.data.duration}h`,
+            fees: parsedData.data.fees,
+          },
         },
       },
     });

@@ -21,6 +21,9 @@ export function AddCollegeForm({
     defaultValues: {
       collegeName: "",
       code: "",
+      startSession: "",
+      endSession: "",
+      duration: "",
       fees: "",
       domains: [],
     },
@@ -34,8 +37,10 @@ export function AddCollegeForm({
   };
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
-      <InputRow1 domainOptions={domainOptions} form={form} />
+    <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
+      <div>
+        <InputRow1 domainOptions={domainOptions} form={form} />
+      </div>
       <div className="mt-4 flex justify-end">
         <Button type="submit">
           <LoadingSwap isLoading={isPending}>Add College</LoadingSwap>

@@ -19,6 +19,10 @@ import {
   MultiSelectTrigger,
   MultiSelectValue,
 } from "@/components/ui/multi-select";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@/components/ui/native-select";
 import type { AddCollegeSchema } from "../lib/zod-type/college-info";
 
 function normalizeDomain(value: string) {
@@ -114,8 +118,16 @@ export function InputRow1({
   form: UseFormReturn<AddCollegeSchema>;
   domainOptions: string[];
 }) {
+  const currentYear = new Date().getFullYear();
+  const startSessionYears = Array.from({ length: 7 }, (_, index) =>
+    String(currentYear - 3 + index),
+  );
+  const endSessionYears = Array.from({ length: 10 }, (_, index) =>
+    String(currentYear - 2 + index),
+  );
+
   return (
-    <div className="space-y-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 [&>[data-slot=field]]:min-w-0">
       <Controller
         control={form.control}
         name="collegeName"
@@ -175,6 +187,81 @@ export function InputRow1({
             field={field}
             fieldState={fieldState}
           />
+        )}
+      />
+
+      <Controller
+        control={form.control}
+        name="startSession"
+        render={({ field, fieldState }) => (
+          <Field>
+            <FieldLabel requiredLable>Start Session</FieldLabel>
+            <FieldContent>
+              <NativeSelect
+                {...field}
+                aria-invalid={fieldState.invalid}
+                className="w-full"
+                value={field.value ?? ""}
+              >
+                <NativeSelectOption value="">
+                  Select start year
+                </NativeSelectOption>
+                {startSessionYears.map((year) => (
+                  <NativeSelectOption key={year} value={year}>
+                    {year}
+                  </NativeSelectOption>
+                ))}
+              </NativeSelect>
+              <FieldError errors={[fieldState.error]} />
+            </FieldContent>
+          </Field>
+        )}
+      />
+
+      <Controller
+        control={form.control}
+        name="endSession"
+        render={({ field, fieldState }) => (
+          <Field>
+            <FieldLabel requiredLable>End Session</FieldLabel>
+            <FieldContent>
+              <NativeSelect
+                {...field}
+                aria-invalid={fieldState.invalid}
+                className="w-full"
+                value={field.value ?? ""}
+              >
+                <NativeSelectOption value="">
+                  Select end year
+                </NativeSelectOption>
+                {endSessionYears.map((year) => (
+                  <NativeSelectOption key={year} value={year}>
+                    {year}
+                  </NativeSelectOption>
+                ))}
+              </NativeSelect>
+              <FieldError errors={[fieldState.error]} />
+            </FieldContent>
+          </Field>
+        )}
+      />
+
+      <Controller
+        control={form.control}
+        name="duration"
+        render={({ field, fieldState }) => (
+          <Field>
+            <FieldLabel requiredLable>Duration (in hours)</FieldLabel>
+            <FieldContent>
+              <Input
+                type="number"
+                {...field}
+                aria-invalid={fieldState.invalid}
+                placeholder="example: 60"
+              />
+              <FieldError errors={[fieldState.error]} />
+            </FieldContent>
+          </Field>
         )}
       />
     </div>

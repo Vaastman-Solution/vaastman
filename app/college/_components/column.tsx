@@ -20,10 +20,21 @@ export const columns: ColumnDef<CollegeInfoRow>[] = [
     },
   },
   {
-    accessorKey: "fees",
+    id: "fees",
+    accessorFn: (row) => {
+      // Prefer the ACTIVE session fee; if not present, use the last available session.
+      const activeSession =
+        row.sessions.find((session) => session.status === "ACTIVE") ??
+        row.sessions.at(-1);
+      return activeSession?.fees ?? "";
+    },
     header: "Fee",
     cell: ({ row }) => {
-      return <div>{row.original.fees}</div>;
+      // Keep the display logic aligned with accessorFn so sorting/filtering and UI match.
+      const activeSession =
+        row.original.sessions.find((session) => session.status === "ACTIVE") ??
+        row.original.sessions.at(-1);
+      return <div>{activeSession?.fees ?? "-"}</div>;
     },
   },
 

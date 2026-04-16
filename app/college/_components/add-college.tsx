@@ -20,7 +20,10 @@ export function AddCollege({ domainOptions }: { domainOptions: string[] }) {
         <Button>Add College</Button>
       </DialogTrigger>
       {/* clicking outsid should not close dialog */}
-      <DialogContent onInteractOutside={(event) => event.preventDefault()}>
+      <DialogContent
+        className="w-[96vw] sm:max-w-4xl"
+        onInteractOutside={(event) => event.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle asChild>
             <h4>Add College</h4>

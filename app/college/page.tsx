@@ -1,5 +1,6 @@
 "use client";
 
+import { ErrorDisplay } from "@/components/error-display";
 import { LoaderScreen } from "@/components/loader-screen";
 import { AddCollege } from "./_components/add-college";
 import { type CollegeInfoRow, columns } from "./_components/column";
@@ -7,7 +8,7 @@ import { DataTable } from "./_components/data-table";
 import { useGetCollegeInfo } from "./query/use-get-collegeInfo";
 
 export default function CollegePage() {
-  const { data, isPending, isError, error } = useGetCollegeInfo();
+  const { data, isPending, error } = useGetCollegeInfo();
   const tableData: CollegeInfoRow[] = data ?? [];
   // get all domains name for auto complete when adding new college
   const domainOptions = Array.from(
@@ -24,11 +25,13 @@ export default function CollegePage() {
     return <LoaderScreen message="Getting colleges list..." />;
   }
 
-  if (isError) {
+  if (error) {
     return (
-      <div className="container mx-auto py-10 text-destructive">
-        {error.message}
-      </div>
+      <ErrorDisplay
+        message={error.message}
+        redirectPath="/signin"
+        buttonText="Back to Signin Page"
+      />
     );
   }
 
