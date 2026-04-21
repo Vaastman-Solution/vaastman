@@ -29,7 +29,8 @@ export function AddCandidateEducationForm({
     defaultValues: {
       id: candidateId,
       universityRoll: "",
-      collegeName: "",
+      collegeId: "",
+      collegeSessionId: "",
       collegeFee: "",
       duration: "",
       domainOrMainSubject: "",

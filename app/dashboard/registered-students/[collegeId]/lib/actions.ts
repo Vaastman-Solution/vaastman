@@ -54,7 +54,7 @@ export async function getRegisteredStudentsByCollege(collegeId: string) {
 
     const candidates = await prisma.candidate_Education.findMany({
       where: {
-        collegeName: college.name,
+        collegeId: college.id,
       },
       include: {
         candidate: {
@@ -68,14 +68,19 @@ export async function getRegisteredStudentsByCollege(collegeId: string) {
             dateOfBirth: true,
           },
         },
+        collegeSession: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
 
     const candidatesBySession = new Map<string, RegisteredStudentRow[]>();
 
     for (const candidate of candidates) {
-      const groupedCandidates =
-        candidatesBySession.get(candidate.session) ?? [];
+      const sessionName = candidate.collegeSession.name;
+      const groupedCandidates = candidatesBySession.get(sessionName) ?? [];
 
       groupedCandidates.push({
         candidateId: candidate.candidate.id,
@@ -92,7 +97,7 @@ export async function getRegisteredStudentsByCollege(collegeId: string) {
         collegeFee: candidate.collegeFee,
       });
 
-      candidatesBySession.set(candidate.session, groupedCandidates);
+      candidatesBySession.set(sessionName, groupedCandidates);
     }
 
     for (const [sessionName, sessionCandidates] of candidatesBySession) {

@@ -6,8 +6,8 @@ export const addCandidateEducationSchema = z.object({
     .string()
     .trim()
     .min(1, { error: "University roll is required" }),
-  collegeName: z.string().trim().min(1, { error: "College name is required" }),
-  session: z.string().trim().min(1, { error: "Session is required" }),
+  collegeId: z.string().trim().min(1, { error: "College name is required" }),
+  collegeSessionId: z.string().trim().min(1, { error: "Session is required" }),
   collegeFee: z.string({ error: "College fee is required" }),
   duration: z.string().trim().min(1, { error: "Duration is required" }),
   domainOrMainSubject: z

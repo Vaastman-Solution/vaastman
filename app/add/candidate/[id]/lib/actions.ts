@@ -1,7 +1,5 @@
 "use server";
 
-import { headers } from "next/headers";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { Prisma } from "@/lib/generated/prisma/client";
 import {
@@ -81,10 +79,23 @@ export async function addCandidateEducationAction(
     return { success: false, message: "Candidate education already exists" };
   }
 
-  const selectedCollege = await prisma.college.findFirst({
-    where: { name: parsedData.data.collegeName },
+  const selectedCollege = await prisma.college.findUnique({
+    where: { id: parsedData.data.collegeId },
     select: {
+      id: true,
       name: true,
+      sessions: {
+        where: {
+          id: parsedData.data.collegeSessionId,
+          status: "ACTIVE",
+        },
+        select: {
+          id: true,
+          name: true,
+          fees: true,
+          duration: true,
+        },
+      },
     },
   });
 
@@ -92,17 +103,23 @@ export async function addCandidateEducationAction(
     return { success: false, message: "Selected college was not found" };
   }
 
+  const selectedSession = selectedCollege.sessions[0];
+
+  if (!selectedSession) {
+    return { success: false, message: "Selected session was not found" };
+  }
+
   try {
     const createdEducation = await prisma.candidate_Education.create({
       data: {
         candidateId: parsedData.data.id,
+        collegeId: selectedCollege.id,
+        collegeSessionId: selectedSession.id,
         universityRoll: parsedData.data.universityRoll,
         // grade: parsedData.data.grade,
         // marks: Number(parsedData.data.marks),
-        collegeName: selectedCollege.name,
-        session: parsedData.data.session,
-        collegeFee: parsedData.data.collegeFee,
-        duration: parsedData.data.duration,
+        collegeFee: selectedSession.fees,
+        duration: selectedSession.duration,
         domainOrMainSubject: parsedData.data.domainOrMainSubject,
         mjcSubject: parsedData.data.mjcSubject,
       },

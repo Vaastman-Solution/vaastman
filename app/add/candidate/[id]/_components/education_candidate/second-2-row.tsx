@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Controller, type UseFormReturn } from "react-hook-form";
+import { Controller, type UseFormReturn, useWatch } from "react-hook-form";
 import type { AddCandidateEducationSchema } from "@/app/add/candidate/[id]/lib/zod-type/candidate-education";
 import { useGetCollegeOptions } from "@/app/add/candidate/[id]/query/use-get-college-options";
 import {
@@ -20,16 +20,34 @@ export function SecondTwoRow({
   form: UseFormReturn<AddCandidateEducationSchema>;
 }) {
   const { data: collegeOptions = [] } = useGetCollegeOptions();
+  const selectedCollegeId = useWatch({
+    control: form.control,
+    name: "collegeId",
+  });
+  const selectedCollegeSessionId = useWatch({
+    control: form.control,
+    name: "collegeSessionId",
+  });
 
   const selectedCollege = collegeOptions.find(
-    (college) => college.name === form.watch("collegeName"),
+    (college) => college.id === selectedCollegeId,
   );
 
   const selectedSession = selectedCollege?.sessions.find(
-    (session) => session.name === form.watch("session"),
+    (session) => session.id === selectedCollegeSessionId,
   );
 
   useEffect(() => {
+    if (
+      selectedCollege &&
+      selectedCollegeSessionId &&
+      !selectedCollege.sessions.some(
+        (session) => session.id === selectedCollegeSessionId,
+      )
+    ) {
+      form.setValue("collegeSessionId", "");
+    }
+
     if (selectedSession) {
       form.setValue("collegeFee", selectedSession.fees ?? "");
       form.setValue("duration", selectedSession.duration ?? "");
@@ -37,13 +55,18 @@ export function SecondTwoRow({
       form.setValue("collegeFee", "");
       form.setValue("duration", "");
     }
-  }, [selectedSession, form.setValue]);
+  }, [
+    selectedCollege,
+    selectedCollegeSessionId,
+    selectedSession,
+    form.setValue,
+  ]);
 
   return (
     <>
       <Controller
         control={form.control}
-        name="collegeName"
+        name="collegeId"
         render={({ field, fieldState }) => (
           <Field>
             <FieldLabel requiredLable>College Name</FieldLabel>
@@ -57,7 +80,7 @@ export function SecondTwoRow({
                   Select college name
                 </NativeSelectOption>
                 {collegeOptions.map((college) => (
-                  <NativeSelectOption key={college.id} value={college.name}>
+                  <NativeSelectOption key={college.id} value={college.id}>
                     {college.name}
                   </NativeSelectOption>
                 ))}
@@ -70,7 +93,7 @@ export function SecondTwoRow({
 
       <Controller
         control={form.control}
-        name="session"
+        name="collegeSessionId"
         render={({ field, fieldState }) => (
           <Field>
             <FieldLabel requiredLable>Session</FieldLabel>
@@ -85,7 +108,7 @@ export function SecondTwoRow({
               >
                 <NativeSelectOption value="">Select session</NativeSelectOption>
                 {selectedCollege?.sessions.map((session) => (
-                  <NativeSelectOption key={session.id} value={session.name}>
+                  <NativeSelectOption key={session.id} value={session.id}>
                     {session.name}
                   </NativeSelectOption>
                 ))}

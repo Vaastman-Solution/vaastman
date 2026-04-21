@@ -1,14 +1,14 @@
 model Candidate_Personal {
-  id          String   @id @default(cuid())
-  name        String
-  email       String
-  phone       String
-  fatherName  String
-  profilePhoto String 
-  gender      Gender
-  dateOfBirth String
+  id           String @id @default(cuid())
+  name         String
+  email        String
+  phone        String
+  fatherName   String
+  profilePhoto String
+  gender       Gender
+  dateOfBirth  String
 
-  candidateEducations Candidate_Education[]
+  candidateEducations     Candidate_Education[]
   candidateCertifications Candidate_Certification[]
 }
 
@@ -19,31 +19,30 @@ enum Gender {
 }
 
 model Candidate_Education {
-  id                    String   @id @default(cuid())
-  candidateId           String
-  universityRoll        String
-  grade                 String?
-  marks                 Float?
-  collegeName           String
-  session               String
-  collegeFee            String
-  duration              String
-  domainOrMainSubject   String
-  mjcSubject            String
-  candidate   Candidate_Personal @relation(fields: [candidateId], references: [id], onDelete: Cascade)
-  
+  id                  String             @id @default(cuid())
+  candidateId         String
+  collegeId           String
+  collegeSessionId    String
+  universityRoll      String
+  grade               String?
+  marks               Float?
+  collegeFee          String
+  duration            String
+  domainOrMainSubject String
+  mjcSubject          String
+  candidate           Candidate_Personal @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  college             College            @relation(fields: [collegeId], references: [id], onDelete: Restrict)
+  collegeSession      CollegeSession     @relation(fields: [collegeSessionId], references: [id], onDelete: Restrict)
 }
 
 model Candidate_Certification {
-  id                    String   @id @default(cuid())
-  QRCode                String
-  certificationName     String
-  certificateNumber    String
-  issuedAt  DateTime
-  expiresAt DateTime
+  id                String             @id @default(cuid())
+  QRCode            String
+  certificationName String
+  certificateNumber String
+  issuedAt          DateTime
+  expiresAt         DateTime
   // relation of candidate
-  candidateId           String
-  candidate   Candidate_Personal @relation(fields: [candidateId], references: [id], onDelete: Cascade)
-
-
+  candidateId       String
+  candidate         Candidate_Personal @relation(fields: [candidateId], references: [id], onDelete: Cascade)
 }
