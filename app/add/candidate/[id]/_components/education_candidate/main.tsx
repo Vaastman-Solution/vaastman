@@ -43,7 +43,7 @@ export function AddCandidateEducationForm({
 
   const onSubmit = (data: AddCandidateEducationSchema) => {
     addCandidateEducation(data);
-    window.open(`/checkout/${candidateId}`, "_blank");
+    window.location.href = `/checkout/${candidateId}`;
   };
 
   return (
