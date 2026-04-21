@@ -22,19 +22,18 @@ export const columns: ColumnDef<CollegeInfoRow>[] = [
   {
     id: "fees",
     accessorFn: (row) => {
-      // Prefer the ACTIVE session fee; if not present, use the last available session.
-      const activeSession =
-        row.sessions.find((session) => session.status === "ACTIVE") ??
-        row.sessions.at(-1);
-      return activeSession?.fees ?? "";
+      // Use session count for a compact table view; session fee details are in expanded row.
+      return row.sessions.length;
     },
     header: "Fee",
     cell: ({ row }) => {
-      // Keep the display logic aligned with accessorFn so sorting/filtering and UI match.
-      const activeSession =
-        row.original.sessions.find((session) => session.status === "ACTIVE") ??
-        row.original.sessions.at(-1);
-      return <div>{activeSession?.fees ?? "-"}</div>;
+      const sessionCount = row.original.sessions.length;
+
+      if (!sessionCount) {
+        return <div>-</div>;
+      }
+
+      return <div>{sessionCount} session(s)</div>;
     },
   },
 
@@ -48,7 +47,7 @@ export const columns: ColumnDef<CollegeInfoRow>[] = [
 
   {
     id: "expander",
-    header: "Domains",
+    header: "Details",
     cell: ({ row }) => (
       <button type="button" onClick={row.getToggleExpandedHandler()}>
         {row.getIsExpanded() ? "▼" : "▶"}

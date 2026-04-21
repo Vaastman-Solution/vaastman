@@ -2,6 +2,8 @@
 
 import { ErrorDisplay } from "@/components/error-display";
 import { LoaderScreen } from "@/components/loader-screen";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { AddCollege } from "./_components/add-college";
 import { type CollegeInfoRow, columns } from "./_components/column";
 import { DataTable } from "./_components/data-table";
@@ -36,15 +38,34 @@ export default function CollegePage() {
   }
 
   return (
-    <div className="container mx-auto py-10">
-      <AddCollege domainOptions={domainOptions} />
+    <div className="container mx-auto space-y-4 py-10">
+      <div className="flex items-center justify-between">
+        <Button variant="link" className="px-0 text-muted-foreground" asChild>
+          <Link href="/dashboard">Back to Dashboard</Link>
+        </Button>
+        <AddCollege domainOptions={domainOptions} />
+      </div>
       <DataTable
         columns={columns}
         data={tableData}
-        // Render domains inside each row's expandable section.
+        // Render fee-by-session and domains inside each row's expandable section.
         renderExpandedRow={(row) => (
           <div className="space-y-2 p-2">
-            <p className="text-sm font-medium">Domains</p>
+            <p className="text-sm text-sidebar-primary font-medium">
+              Session Fees
+            </p>
+            {row.sessions.length ? (
+              <div className="space-y-1">
+                {row.sessions.map((session) => (
+                  <p key={session.id} className="text-sm">
+                    {session.name}: {session.fees}
+                  </p>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">No session fees.</p>
+            )}
+            <p className="text-sm text-sidebar-primary font-medium">Domains</p>
             {row.domains.length ? (
               <div className="flex flex-wrap gap-2">
                 {row.domains.map((domain) => (

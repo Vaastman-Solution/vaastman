@@ -79,7 +79,7 @@ model Verification {
 }
 
 model AllowedEmail {
-  id        String   @id @default(cuid()) 
+  id        String   @id @default(cuid())
   email     String   @unique
   role      Role     @default(STAFF) // Default role when they signup
   addedBy   String? // Admin ID who added this email
