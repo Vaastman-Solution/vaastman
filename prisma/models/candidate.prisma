@@ -10,6 +10,7 @@ model Candidate_Personal {
 
   candidateEducations     Candidate_Education[]
   candidateCertifications Candidate_Certification[]
+  candidatePayments       Candidate_Payment[]
 }
 
 enum Gender {

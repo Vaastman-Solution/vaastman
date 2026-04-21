@@ -71,7 +71,7 @@ export async function POST(request: Request) {
         .upload_stream(
           {
             resource_type: "image",
-            folder: "PathoLab_Report_ProfilePic",
+            folder: "Vaastman_solution",
             // We already processed the image, so no need for heavy Cloudinary transformations
             // just ensure it's stored as the format we sent (webp)
           },

@@ -1,0 +1,31 @@
+enum CandidatePaymentStatus {
+  CREATED
+  VERIFIED
+  FAILED
+}
+
+model Candidate_Payment {
+  id                String                 @id @default(cuid())
+  candidateId       String
+  attemptRef        String?
+  receipt           String?
+  amount            Int
+  currency          String                 @default("INR")
+  status            CandidatePaymentStatus @default(CREATED)
+  razorpayOrderId   String                 @unique
+  razorpayPaymentId String?                @unique
+  razorpaySignature String?
+  verifiedAt        DateTime?
+  failureReason     String?
+  orderPayload      Json?
+  paymentPayload    Json?
+  webhookPayload    Json?
+
+  candidate Candidate_Personal @relation(fields: [candidateId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([candidateId, status])
+  @@index([status, createdAt])
+}
