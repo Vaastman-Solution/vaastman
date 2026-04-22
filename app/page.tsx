@@ -1,24 +1,24 @@
 "use client";
 
 import { LoaderScreen } from "@/components/loader-screen";
+import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-
 import { Role } from "@/lib/generated/prisma/enums";
 
 export default function Page() {
-  const { data: session, isPending } = authClient.useSession();
+  const generateReceipt = async () => {
+    const response = await fetch("/api/receipt", {
+      method: "POST",
+    });
 
-  if (isPending) {
-    return <LoaderScreen message="Authenticating..." />;
-  }
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "receipt.pdf";
+    link.click();
+    URL.revokeObjectURL(url);
+  };
 
-  if (!session) {
-    window.location.href = "/signin";
-  }
-
-  if (session?.user.role !== Role.ADMIN) {
-    window.location.href = "/signin";
-  }
-
-  return <div>hi there</div>;
+  return <Button onClick={generateReceipt}>Generate Receipt</Button>;
 }

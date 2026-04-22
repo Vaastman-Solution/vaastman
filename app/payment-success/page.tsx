@@ -45,8 +45,7 @@ export default async function Page({ searchParams }: PaymentSuccessPageProps) {
               Your payment is confirmed.
             </CardTitle>
             <CardDescription>
-              The receipt action is in place now. It currently prints this page
-              and can be wired to a final receipt layout later.
+              Download your payment receipt with the confirmed details.
             </CardDescription>
           </div>
         </CardHeader>
@@ -73,10 +72,10 @@ export default async function Page({ searchParams }: PaymentSuccessPageProps) {
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-3 border-t sm:flex-row sm:justify-between">
-          <PrintReceiptButton />
-          <Button asChild>
+          <Button variant={"outline"} asChild>
             <Link href="/home">Back to Home</Link>
           </Button>
+          <PrintReceiptButton candidateId={candidateId} />
         </CardFooter>
       </Card>
     </main>

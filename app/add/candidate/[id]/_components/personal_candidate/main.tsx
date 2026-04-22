@@ -61,7 +61,12 @@ export function AddCandidatePersonalForm({
           </div>
         </CardContent>
         <CardFooter className="justify-center">
-          <Button type="submit" size="lg" className="px-8 text-base">
+          <Button
+            disabled={isPending}
+            type="submit"
+            size="lg"
+            className="px-8 text-base"
+          >
             <LoadingSwap isLoading={isPending}>
               Save Personal Details
             </LoadingSwap>

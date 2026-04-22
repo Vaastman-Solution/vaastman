@@ -61,7 +61,12 @@ export function AddCandidateEducationForm({
           </div>
         </CardContent>
         <CardFooter className="justify-center">
-          <Button className="px-8 text-base" size="lg" type="submit">
+          <Button
+            disabled={isPending}
+            className="px-8 text-base"
+            size="lg"
+            type="submit"
+          >
             <LoadingSwap isLoading={isPending}>
               Save Education Details
             </LoadingSwap>

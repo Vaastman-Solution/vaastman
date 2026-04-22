@@ -28,7 +28,6 @@ export function useVerifyPayment(candidateId: string) {
       queryClient.invalidateQueries({
         queryKey: ["order", candidateId],
       });
-      toast.success("Payment verified successfully.");
     },
     onError: (error) => {
       toast.error(error.message);
