@@ -1,7 +1,9 @@
 "use client";
 
+import { IconDownload } from "@tabler/icons-react";
 import Link from "next/link";
 import { DataTable } from "@/app/college/_components/data-table";
+import { downloadRegisteredStudentsSessionCsv } from "@/app/dashboard/registered-students/[collegeId]/lib/export-session-csv";
 import { useGetRegisteredStudents } from "@/app/dashboard/registered-students/[collegeId]/query/use-get-registered-students";
 import { ErrorDisplay } from "@/components/error-display";
 import { LoaderScreen } from "@/components/loader-screen";
@@ -79,6 +81,23 @@ export function RegisteredStudents({ collegeId }: RegisteredStudentsProps) {
 
         {data.sessions.map((session) => (
           <TabsContent key={session.name} value={session.name} className="mt-0">
+            <div className="mb-3 flex justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() =>
+                  downloadRegisteredStudentsSessionCsv({
+                    collegeName: data.college.name,
+                    sessionName: session.name,
+                    candidates: session.candidates,
+                  })
+                }
+                disabled={!session.candidates.length}
+              >
+                <IconDownload className="size-5" data-icon="inline-start" />
+                Export CSV
+              </Button>
+            </div>
             <DataTable columns={columns} data={session.candidates} />
           </TabsContent>
         ))}

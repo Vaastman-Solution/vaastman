@@ -33,6 +33,10 @@ Heed deprecation notices and prefer current project conventions over remembered 
 
 - Use Bun for everything: installing dependencies, running scripts, and invoking project tooling.
 
+# Maintainability Rule
+
+- If a file becomes complex, extract helper functions into a `lib/` module instead of keeping all logic inline in the same file.
+
 # Feature Route Pattern
 
 - For data-driven routes under `app/`, keep feature code colocated inside the route folder.
