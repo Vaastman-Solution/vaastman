@@ -123,6 +123,10 @@ export function PaymentButton({ candidateId }: { candidateId: string }) {
             razorpaySignature: response.razorpay_signature,
           });
 
+          if (!verification) {
+            return;
+          }
+
           const paymentSuccessParams = new URLSearchParams({
             candidateId: verification.candidateId,
             orderId: verification.orderId,
