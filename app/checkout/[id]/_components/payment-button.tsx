@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ErrorDisplay } from "@/components/error-display";
 import { Button } from "@/components/ui/button";
@@ -74,6 +75,7 @@ function loadRazorpayScript() {
 }
 
 export function PaymentButton({ candidateId }: { candidateId: string }) {
+  const router = useRouter();
   const { data, isLoading, error } = useQuery(getOrder(candidateId));
   const verifyPaymentMutation = useVerifyPayment(candidateId);
 
@@ -115,11 +117,19 @@ export function PaymentButton({ candidateId }: { candidateId: string }) {
       },
       handler: async (response) => {
         try {
-          await verifyPaymentMutation.mutateAsync({
+          const verification = await verifyPaymentMutation.mutateAsync({
             razorpayOrderId: response.razorpay_order_id,
             razorpayPaymentId: response.razorpay_payment_id,
             razorpaySignature: response.razorpay_signature,
           });
+
+          const paymentSuccessParams = new URLSearchParams({
+            candidateId: verification.candidateId,
+            orderId: verification.orderId,
+            paymentId: verification.paymentId,
+          });
+
+          router.replace(`/payment-success?${paymentSuccessParams.toString()}`);
         } catch (error) {
           console.error("Server-side payment verification failed:", error);
           // Note: Error toast is handled by useMutation's onError callback.

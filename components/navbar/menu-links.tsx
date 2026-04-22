@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   AccordionContent,
   AccordionItem,
@@ -11,7 +10,6 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import type { MenuItem } from "./types";
-import { isInternalUrl } from "./utils";
 
 function DesktopMenuItem({ item }: { item: MenuItem }) {
   if (item.items) {
@@ -35,11 +33,7 @@ function DesktopMenuItem({ item }: { item: MenuItem }) {
         asChild
         className="bg-background hover:bg-muted hover:text-accent-foreground group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
       >
-        {isInternalUrl(item.url) ? (
-          <Link href={item.url}>{item.title}</Link>
-        ) : (
-          <a href={item.url}>{item.title}</a>
-        )}
+        <a href={item.url}>{item.title}</a>
       </NavigationMenuLink>
     </NavigationMenuItem>
   );
@@ -62,9 +56,9 @@ function MobileMenuItem({ item }: { item: MenuItem }) {
   }
 
   return (
-    <Link key={item.title} href={item.url} className="text-md font-semibold">
+    <a key={item.title} href={item.url} className="text-md font-semibold">
       {item.title}
-    </Link>
+    </a>
   );
 }
 
@@ -83,14 +77,7 @@ function SubMenuLink({ item }: { item: MenuItem }) {
     </>
   );
 
-  return isInternalUrl(item.url) ? (
-    <Link
-      className="hover:bg-muted hover:text-accent-foreground flex min-w-80 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none"
-      href={item.url}
-    >
-      {content}
-    </Link>
-  ) : (
+  return (
     <a
       className="hover:bg-muted hover:text-accent-foreground flex min-w-80 flex-row gap-4 rounded-md p-3 leading-none no-underline transition-colors outline-none select-none"
       href={item.url}
