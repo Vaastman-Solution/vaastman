@@ -10,9 +10,9 @@ import { getInitials, getMenuItems } from "./utils";
 
 function Navbar1({
   logo = {
-    url: "https://www.vaastman.com/",
-    src: "https://www.vaastman.com/",
-    alt: "logo",
+    url: "/home",
+    src: "/vaastman-logo.jpg",
+    alt: "Vaastman Solutions logo",
     title: "Vaastman",
   },
   menu = [

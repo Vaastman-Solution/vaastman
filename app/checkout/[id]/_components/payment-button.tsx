@@ -3,76 +3,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import {
+  createPaymentSuccessSearchParams,
+  getPayButtonLabel,
+  loadRazorpayScript,
+} from "@/app/checkout/[id]/lib/payment-checkout";
 import { ErrorDisplay } from "@/components/error-display";
 import { Button } from "@/components/ui/button";
 import { getOrder } from "../query/get-order";
 import { useVerifyPayment } from "../query/mut-verify-payment";
-
-type RazorpaySuccessResponse = {
-  razorpay_order_id: string;
-  razorpay_payment_id: string;
-  razorpay_signature: string;
-};
-
-type RazorpayOptions = {
-  key: string;
-  amount: number;
-  currency: string;
-  name: string;
-  description: string;
-  order_id: string;
-  handler: (response: RazorpaySuccessResponse) => void | Promise<void>;
-  notes?: Record<string, string>;
-  prefill?: {
-    name?: string;
-    email?: string;
-    contact?: string;
-  };
-  theme?: {
-    color?: string;
-  };
-};
-
-type RazorpayInstance = {
-  open: () => void;
-  on: (event: "payment.failed", cb: () => void) => void;
-};
-
-declare global {
-  interface Window {
-    Razorpay?: new (options: RazorpayOptions) => RazorpayInstance;
-  }
-}
-
-let razorpayScriptPromise: Promise<boolean> | null = null;
-
-function loadRazorpayScript() {
-  if (typeof window === "undefined") {
-    return Promise.resolve(false);
-  }
-
-  if (window.Razorpay) {
-    return Promise.resolve(true);
-  }
-
-  if (razorpayScriptPromise) {
-    return razorpayScriptPromise;
-  }
-
-  razorpayScriptPromise = new Promise((resolve) => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    script.onload = () => resolve(true);
-    script.onerror = () => {
-      razorpayScriptPromise = null;
-      resolve(false);
-    };
-    document.body.appendChild(script);
-  });
-
-  return razorpayScriptPromise;
-}
 
 export function PaymentButton({ candidateId }: { candidateId: string }) {
   const router = useRouter();
@@ -127,13 +66,13 @@ export function PaymentButton({ candidateId }: { candidateId: string }) {
             return;
           }
 
-          const paymentSuccessParams = new URLSearchParams({
+          const paymentSuccessParams = createPaymentSuccessSearchParams({
             candidateId: verification.candidateId,
             orderId: verification.orderId,
             paymentId: verification.paymentId,
           });
 
-          router.replace(`/payment-success?${paymentSuccessParams.toString()}`);
+          router.replace(`/payment-success?${paymentSuccessParams}`);
         } catch (error) {
           console.error("Server-side payment verification failed:", error);
           // Note: Error toast is handled by useMutation's onError callback.
@@ -157,7 +96,7 @@ export function PaymentButton({ candidateId }: { candidateId: string }) {
 
   return (
     <Button onClick={handlePay} disabled={isPending || !data}>
-      {isPending ? "Loading..." : `Pay ₹${(payableAmount / 100).toFixed(2)}`}
+      {getPayButtonLabel(payableAmount, isPending)}
     </Button>
   );
 }
