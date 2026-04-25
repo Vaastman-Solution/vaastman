@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getRegisteredStudentsByCollege } from "@/app/dashboard/registered-students/[collegeId]/lib/actions";
+import { getRegisteredStudentsByCollege } from "@/app/(dashboard)/dashboard/registered-students/[collegeId]/lib/actions";
 
 export function useGetRegisteredStudents(collegeId: string) {
   return useQuery({

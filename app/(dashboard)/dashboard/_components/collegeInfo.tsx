@@ -12,13 +12,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { NAVBAR_HEIGHT } from "@/lib/constants";
 import { useGetCollegeInfo } from "../query/use-get-college-info";
 
 export default function CollegeInfo() {
   const { data, isPending, error } = useGetCollegeInfo();
 
   if (isPending) {
-    return <LoaderScreen message="Getting colleges list..." />;
+    return (
+      <LoaderScreen
+        message="Getting colleges list..."
+        offsetHeight={NAVBAR_HEIGHT * 2}
+      />
+    );
   }
 
   if (error) {
@@ -33,7 +39,7 @@ export default function CollegeInfo() {
 
   if (!data?.length) {
     return (
-      <div className="container mx-auto px-4 py-10 md:px-6">
+      <div className="">
         <Card className="border-dashed">
           <CardHeader>
             <CardTitle>No colleges found</CardTitle>
@@ -47,7 +53,7 @@ export default function CollegeInfo() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-10 md:px-6">
+    <div className="">
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {data.map((college) => (
           <Card key={college.id} className="h-full justify-between">

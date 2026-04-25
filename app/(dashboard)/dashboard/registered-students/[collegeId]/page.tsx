@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { ContentLayout } from "@/components/admin-panel/content-layout";
 import { auth } from "@/lib/auth";
 import { RegisteredStudents } from "./_components/registered-students";
 
@@ -18,5 +19,9 @@ export default async function RegisteredStudentsPage({
 
   const { collegeId } = await params;
 
-  return <RegisteredStudents collegeId={collegeId} />;
+  return (
+    <ContentLayout title="Registered Students">
+      <RegisteredStudents collegeId={collegeId} />
+    </ContentLayout>
+  );
 }

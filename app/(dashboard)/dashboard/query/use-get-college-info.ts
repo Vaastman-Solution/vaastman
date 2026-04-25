@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getCollegeInfo } from "@/app/college/lib/actions";
+import { getCollegeInfo } from "@/app/(dashboard)/college/lib/actions";
 
 export const useGetCollegeInfo = () => {
   return useQuery({

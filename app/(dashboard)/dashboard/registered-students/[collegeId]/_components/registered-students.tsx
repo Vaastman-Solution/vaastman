@@ -2,14 +2,15 @@
 
 import { IconDownload } from "@tabler/icons-react";
 import Link from "next/link";
-import { DataTable } from "@/app/college/_components/data-table";
-import { downloadRegisteredStudentsSessionCsv } from "@/app/dashboard/registered-students/[collegeId]/lib/export-session-csv";
-import { useGetRegisteredStudents } from "@/app/dashboard/registered-students/[collegeId]/query/use-get-registered-students";
+import { DataTable } from "@/app/(dashboard)/college/_components/data-table";
+import { downloadRegisteredStudentsSessionCsv } from "@/app/(dashboard)/dashboard/registered-students/[collegeId]/lib/export-session-csv";
+import { useGetRegisteredStudents } from "@/app/(dashboard)/dashboard/registered-students/[collegeId]/query/use-get-registered-students";
 import { ErrorDisplay } from "@/components/error-display";
 import { LoaderScreen } from "@/components/loader-screen";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { NAVBAR_HEIGHT } from "@/lib/constants";
 import { columns } from "./column";
 
 type RegisteredStudentsProps = {
@@ -20,7 +21,12 @@ export function RegisteredStudents({ collegeId }: RegisteredStudentsProps) {
   const { data, isPending, error } = useGetRegisteredStudents(collegeId);
 
   if (isPending) {
-    return <LoaderScreen message="Getting registered students..." />;
+    return (
+      <LoaderScreen
+        offsetHeight={NAVBAR_HEIGHT * 2}
+        message="Getting registered students..."
+      />
+    );
   }
 
   if (error) {
@@ -35,7 +41,7 @@ export function RegisteredStudents({ collegeId }: RegisteredStudentsProps) {
 
   if (!data?.sessions.length) {
     return (
-      <div className="container mx-auto space-y-4 px-4 py-10 md:px-6">
+      <div className="mx-auto">
         <Button variant="link" className="px-0 text-muted-foreground" asChild>
           <Link href="/dashboard">Back to Dashboard</Link>
         </Button>
@@ -53,7 +59,7 @@ export function RegisteredStudents({ collegeId }: RegisteredStudentsProps) {
   }
 
   return (
-    <div className="container mx-auto space-y-4 px-4 py-10 md:px-6">
+    <div className="">
       <Button variant="link" className="px-0 text-muted-foreground" asChild>
         <Link href="/dashboard">Back to Dashboard</Link>
       </Button>
@@ -84,7 +90,6 @@ export function RegisteredStudents({ collegeId }: RegisteredStudentsProps) {
             <div className="mb-3 flex justify-end">
               <Button
                 type="button"
-                variant="outline"
                 onClick={() =>
                   downloadRegisteredStudentsSessionCsv({
                     collegeName: data.college.name,

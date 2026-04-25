@@ -1,7 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import type { useGetRegisteredStudents } from "@/app/dashboard/registered-students/[collegeId]/query/use-get-registered-students";
+import type { useGetRegisteredStudents } from "@/app/(dashboard)/dashboard/registered-students/[collegeId]/query/use-get-registered-students";
 
 export type RegisteredStudentsRow = NonNullable<
   ReturnType<typeof useGetRegisteredStudents>["data"]

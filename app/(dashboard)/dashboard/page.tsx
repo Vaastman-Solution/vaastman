@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { ContentLayout } from "@/components/admin-panel/content-layout";
 import { auth } from "@/lib/auth";
 import CollegeInfo from "./_components/collegeInfo";
 
@@ -9,5 +10,9 @@ export default async function DashboardPage() {
   if (!session) {
     redirect("/signin");
   }
-  return <CollegeInfo />;
+  return (
+    <ContentLayout title="College Information">
+      <CollegeInfo />
+    </ContentLayout>
+  );
 }

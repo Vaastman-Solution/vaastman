@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import {
   type AddCollegeSchema,
   addCollegeSchema,
-} from "@/app/college/lib/zod-type/college-info";
+} from "@/app/(dashboard)/college/lib/zod-type/college-info";
 import { Button } from "@/components/ui/button";
 import { LoadingSwap } from "@/components/ui/loading-swap";
 import { useAddCollegeInfo } from "../query/mut-add-collegeInfo";
