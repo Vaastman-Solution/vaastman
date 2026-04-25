@@ -1,6 +1,6 @@
 @reference "./globals.css";
 
-h1 {
+/* h1 {
   @apply text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight md:leading-tight lg:leading-none;
 }
 
@@ -22,7 +22,7 @@ h5 {
 
 h6 {
   @apply text-sm md:text-base lg:text-lg font-semibold;
-}
+} */
 
 /* Body Text */
 p {
