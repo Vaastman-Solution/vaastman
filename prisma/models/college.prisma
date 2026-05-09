@@ -1,0 +1,57 @@
+model University {
+  id        String    @id @default(cuid())
+  name      UniversityName
+  colleges  College[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum UniversityName {
+  PATLIPUTRA_UNIVERSITY // underscore will remove on ui to show (or select) university name by code: replace("_", " ")
+}
+
+model College {
+  id                  String                @id @default(cuid())
+  name                String
+  code                String?
+  
+  universityId        String
+  university          University            @relation(fields: [universityId], references: [id], onDelete: Cascade)
+
+  sessions            CollegeSession[]
+  domains             Domain[]
+  candidateEducations Candidate_Education[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum CollegeSessionStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model CollegeSession {
+  id       String               @id @default(cuid())
+  name     String
+  fees     String
+  duration String
+  status   CollegeSessionStatus @default(ACTIVE)
+
+  collegeId           String
+  college             College               @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  candidateEducations Candidate_Education[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Domain {
+  id       String    @id @default(cuid())
+  name     String
+  colleges College[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
