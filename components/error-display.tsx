@@ -1,7 +1,8 @@
-// components/ui/error-display.tsx
+"use client";
 
-import { AlertCircle } from "lucide-react";
-import { useRouter } from "next/navigation"; // or "next/router" for pages directory
+import { AlertCircle, RefreshCw } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,7 +16,8 @@ interface ErrorDisplayProps {
   showButton?: boolean;
   redirectPath?: string;
   buttonText?: string;
-  height?: "screen" | "1"; // 50vh means 0
+  refreshButton?: boolean;
+  height?: "screen" | "1";
 }
 
 export function ErrorDisplay({
@@ -23,6 +25,7 @@ export function ErrorDisplay({
   showButton = true,
   redirectPath = "/",
   buttonText = "Go to Home Page",
+  refreshButton = false,
   height = "1",
 }: ErrorDisplayProps) {
   const router = useRouter();
@@ -31,22 +34,43 @@ export function ErrorDisplay({
     router.push(redirectPath);
   };
 
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
   return (
-    <div className={`flex min-h-${height} items-center justify-center p-4`}>
+    <div
+      className={`flex items-center justify-center p-4 ${
+        height === "screen" ? "min-h-screen" : "min-h-[50vh]"
+      }`}
+    >
       <Card className="w-full max-w-md">
         <CardHeader>
           <div className="flex items-center justify-center">
             <AlertCircle className="text-destructive size-12" />
           </div>
         </CardHeader>
+
         <CardContent>
-          <p className="text-destructive text-center font-medium">{message}</p>
+          <p className="text-destructive text-center font-medium">
+            {message}
+          </p>
         </CardContent>
-        {showButton && (
-          <CardFooter className="flex justify-center">
-            <Button onClick={handleRedirect} variant="default">
-              {buttonText}
-            </Button>
+
+        {(showButton || refreshButton) && (
+          <CardFooter className="flex justify-center gap-2">
+            {refreshButton && (
+              <Button onClick={handleRefresh} variant="outline">
+                <RefreshCw className="mr-2 size-4" />
+                Refresh Page
+              </Button>
+            )}
+
+            {showButton && (
+              <Button onClick={handleRedirect}>
+                {buttonText}
+              </Button>
+            )}
           </CardFooter>
         )}
       </Card>

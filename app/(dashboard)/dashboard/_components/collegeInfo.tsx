@@ -1,106 +1,87 @@
 "use client";
 
-import { IconEyeFilled } from "@tabler/icons-react";
-import Link from "next/link";
+import { useState } from "react";
 import { ErrorDisplay } from "@/components/error-display";
 import { LoaderScreen } from "@/components/loader-screen";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { NAVBAR_HEIGHT } from "@/lib/constants";
 import { useGetCollegeInfo } from "../query/use-get-college-info";
+import { useGetDashboardOverview } from "../query/use-get-dashboard-overview";
+import { CollegeListSection } from "./college-list-section";
+import { OverviewFilter } from "./overview-filter";
+import { OverviewStats } from "./overview-stats";
 
 export default function CollegeInfo() {
-  const { data, isPending, error } = useGetCollegeInfo();
+  const [fromDateDraft, setFromDateDraft] = useState("");
+  const [toDateDraft, setToDateDraft] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
 
-  if (isPending) {
+  const { data, isPending, error } = useGetCollegeInfo();
+  const {
+    data: overview,
+    isPending: isOverviewPending,
+    error: overviewError,
+  } = useGetDashboardOverview({
+    from: fromDate || undefined,
+    to: toDate || undefined,
+  });
+
+  const isDateFiltered = Boolean(fromDate || toDate);
+
+  if (isPending || isOverviewPending) {
     return (
       <LoaderScreen
-        message="Getting colleges list..."
+        message="Loading overview..."
         offsetHeight={NAVBAR_HEIGHT * 2}
       />
     );
   }
 
-  if (error) {
+  if (error || overviewError) {
     return (
       <ErrorDisplay
-        message={error.message}
-        redirectPath="/signin"
-        buttonText="Back to Signin Page"
+        message={error?.message ?? overviewError?.message}
+        showButton={false}
+        refreshButton={true}
       />
     );
   }
 
-  if (!data?.length) {
-    return (
-      <div className="">
-        <Card className="border-dashed">
-          <CardHeader>
-            <CardTitle>No colleges found</CardTitle>
-          </CardHeader>
-          <CardContent className="text-muted-foreground">
-            Add college information to see details here.
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
   return (
-    <div className="">
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {data.map((college) => (
-          <Card key={college.id} className="h-full justify-between">
-            <CardHeader>
-              <CardTitle className="line-clamp-2">
-                {college.name} {college.code ? `[${college.code}]` : ""}
-              </CardTitle>
-            </CardHeader>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Overview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <OverviewFilter
+            appliedFromDate={fromDate}
+            appliedToDate={toDate}
+            fromDateDraft={fromDateDraft}
+            isDateFiltered={isDateFiltered}
+            onApply={() => {
+              setFromDate(fromDateDraft);
+              setToDate(toDateDraft);
+            }}
+            onClear={() => {
+              setFromDateDraft("");
+              setToDateDraft("");
+              setFromDate("");
+              setToDate("");
+            }}
+            onFromDateChange={setFromDateDraft}
+            onToDateChange={setToDateDraft}
+            toDateDraft={toDateDraft}
+          />
+        </CardContent>
+      </Card>
 
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-muted-foreground">
-                  Session & associated fee
-                </p>
-                {college.sessions.length ? (
-                  <div className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-1 text-sm">
-                    <p className="font-medium text-muted-foreground">Session</p>
-                    <p className="text-right font-medium text-muted-foreground">
-                      Fee
-                    </p>
-                    {college.sessions.map((session) => (
-                      <div key={session.id} className="contents">
-                        <p>{session.name}</p>
-                        <p className="text-right">{session.fees}</p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-sm">-</p>
-                )}
-              </div>
-            </CardContent>
+      <OverviewStats overview={overview} />
 
-            <CardFooter className="border-t">
-              <Button
-                variant="link"
-                className="px-0 text-muted-foreground"
-                asChild
-              >
-                <Link href={`/dashboard/registered-students/${college.id}`}>
-                  <IconEyeFilled className="size-5" />
-                  View registered students
-                </Link>
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
+      <div>
+        <h2 className="mb-3 text-lg font-semibold">Colleges</h2>
+        <CollegeListSection colleges={data ?? []} />
       </div>
     </div>
   );

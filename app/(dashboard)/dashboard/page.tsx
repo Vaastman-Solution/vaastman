@@ -11,7 +11,7 @@ export default async function DashboardPage() {
     redirect("/signin");
   }
   return (
-    <ContentLayout title="College Information">
+    <ContentLayout title="Dashboard">
       <CollegeInfo />
     </ContentLayout>
   );
