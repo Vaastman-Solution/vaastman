@@ -13,7 +13,7 @@ export function PrintReceiptButton() {
   const handlePrint = () => {
     setOriginalTheme(resolvedTheme);
     setTheme("light");
-    
+
     // Wait a bit for theme to apply before printing
     setTimeout(() => {
       window.print();

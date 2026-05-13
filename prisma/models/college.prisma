@@ -9,6 +9,7 @@ model University {
 
 enum UniversityName {
   PATLIPUTRA_UNIVERSITY // underscore will remove on ui to show (or select) university name by code: replace("_", " ")
+  PATNA_UNIVERSITY
 }
 
 model College {

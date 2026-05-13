@@ -18,4 +18,3 @@ export function useGetPaymentReceipt(candidateId: string) {
     retry: false,
   });
 }
-

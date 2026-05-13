@@ -10,6 +10,7 @@ import {
 } from "@/app/(dashboard)/college/session/[collegeId]/lib/zod-type/add-college-session";
 import { useAddCollegeSession } from "@/app/(dashboard)/college/session/[collegeId]/query/mut-add-college-session";
 import { useGetCollegeSession } from "@/app/(dashboard)/college/session/[collegeId]/query/use-get-college-session";
+import { BackRedirect } from "@/components/back-redirect";
 import { ErrorDisplay } from "@/components/error-display";
 import { LoaderScreen } from "@/components/loader-screen";
 import { Button } from "@/components/ui/button";
@@ -33,7 +34,6 @@ import {
   NativeSelect,
   NativeSelectOption,
 } from "@/components/ui/native-select";
-import { BackRedirect } from "@/components/back-redirect";
 
 type ManageCollegeSessionProps = {
   collegeId: string;

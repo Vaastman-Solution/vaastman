@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/db";
+import { ErrorTypes } from "@/lib/error-type";
 import { Prisma } from "@/lib/generated/prisma/client";
 import {
   type AddCandidateEducationSchema,
@@ -10,7 +11,6 @@ import {
   type AddCandidatePersonalSchema,
   addCandidatePersonalSchema,
 } from "./zod-type/candidate-personal";
-import { ErrorTypes } from "@/lib/error-type";
 
 export async function addCandidatePersonalAction(
   data: AddCandidatePersonalSchema,
@@ -197,7 +197,7 @@ export async function getUniversity() {
                 name: true,
                 fees: true,
                 duration: true,
-              }
+              },
             },
             domains: {
               select: {
@@ -205,14 +205,13 @@ export async function getUniversity() {
                 name: true,
               },
             },
-          }
-        }
-      }
-    })
+          },
+        },
+      },
+    });
 
     return { success: true, data: universities };
   } catch {
     return { success: false, message: "Failed to fetch universities" };
   }
 }
-

@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 
@@ -16,7 +16,12 @@ interface BackRedirectProps {
   method?: "push" | "replace" | "href";
 }
 
-export function BackRedirect({ href, label, className, method = "replace" }: BackRedirectProps) {
+export function BackRedirect({
+  href,
+  label,
+  className,
+  method = "replace",
+}: BackRedirectProps) {
   const router = useRouter();
 
   const handleNavigation = () => {
@@ -33,9 +38,7 @@ export function BackRedirect({ href, label, className, method = "replace" }: Bac
     <Button
       onClick={handleNavigation}
       variant={"outline"}
-      className={cn(
-        className
-      )}
+      className={cn(className)}
     >
       <ArrowLeft className="h-3.5 w-3.5" />
       {label}

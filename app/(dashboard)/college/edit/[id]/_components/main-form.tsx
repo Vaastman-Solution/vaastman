@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { getCollegeByIdHook } from "@/app/(dashboard)/college/edit/[id]/query/get-college-by-id";
+import { BackRedirect } from "@/components/back-redirect";
 import { ErrorDisplay } from "@/components/error-display";
 import { LoaderScreen } from "@/components/loader-screen";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,6 @@ import {
 } from "../lib/zod-type/type";
 import { useUpdateCollegeInfo } from "../query/mut-update-college";
 import { InputForm } from "./input-form";
-import { BackRedirect } from "@/components/back-redirect";
 
 export function MainForm({ collegeId }: { collegeId: string }) {
   const router = useRouter();
@@ -81,7 +81,12 @@ export function MainForm({ collegeId }: { collegeId: string }) {
 
   return (
     <form className="w-full" onSubmit={form.handleSubmit(onSubmit)}>
-      <BackRedirect className="mb-4" href="/college" label="Back to College" method="href" />
+      <BackRedirect
+        className="mb-4"
+        href="/college"
+        label="Back to College"
+        method="href"
+      />
       <InputForm
         domainOptions={college.domains
           .map((domain) => domain.name)

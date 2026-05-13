@@ -129,7 +129,6 @@ export function InputRow1({
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 [&>[data-slot=field]]:min-w-0">
-
       <Controller
         control={form.control}
         name="universityName"
@@ -157,7 +156,6 @@ export function InputRow1({
           </Field>
         )}
       />
-
 
       <Controller
         control={form.control}

@@ -1,7 +1,7 @@
-import { Hero } from "@/components/home/hero";
 import { Achievements } from "@/components/home/achievements";
-import { Services } from "@/components/home/services";
 import { Clients } from "@/components/home/clients";
+import { Hero } from "@/components/home/hero";
+import { Services } from "@/components/home/services";
 
 export default function Page() {
   return (
@@ -13,4 +13,3 @@ export default function Page() {
     </>
   );
 }
-

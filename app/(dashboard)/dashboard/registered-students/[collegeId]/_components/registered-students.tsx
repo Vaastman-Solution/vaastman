@@ -5,6 +5,7 @@ import Link from "next/link";
 import { DataTable } from "@/app/(dashboard)/college/_components/data-table";
 import { downloadRegisteredStudentsSessionCsv } from "@/app/(dashboard)/dashboard/registered-students/[collegeId]/lib/export-session-csv";
 import { useGetRegisteredStudents } from "@/app/(dashboard)/dashboard/registered-students/[collegeId]/query/use-get-registered-students";
+import { BackRedirect } from "@/components/back-redirect";
 import { ErrorDisplay } from "@/components/error-display";
 import { LoaderScreen } from "@/components/loader-screen";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NAVBAR_HEIGHT } from "@/lib/constants";
 import { columns } from "./column";
-import { BackRedirect } from "@/components/back-redirect";
 
 type RegisteredStudentsProps = {
   collegeId: string;
@@ -43,7 +43,11 @@ export function RegisteredStudents({ collegeId }: RegisteredStudentsProps) {
   if (!data?.sessions.length) {
     return (
       <div className="mx-auto">
-        <BackRedirect href="/dashboard" label="Back to Dashboard" method="href" />
+        <BackRedirect
+          href="/dashboard"
+          label="Back to Dashboard"
+          method="href"
+        />
 
         <Card className="border-dashed">
           <CardHeader>
@@ -59,7 +63,12 @@ export function RegisteredStudents({ collegeId }: RegisteredStudentsProps) {
 
   return (
     <div className="">
-      <BackRedirect className="mb-4" href="/dashboard" label="Back to Dashboard" method="href" />
+      <BackRedirect
+        className="mb-4"
+        href="/dashboard"
+        label="Back to Dashboard"
+        method="href"
+      />
 
       <div>
         <h3 className="font-semibold">

@@ -26,9 +26,7 @@ export function PaymentReceipt({ receipt }: PaymentReceiptProps) {
         <ReceiptHeader receipt={receipt} />
 
         <div className="my-5 text-center">
-          <h1 className="text-xl font-bold tracking-wide">
-            PAYMENT RECEIPT
-          </h1>
+          <h1 className="text-xl font-bold tracking-wide">PAYMENT RECEIPT</h1>
         </div>
 
         <PaymentInformation receipt={receipt} />

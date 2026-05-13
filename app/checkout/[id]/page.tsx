@@ -1,5 +1,6 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ErrorDisplay } from "@/components/error-display";
 import {
   Card,
@@ -13,7 +14,6 @@ import { prisma } from "@/lib/db";
 import { getQueryClient } from "@/lib/get-query-client";
 import { PaymentButton } from "./_components/payment-button";
 import { getOrder } from "./query/get-order";
-import { redirect } from "next/navigation";
 
 export default async function Page({
   params,
@@ -29,10 +29,9 @@ export default async function Page({
     },
   });
 
-  if(payment?.status === "VERIFIED") {
-    redirect(`/payment-overview/${candidateId}`)
+  if (payment?.status === "VERIFIED") {
+    redirect(`/payment-overview/${candidateId}`);
   }
-
 
   const queryClient = getQueryClient();
 

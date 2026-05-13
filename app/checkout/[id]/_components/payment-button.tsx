@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -7,21 +8,30 @@ import {
   createPaymentSuccessSearchParams,
   getPayButtonLabel,
   loadRazorpayScript,
+  type RazorpayErrorResponse,
 } from "@/app/checkout/[id]/lib/payment-checkout";
 import { ErrorDisplay } from "@/components/error-display";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { getOrder } from "../query/get-order";
+import { useRecordPaymentFailure } from "../query/mut-record-payment-failure";
 import { useVerifyPayment } from "../query/mut-verify-payment";
 
 export function PaymentButton({ candidateId }: { candidateId: string }) {
   const router = useRouter();
+  const [paymentError, setPaymentError] = useState<string | null>(null);
   const { data, isLoading, error } = useQuery(getOrder(candidateId));
   const verifyPaymentMutation = useVerifyPayment(candidateId);
+  const recordPaymentFailureMutation = useRecordPaymentFailure();
 
-  const isPending = isLoading || verifyPaymentMutation.isPending || verifyPaymentMutation.isSuccess;
+  const isPending =
+    isLoading ||
+    verifyPaymentMutation.isPending ||
+    verifyPaymentMutation.isSuccess;
   const payableAmount = Number(data?.order.amount ?? 0);
 
   const handlePay = async () => {
+    setPaymentError(null);
     if (!data) {
       return;
     }
@@ -72,7 +82,7 @@ export function PaymentButton({ candidateId }: { candidateId: string }) {
             paymentId: verification.paymentId,
           });
 
-          window.location.href = (`/payment-overview/${candidateId}?${paymentSuccessParams}`);
+          window.location.href = `/payment-overview/${candidateId}?${paymentSuccessParams}`;
         } catch (error) {
           console.error("Server-side payment verification failed:", error);
           // Note: Error toast is handled by useMutation's onError callback.
@@ -83,8 +93,16 @@ export function PaymentButton({ candidateId }: { candidateId: string }) {
       },
     });
 
-    checkout.on("payment.failed", () => {
-      toast.error("Payment failed. Please try again.");
+    checkout.on("payment.failed", (response: RazorpayErrorResponse) => {
+      setPaymentError(
+        response.error.description || "Payment failed. Please try again.",
+      );
+      recordPaymentFailureMutation.mutate({
+        razorpayOrderId: response.error.metadata.order_id || data.order.id,
+        razorpayPaymentId: response.error.metadata.payment_id,
+        reason: response.error.description || response.error.reason,
+        paymentPayload: response.error as unknown as Record<string, string>,
+      });
     });
 
     checkout.open();
@@ -95,8 +113,15 @@ export function PaymentButton({ candidateId }: { candidateId: string }) {
   }
 
   return (
-    <Button onClick={handlePay} disabled={isPending || !data}>
-      {getPayButtonLabel(payableAmount, isPending)}
-    </Button>
+    <div className="flex flex-col gap-4">
+      {paymentError && (
+        <Alert variant="destructive">
+          <AlertDescription>{paymentError}</AlertDescription>
+        </Alert>
+      )}
+      <Button onClick={handlePay} disabled={isPending || !data}>
+        {getPayButtonLabel(payableAmount, isPending)}
+      </Button>
+    </div>
   );
 }

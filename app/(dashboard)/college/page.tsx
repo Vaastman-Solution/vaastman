@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
+import { BackRedirect } from "@/components/back-redirect";
 import { ErrorDisplay } from "@/components/error-display";
 import { LoaderScreen } from "@/components/loader-screen";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,6 @@ import { AddCollege } from "./_components/add-college";
 import { type CollegeInfoRow, columns } from "./_components/column";
 import { DataTable } from "./_components/data-table";
 import { useGetCollegeInfo } from "./query/use-get-collegeInfo";
-import { BackRedirect } from "@/components/back-redirect";
 
 export default function CollegePage() {
   const { data, isPending, error } = useGetCollegeInfo();
@@ -27,7 +27,12 @@ export default function CollegePage() {
   ).sort((a, b) => a.localeCompare(b));
 
   if (isPending) {
-    return <LoaderScreen message="Getting colleges list..." offsetHeight={NAVBAR_HEIGHT} />;
+    return (
+      <LoaderScreen
+        message="Getting colleges list..."
+        offsetHeight={NAVBAR_HEIGHT}
+      />
+    );
   }
 
   if (error) {
@@ -44,7 +49,11 @@ export default function CollegePage() {
     <ContentLayout title="Colleges">
       <div className="">
         <div className="flex mb-2 md:mb-4 items-center justify-between">
-          <BackRedirect href="/dashboard" label="Back to dashboard" method="href" />
+          <BackRedirect
+            href="/dashboard"
+            label="Back to dashboard"
+            method="href"
+          />
           <AddCollege domainOptions={domainOptions} />
         </div>
         <DataTable

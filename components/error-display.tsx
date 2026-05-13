@@ -52,9 +52,7 @@ export function ErrorDisplay({
         </CardHeader>
 
         <CardContent>
-          <p className="text-destructive text-center font-medium">
-            {message}
-          </p>
+          <p className="text-destructive text-center font-medium">{message}</p>
         </CardContent>
 
         {(showButton || refreshButton) && (
@@ -67,9 +65,7 @@ export function ErrorDisplay({
             )}
 
             {showButton && (
-              <Button onClick={handleRedirect}>
-                {buttonText}
-              </Button>
+              <Button onClick={handleRedirect}>{buttonText}</Button>
             )}
           </CardFooter>
         )}

@@ -70,13 +70,9 @@ export async function getRegisteredStudentsByCollege(collegeId: string) {
             gender: true,
             dateOfBirth: true,
             candidatePayments: {
-              orderBy: {
-                createdAt: "desc",
-              },
               select: {
                 status: true,
               },
-              take: 1,
             },
           },
         },
@@ -94,6 +90,24 @@ export async function getRegisteredStudentsByCollege(collegeId: string) {
       const sessionName = candidate.collegeSession.name;
       const groupedCandidates = candidatesBySession.get(sessionName) ?? [];
 
+      // Determine the most relevant payment status from all attempts.
+      // Priority 1: If any attempt is VERIFIED, the overall status is VERIFIED.
+      // Priority 2: If no attempt is VERIFIED, but one is pending (CREATED), show CREATED.
+      // Priority 3: If all attempts failed, show FAILED.
+      // Priority 4: If there are no attempts at all, show N/A.
+      const paymentStatuses = candidate.candidate.candidatePayments.map(
+        (p) => p.status,
+      );
+      let finalPaymentStatus = "N/A";
+
+      if (paymentStatuses.includes("VERIFIED")) {
+        finalPaymentStatus = "VERIFIED";
+      } else if (paymentStatuses.includes("CREATED")) {
+        finalPaymentStatus = "CREATED";
+      } else if (paymentStatuses.includes("FAILED")) {
+        finalPaymentStatus = "FAILED";
+      }
+
       groupedCandidates.push({
         candidateId: candidate.candidate.id,
         name: candidate.candidate.name,
@@ -108,8 +122,7 @@ export async function getRegisteredStudentsByCollege(collegeId: string) {
         mjcSubject: candidate.mjcSubject,
         duration: candidate.duration,
         collegeFee: candidate.collegeFee,
-        paymentStatus:
-          candidate.candidate.candidatePayments.at(0)?.status ?? "N/A",
+        paymentStatus: finalPaymentStatus,
       });
 
       candidatesBySession.set(sessionName, groupedCandidates);

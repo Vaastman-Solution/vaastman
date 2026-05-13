@@ -183,7 +183,10 @@ export function PaymentInformation({ receipt }: ReceiptSectionProps) {
         { label: "Order ID", value: receipt.orderId },
         { label: "Payment ID", value: formatNullable(receipt.paymentId) },
         { label: "Payment Mode", value: "Online" },
-        { label: "Payment Date & Time", value: `${formatDate(receipt.paidAt)} : ${formatTime(receipt.paidAt)}` },
+        {
+          label: "Payment Date & Time",
+          value: `${formatDate(receipt.paidAt)} : ${formatTime(receipt.paidAt)}`,
+        },
       ]}
       title="Payment Information"
     />

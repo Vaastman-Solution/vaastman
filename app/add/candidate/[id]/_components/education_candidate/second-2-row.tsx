@@ -36,7 +36,7 @@ export function SecondTwoRow({
   const selectedUniversity = universityOptions.find(
     (u) => u.id === selectedUniversityId,
   );
-  
+
   const collegeOptions = selectedUniversity?.colleges ?? [];
 
   const selectedCollege = collegeOptions.find(

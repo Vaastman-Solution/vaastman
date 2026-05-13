@@ -1,20 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import { Ellipsis, LogOut } from "lucide-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-import { cn } from "@/lib/utils";
-import { getMenuList } from "@/lib/menu-list";
+import { CollapseMenuButton } from "@/components/admin-panel/collapse-menu-button";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CollapseMenuButton } from "@/components/admin-panel/collapse-menu-button";
 import {
   Tooltip,
-  TooltipTrigger,
   TooltipContent,
-  TooltipProvider
+  TooltipProvider,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getMenuList } from "@/lib/menu-list";
+import { cn } from "@/lib/utils";
 
 interface MenuProps {
   isOpen: boolean | undefined;
@@ -64,7 +63,7 @@ export function Menu({ isOpen }: MenuProps) {
                                 ((active === undefined &&
                                   pathname.startsWith(href)) ||
                                   active) &&
-                                  "bg-sidebar-accent text-sidebar-accent-foreground"
+                                  "bg-sidebar-accent text-sidebar-accent-foreground",
                               )}
                               asChild
                             >
@@ -79,7 +78,7 @@ export function Menu({ isOpen }: MenuProps) {
                                     "max-w-[200px] truncate",
                                     isOpen === false
                                       ? "-translate-x-96 opacity-0"
-                                      : "translate-x-0 opacity-100"
+                                      : "translate-x-0 opacity-100",
                                   )}
                                 >
                                   {label}
@@ -109,7 +108,7 @@ export function Menu({ isOpen }: MenuProps) {
                         isOpen={isOpen}
                       />
                     </div>
-                  )
+                  ),
               )}
             </li>
           ))}
@@ -128,7 +127,7 @@ export function Menu({ isOpen }: MenuProps) {
                     <p
                       className={cn(
                         "whitespace-nowrap",
-                        isOpen === false ? "opacity-0 hidden" : "opacity-100"
+                        isOpen === false ? "opacity-0 hidden" : "opacity-100",
                       )}
                     >
                       Sign out

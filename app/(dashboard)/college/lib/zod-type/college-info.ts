@@ -1,5 +1,5 @@
+import { z } from "zod";
 import { UniversityName } from "@/lib/generated/prisma/enums";
-import {z} from "zod";
 
 export const addCollegeSchema = z.object({
   universityName: z.enum(UniversityName),
@@ -18,4 +18,3 @@ export type AddCollegeSchema = z.infer<typeof addCollegeSchema>;
 export const updateCollegeSchema = addCollegeSchema.partial();
 
 export type UpdateCollegeSchema = z.infer<typeof updateCollegeSchema>;
-

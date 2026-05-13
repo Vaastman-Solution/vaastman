@@ -1,18 +1,18 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
 import {
-  IconCodeCircle2Filled,
-  IconLayout2Filled,
-  IconDeviceMobileFilled,
-  IconSearchFilled,
-  IconCloudComputingFilled,
-  IconChartDotsFilled,
   IconBulbFilled,
+  IconChartDotsFilled,
+  IconCloudComputingFilled,
+  IconCodeCircle2Filled,
+  IconDeviceMobileFilled,
+  IconLayout2Filled,
   IconPhoneCallFilled,
-  IconWorldFilled,
+  IconSearchFilled,
   IconSettingsFilled,
+  IconWorldFilled,
 } from "@tabler/icons-react";
+import { motion, type Variants } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 
 interface Service {
@@ -114,7 +114,11 @@ const containerVariants = {
 
 const cardVariants = {
   hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: "easeOut" },
+  },
 } satisfies Variants;
 
 function ServiceCard({ service }: { service: Service }) {
@@ -133,10 +137,14 @@ function ServiceCard({ service }: { service: Service }) {
 
       <div className="flex flex-col gap-0.5">
         <h3 className="text-sm font-bold text-foreground">{service.title}</h3>
-        <span className={`text-xs font-semibold ${service.color}`}>{service.tagline}</span>
+        <span className={`text-xs font-semibold ${service.color}`}>
+          {service.tagline}
+        </span>
       </div>
 
-      <p className="text-xs leading-snug text-muted-foreground">{service.description}</p>
+      <p className="text-xs leading-snug text-muted-foreground">
+        {service.description}
+      </p>
     </motion.div>
   );
 }

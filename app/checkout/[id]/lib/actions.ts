@@ -450,3 +450,33 @@ export async function verifyPayment(data: VerifyPaymentInput) {
     };
   }
 }
+
+type RecordPaymentFailureInput = {
+  razorpayOrderId: string;
+  razorpayPaymentId?: string;
+  reason?: string;
+  paymentPayload?: Record<string, string>;
+};
+
+/**
+ * Records a payment failure initiated from the client-side Razorpay checkout.
+ * @param data - The failure details including order ID and optional reason.
+ */
+export async function recordPaymentFailure(data: RecordPaymentFailureInput) {
+  const {
+    razorpayOrderId,
+    reason = "Payment failed on client",
+    paymentPayload,
+  } = data;
+
+  if (!razorpayOrderId) {
+    return { success: false, message: "Missing payment order ID" };
+  }
+
+  try {
+    await markPaymentFailed(razorpayOrderId, reason, paymentPayload);
+    return { success: true, data: null };
+  } catch (error) {
+    return { success: false, message: "Failed to record payment failure" };
+  }
+}

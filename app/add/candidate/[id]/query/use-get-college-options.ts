@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCandidateEducationColleges, getUniversity } from "@/app/add/candidate/[id]/lib/actions";
+import {
+  getCandidateEducationColleges,
+  getUniversity,
+} from "@/app/add/candidate/[id]/lib/actions";
 
 export function useGetUniversityOptions() {
   return useQuery({

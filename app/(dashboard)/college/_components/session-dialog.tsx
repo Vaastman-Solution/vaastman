@@ -44,7 +44,9 @@ export function SessionDialog({ collegeId, sessions }: SessionDialogProps) {
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
-        <a href="#" className="hover:underline">Session</a>
+        <a href="#" className="hover:underline">
+          Session
+        </a>
       </DialogTrigger>
       <DialogContent className="w-[96vw] sm:max-w-2xl">
         <DialogHeader>

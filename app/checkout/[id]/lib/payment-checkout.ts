@@ -23,9 +23,26 @@ type RazorpayOptions = {
   };
 };
 
+export type RazorpayErrorResponse = {
+  error: {
+    code: string;
+    description: string;
+    source: string;
+    step: string;
+    reason: string;
+    metadata: {
+      order_id: string;
+      payment_id: string;
+    };
+  };
+};
+
 type RazorpayInstance = {
   open: () => void;
-  on: (event: "payment.failed", cb: () => void) => void;
+  on: (
+    event: "payment.failed",
+    cb: (response: RazorpayErrorResponse) => void,
+  ) => void;
 };
 
 declare global {

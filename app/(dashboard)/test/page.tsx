@@ -1,9 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 import { ContentLayout } from "@/components/admin-panel/content-layout";
+import { cn } from "@/lib/utils";
 
 interface BackRedirectProps {
   /** Where to navigate back to */
@@ -29,7 +29,7 @@ export function BackRedirect({ href, label, className }: BackRedirectProps) {
         "hover:bg-muted hover:text-foreground hover:border-input",
         "active:scale-[0.97]",
         "cursor-pointer select-none",
-        className
+        className,
       )}
     >
       <ArrowLeft className="h-3.5 w-3.5" />
@@ -41,8 +41,7 @@ export function BackRedirect({ href, label, className }: BackRedirectProps) {
 export default function Page() {
   return (
     <ContentLayout title="hi there">
-
-    <BackRedirect href="/dashboard" label="Back to dashboard" />
+      <BackRedirect href="/dashboard" label="Back to dashboard" />
     </ContentLayout>
-  )
+  );
 }

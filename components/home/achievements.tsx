@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { animate, motion, useInView, type Variants } from "motion/react";
 import {
   IconBoltFilled,
-  IconStarFilled,
-  IconHeartFilled,
-  IconTrophyFilled,
   IconClockFilled,
+  IconHeartFilled,
+  IconStarFilled,
   IconThumbUpFilled,
+  IconTrophyFilled,
 } from "@tabler/icons-react";
+import { animate, motion, useInView, type Variants } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 
 interface Stat {
@@ -121,7 +121,11 @@ const cardVariants = {
 
 const headerVariants = {
   hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: "easeOut" },
+  },
 } satisfies Variants;
 
 export function Achievements() {

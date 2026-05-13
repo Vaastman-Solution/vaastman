@@ -1,8 +1,8 @@
 "use client";
 
+import { IconArrowLeft } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { IconArrowLeft } from "@tabler/icons-react";
 import { PaymentReceipt } from "@/app/payment-overview/[candidateId]/_components/payment-receipt";
 import { PrintReceiptButton } from "@/app/payment-overview/[candidateId]/_components/print-receipt-button";
 import { useGetPaymentReceipt } from "@/app/payment-overview/[candidateId]/query/use-get-payment-receipt";

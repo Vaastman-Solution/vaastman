@@ -1,8 +1,8 @@
 import {
-  IconBrandXFilled,
-  IconBrandLinkedinFilled,
-  IconBrandInstagramFilled,
   IconBrandGithubFilled,
+  IconBrandInstagramFilled,
+  IconBrandLinkedinFilled,
+  IconBrandXFilled,
   IconMailFilled,
   IconMapPin,
   IconPhoneFilled,
@@ -34,8 +34,16 @@ const socials = [
 ];
 
 const contact = [
-  { icon: IconMailFilled, value: "vaastmansolutions.info@gmail.com", href: "mailto:vaastmansolutions.info@gmail.com" },
-  { icon: IconPhoneFilled, value: "+91 98765 43210", href: "tel:+919876543210" },
+  {
+    icon: IconMailFilled,
+    value: "vaastmansolutions.info@gmail.com",
+    href: "mailto:vaastmansolutions.info@gmail.com",
+  },
+  {
+    icon: IconPhoneFilled,
+    value: "+91 98765 43210",
+    href: "tel:+919876543210",
+  },
   { icon: IconMapPin, value: "Patna, Bihar — INDIA, 800001", href: "#" },
 ];
 
@@ -46,7 +54,6 @@ export function Footer() {
     <footer className="border-t border-border">
       <div className="mx-auto w-[90%] py-12">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
-
           {/* Brand */}
           <div className="flex flex-col gap-4">
             <a href="/home" className="w-fit">
@@ -54,7 +61,8 @@ export function Footer() {
                 Vaastman
               </span>
               <span className="text-xl font-extrabold tracking-tight text-foreground">
-                {" "}Solutions
+                {" "}
+                Solutions
               </span>
             </a>
             <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">

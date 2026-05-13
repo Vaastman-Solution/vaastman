@@ -12,16 +12,76 @@ interface Client {
 }
 
 const clients: Client[] = [
-  { name: "Nexova Tech", initials: "NX", industry: "SaaS", bg: "bg-violet-100 dark:bg-violet-900/40", text: "text-violet-700 dark:text-violet-300" },
-  { name: "Brightline", initials: "BL", industry: "Media", bg: "bg-amber-100 dark:bg-amber-900/40", text: "text-amber-700 dark:text-amber-300" },
-  { name: "Apex Digital", initials: "AD", industry: "E-Commerce", bg: "bg-sky-100 dark:bg-sky-900/40", text: "text-sky-700 dark:text-sky-300" },
-  { name: "CloudPeak", initials: "CP", industry: "Cloud", bg: "bg-emerald-100 dark:bg-emerald-900/40", text: "text-emerald-700 dark:text-emerald-300" },
-  { name: "Forgewave", initials: "FW", industry: "Fintech", bg: "bg-rose-100 dark:bg-rose-900/40", text: "text-rose-700 dark:text-rose-300" },
-  { name: "Luminary Labs", initials: "LL", industry: "AI / ML", bg: "bg-orange-100 dark:bg-orange-900/40", text: "text-orange-700 dark:text-orange-300" },
-  { name: "Strata Systems", initials: "SS", industry: "Enterprise", bg: "bg-indigo-100 dark:bg-indigo-900/40", text: "text-indigo-700 dark:text-indigo-300" },
-  { name: "Prism Creative", initials: "PC", industry: "Design", bg: "bg-pink-100 dark:bg-pink-900/40", text: "text-pink-700 dark:text-pink-300" },
-  { name: "Orion Ventures", initials: "OV", industry: "Startup", bg: "bg-cyan-100 dark:bg-cyan-900/40", text: "text-cyan-700 dark:text-cyan-300" },
-  { name: "Zenith Corp", initials: "ZC", industry: "Logistics", bg: "bg-teal-100 dark:bg-teal-900/40", text: "text-teal-700 dark:text-teal-300" },
+  {
+    name: "Nexova Tech",
+    initials: "NX",
+    industry: "SaaS",
+    bg: "bg-violet-100 dark:bg-violet-900/40",
+    text: "text-violet-700 dark:text-violet-300",
+  },
+  {
+    name: "Brightline",
+    initials: "BL",
+    industry: "Media",
+    bg: "bg-amber-100 dark:bg-amber-900/40",
+    text: "text-amber-700 dark:text-amber-300",
+  },
+  {
+    name: "Apex Digital",
+    initials: "AD",
+    industry: "E-Commerce",
+    bg: "bg-sky-100 dark:bg-sky-900/40",
+    text: "text-sky-700 dark:text-sky-300",
+  },
+  {
+    name: "CloudPeak",
+    initials: "CP",
+    industry: "Cloud",
+    bg: "bg-emerald-100 dark:bg-emerald-900/40",
+    text: "text-emerald-700 dark:text-emerald-300",
+  },
+  {
+    name: "Forgewave",
+    initials: "FW",
+    industry: "Fintech",
+    bg: "bg-rose-100 dark:bg-rose-900/40",
+    text: "text-rose-700 dark:text-rose-300",
+  },
+  {
+    name: "Luminary Labs",
+    initials: "LL",
+    industry: "AI / ML",
+    bg: "bg-orange-100 dark:bg-orange-900/40",
+    text: "text-orange-700 dark:text-orange-300",
+  },
+  {
+    name: "Strata Systems",
+    initials: "SS",
+    industry: "Enterprise",
+    bg: "bg-indigo-100 dark:bg-indigo-900/40",
+    text: "text-indigo-700 dark:text-indigo-300",
+  },
+  {
+    name: "Prism Creative",
+    initials: "PC",
+    industry: "Design",
+    bg: "bg-pink-100 dark:bg-pink-900/40",
+    text: "text-pink-700 dark:text-pink-300",
+  },
+  {
+    name: "Orion Ventures",
+    initials: "OV",
+    industry: "Startup",
+    bg: "bg-cyan-100 dark:bg-cyan-900/40",
+    text: "text-cyan-700 dark:text-cyan-300",
+  },
+  {
+    name: "Zenith Corp",
+    initials: "ZC",
+    industry: "Logistics",
+    bg: "bg-teal-100 dark:bg-teal-900/40",
+    text: "text-teal-700 dark:text-teal-300",
+  },
 ];
 
 function ClientCard({ client }: { client: Client }) {
@@ -35,7 +95,9 @@ function ClientCard({ client }: { client: Client }) {
       </div>
 
       <div className="flex flex-col items-center gap-0.5">
-        <span className="text-sm font-semibold text-foreground">{client.name}</span>
+        <span className="text-sm font-semibold text-foreground">
+          {client.name}
+        </span>
         <span className="text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
           {client.industry}
         </span>
@@ -46,7 +108,11 @@ function ClientCard({ client }: { client: Client }) {
 
 const headerVariants = {
   hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: "easeOut" },
+  },
 } satisfies Variants;
 
 export function Clients() {

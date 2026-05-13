@@ -28,8 +28,10 @@ export default function Page() {
   const searchParams = useSearchParams();
 
   // get college data
-  const { isPending: isUniversityOptionsPending, error: universityOptionsError } =
-    useGetUniversityOptions();
+  const {
+    isPending: isUniversityOptionsPending,
+    error: universityOptionsError,
+  } = useGetUniversityOptions();
 
   const candidateId = params.id as string;
 
