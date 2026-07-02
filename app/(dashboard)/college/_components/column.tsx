@@ -3,6 +3,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import type { useGetCollegeInfo } from "@/app/(dashboard)/college/query/use-get-collegeInfo";
+import { CredentialDialog } from "./credential-dialog";
 import { SessionDialog } from "./session-dialog";
 
 export type CollegeInfoRow = NonNullable<
@@ -77,7 +78,12 @@ export const columns: ColumnDef<CollegeInfoRow>[] = [
             status: session.status,
           }))}
         />
+        <CredentialDialog
+          collegeId={row.original.id}
+          collegeName={row.original.name}
+        />
       </div>
     ),
   },
 ];
+

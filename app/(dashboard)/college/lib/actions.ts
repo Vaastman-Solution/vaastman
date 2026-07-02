@@ -92,6 +92,8 @@ export async function addCollegeInfo(data: AddCollegeSchema) {
             name: `${parsedData.data.startSession}-${parsedData.data.endSession}`,
             duration: `${parsedData.data.duration}h`,
             fees: parsedData.data.fees,
+            isActive: true,
+            deprecated: false,
           },
         },
       },
@@ -144,6 +146,8 @@ export async function updateCollegeSessionStatus(input: {
       },
       data: {
         status: input.status,
+        isActive: input.status === "ACTIVE",
+        deprecated: input.status === "INACTIVE",
       },
     });
 

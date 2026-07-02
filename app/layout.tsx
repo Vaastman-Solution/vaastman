@@ -13,6 +13,7 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  weight: ["500"],
   subsets: ["latin"],
 });
 
@@ -53,7 +54,7 @@ export default function RootLayout({
           position="top-right"
           richColors
           closeButton
-          theme="light"
+          theme="dark"
           offset={{ top: "8px" }}
           mobileOffset={{ top: "6px" }}
         />

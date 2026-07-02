@@ -26,8 +26,14 @@ model User {
   role     String?
   isActive Boolean?
 
+  username        String?
+  displayUsername String?
+  collegeId       String?
+  college         College? @relation(fields: [collegeId], references: [id], onDelete: SetNull)
+
   @@unique([email])
   @@map("user")
+  @@unique([username])
 }
 
 model Session {
@@ -91,4 +97,5 @@ enum Role {
   ADMIN
   STAFF
   SUPERADMIN
+  COLLEGE
 }

@@ -1,13 +1,12 @@
 import {
-  Bookmark,
-  LayoutGrid,
-  type LucideIcon,
-  MoveLeft,
-  Settings,
-  SquarePen,
-  Tag,
-  Users,
-} from "lucide-react";
+  IconBookmarkFilled,
+  IconCalendarFilled,
+  IconHomeFilled,
+  IconLayoutDashboardFilled,
+  IconSchoolFilled,
+  IconUsers,
+} from "@tabler/icons-react";
+import type { ComponentType } from "react";
 
 type Submenu = {
   href: string;
@@ -19,7 +18,7 @@ type Menu = {
   href: string;
   label: string;
   active?: boolean;
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string }>;
   submenus?: Submenu[];
 };
 
@@ -28,7 +27,7 @@ type Group = {
   menus: Menu[];
 };
 
-export function getMenuList(pathname: string): Group[] {
+export function getMenuList(_pathname: string): Group[] {
   return [
     {
       groupLabel: "",
@@ -36,7 +35,7 @@ export function getMenuList(pathname: string): Group[] {
         {
           href: "/dashboard",
           label: "Dashboard",
-          icon: LayoutGrid,
+          icon: IconLayoutDashboardFilled,
           submenus: [],
         },
       ],
@@ -77,17 +76,27 @@ export function getMenuList(pathname: string): Group[] {
         {
           href: "/college",
           label: "Manage colleges",
-          icon: Bookmark,
+          icon: IconBookmarkFilled,
+        },
+        {
+          href: "/academic-session",
+          label: "Academic sessions",
+          icon: IconCalendarFilled,
         },
         {
           href: "/add/candidate",
           label: "Internship",
-          icon: Users,
+          icon: IconUsers,
         },
         {
           href: "/home",
           label: "Home Page",
-          icon: MoveLeft,
+          icon: IconHomeFilled,
+        },
+        {
+          href: "/college-login",
+          label: "College Portal",
+          icon: IconSchoolFilled,
         },
       ],
     },

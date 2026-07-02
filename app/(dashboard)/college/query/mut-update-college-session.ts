@@ -12,6 +12,8 @@ type CollegeSessionData = {
   sessions: Array<{
     id: string;
     status: SessionStatus;
+    isActive?: boolean;
+    deprecated?: boolean;
   }>;
 };
 
@@ -53,6 +55,9 @@ export function useUpdateCollegeSession(collegeId: string) {
           return old;
         }
 
+        const isActive = status === "ACTIVE";
+        const deprecated = status === "INACTIVE";
+
         return old.map((college) => {
           if (college.id !== collegeId) {
             return college;
@@ -61,7 +66,9 @@ export function useUpdateCollegeSession(collegeId: string) {
           return {
             ...college,
             sessions: college.sessions.map((session) =>
-              session.id === sessionId ? { ...session, status } : session,
+              session.id === sessionId
+                ? { ...session, status, isActive, deprecated }
+                : session,
             ),
           };
         });
@@ -74,10 +81,15 @@ export function useUpdateCollegeSession(collegeId: string) {
             return old;
           }
 
+          const isActive = status === "ACTIVE";
+          const deprecated = status === "INACTIVE";
+
           return {
             ...old,
             sessions: old.sessions.map((session) =>
-              session.id === sessionId ? { ...session, status } : session,
+              session.id === sessionId
+                ? { ...session, status, isActive, deprecated }
+                : session,
             ),
           };
         },

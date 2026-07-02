@@ -73,7 +73,7 @@ Heed deprecation notices and prefer current project conventions over remembered 
 ## Mutation Conventions
 
 - Use `useMutation` together with `useQueryClient` for every create, update, and delete flow.
-- Mutation hooks should call the related server action, throw on `!res.success`, and return the successful response.
+- Mutation hooks should call the related server action, throw on `!res.success`, and return the successful response.  
 - After every successful mutation, invalidate the related query key with `queryClient.invalidateQueries(...)`.
 - Invalidation is mandatory for create, update, and delete mutations. Do not skip it.
 - Invalidate the exact query key that the list/detail view uses, instead of using broad invalidation when the target key is known.
@@ -93,3 +93,20 @@ Heed deprecation notices and prefer current project conventions over remembered 
 - Do not commit everything at once (avoid `git add .`).
 - Write clear and concise commit messages.
 - Do not push commits unless explicitly requested.
+
+# Adding a New University
+
+To add a new university to the system, follow these steps:
+
+1. **Update the Enum**:
+   Open [college.prisma](file:///home/kys/projects/vaastman/prisma/models/college.prisma) and add the new university to the `UniversityName` enum (use uppercase with underscores, e.g. `NEW_UNIVERSITY_NAME`).
+
+2. **Sync the Database Schema and Regenerate Client**:
+   Run the following commands in your terminal:
+   ```bash
+   bun run db:push
+   ```
+   This command will push the updated schema to the database and regenerate the Prisma client.
+
+> [!NOTE]
+> You do **not** need to manually insert the new university record into the database. When you add the first college under this university via the admin UI, the application will automatically create the corresponding `University` record in the database if it doesn't already exist.

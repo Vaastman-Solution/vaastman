@@ -23,6 +23,7 @@ model College {
   sessions            CollegeSession[]
   domains             Domain[]
   candidateEducations Candidate_Education[]
+  users               User[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -34,11 +35,13 @@ enum CollegeSessionStatus {
 }
 
 model CollegeSession {
-  id       String               @id @default(cuid())
-  name     String
-  fees     String
-  duration String
-  status   CollegeSessionStatus @default(ACTIVE)
+  id         String               @id @default(cuid())
+  name       String
+  fees       String
+  duration   String
+  status     CollegeSessionStatus @default(ACTIVE)
+  isActive   Boolean              @default(true)
+  deprecated Boolean              @default(false)
 
   collegeId           String
   college             College               @relation(fields: [collegeId], references: [id], onDelete: Cascade)

@@ -1,9 +1,10 @@
 "use client";
 
 import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
-import { ChevronDown, Dot, type LucideIcon } from "lucide-react";
+import { IconChevronDown, IconPointFilled } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { ComponentType } from "react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,7 +35,7 @@ type Submenu = {
 };
 
 interface CollapseMenuButtonProps {
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string }>;
   label: string;
   active: boolean;
   submenus: Submenu[];
@@ -49,9 +50,11 @@ export function CollapseMenuButton({
   isOpen,
 }: CollapseMenuButtonProps) {
   const pathname = usePathname();
-  const isSubmenuActive = submenus.some((submenu) =>
-    submenu.active === undefined ? submenu.href === pathname : submenu.active,
-  );
+  const isSubmenuActive =
+    active ||
+    submenus.some((submenu) =>
+      submenu.active === undefined ? submenu.href === pathname : submenu.active,
+    );
   const [isCollapsed, setIsCollapsed] = useState<boolean>(isSubmenuActive);
 
   return isOpen ? (
@@ -75,7 +78,7 @@ export function CollapseMenuButton({
           <div className="w-full items-center flex justify-between">
             <div className="flex items-center">
               <span className="mr-4">
-                <Icon size={18} />
+                <Icon className="size-5" />
               </span>
               <p
                 className={cn(
@@ -96,18 +99,15 @@ export function CollapseMenuButton({
                   : "-translate-x-96 opacity-0",
               )}
             >
-              <ChevronDown
-                size={18}
-                className="transition-transform duration-200"
-              />
+              <IconChevronDown className="size-5 transition-transform duration-200" />
             </div>
           </div>
         </Button>
       </CollapsibleTrigger>
       <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-        {submenus.map(({ href, label, active }, index) => (
+        {submenus.map(({ href, label, active }) => (
           <Button
-            key={index}
+            key={href}
             variant="ghost"
             className={cn(
               "w-full justify-start h-10 mb-1",
@@ -118,7 +118,7 @@ export function CollapseMenuButton({
           >
             <Link href={href}>
               <span className="mr-4 ml-2">
-                <Dot size={18} />
+                <IconPointFilled className="size-5" />
               </span>
               <p
                 className={cn(
@@ -152,7 +152,7 @@ export function CollapseMenuButton({
                 <div className="w-full items-center flex justify-between">
                   <div className="flex items-center">
                     <span className={cn(isOpen === false ? "" : "mr-4")}>
-                      <Icon size={18} />
+                      <Icon className="size-5" />
                     </span>
                     <p
                       className={cn(
@@ -177,8 +177,8 @@ export function CollapseMenuButton({
           {label}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {submenus.map(({ href, label, active }, index) => (
-          <DropdownMenuItem key={index} asChild>
+        {submenus.map(({ href, label, active }) => (
+          <DropdownMenuItem key={href} asChild>
             <Link
               className={cn(
                 "cursor-pointer",

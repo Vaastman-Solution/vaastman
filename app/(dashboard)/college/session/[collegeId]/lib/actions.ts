@@ -156,6 +156,8 @@ export async function addCollegeSessionInfo(
           duration: sessionDuration,
           fees: parsedData.data.fees,
           status: CollegeSessionStatus.ACTIVE,
+          isActive: true,
+          deprecated: false,
         },
       });
     });
