@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 import { PaymentOverviewClient } from "@/app/payment-overview/[candidateId]/_components/payment-overview-client";
-import { useGetPaymentReceipt } from "@/app/payment-overview/[candidateId]/query/use-get-payment-receipt";
+import { useGetOfferLetter } from "@/app/payment-overview/[candidateId]/query/use-get-offer-letter";
 import { getQueryClient } from "@/lib/get-query-client";
 
 type PaymentOverviewPageProps = {
@@ -14,7 +14,7 @@ export default async function Page({ params }: PaymentOverviewPageProps) {
   const { candidateId } = await params;
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery(useGetPaymentReceipt(candidateId));
+  await queryClient.prefetchQuery(useGetOfferLetter(candidateId));
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

@@ -2,11 +2,13 @@
 
 import { prisma } from "@/lib/db";
 
-function toReadableStatus(status: string) {
-  return status.charAt(0) + status.slice(1).toLowerCase();
-}
-
-export async function getPaymentReceipt(candidateId: string) {
+/**
+ * Fetches the data needed to render an Internship Offer Letter.
+ * Only returns data when the candidate has a VERIFIED payment.
+ * Intentionally excludes payment/transaction details.
+ * @param candidateId - The ID of the candidate
+ */
+export async function getOfferLetterData(candidateId: string) {
   const normalizedCandidateId = candidateId.trim();
 
   if (!normalizedCandidateId) {
@@ -20,26 +22,12 @@ export async function getPaymentReceipt(candidateId: string) {
       },
       select: {
         name: true,
-        email: true,
-        phone: true,
         fatherName: true,
         candidateEducations: {
           select: {
-            universityRoll: true,
             collegeRoll: true,
-            duration: true,
-            domainOrMainSubject: true,
             mjcSubject: true,
-            college: {
-              select: {
-                name: true,
-              },
-            },
-            collegeSession: {
-              select: {
-                name: true,
-              },
-            },
+            domainOrMainSubject: true,
           },
           take: 1,
         },
@@ -47,18 +35,8 @@ export async function getPaymentReceipt(candidateId: string) {
           where: {
             status: "VERIFIED",
           },
-          orderBy: {
-            verifiedAt: "desc",
-          },
           select: {
-            receipt: true,
-            amount: true,
-            currency: true,
-            status: true,
-            razorpayOrderId: true,
-            razorpayPaymentId: true,
-            verifiedAt: true,
-            createdAt: true,
+            id: true,
           },
           take: 1,
         },
@@ -71,37 +49,28 @@ export async function getPaymentReceipt(candidateId: string) {
     if (!candidate || !education || !payment) {
       return {
         success: false,
-        message: "Receipt data not found for this candidate",
+        message: "Offer letter data not found for this candidate",
       };
     }
-
-    const paidAt = payment.verifiedAt ?? payment.createdAt;
 
     return {
       success: true,
       data: {
-        status: toReadableStatus(payment.status),
-        receiptNo: payment.receipt,
-        orderId: payment.razorpayOrderId,
-        paymentId: payment.razorpayPaymentId,
-        paidAt: paidAt.toISOString(),
-        amount: payment.amount,
-        currency: payment.currency,
+        year: new Date().getFullYear().toString(),
+        registrationNumber: normalizedCandidateId,
+        issueDate: new Date().toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        }),
         studentName: candidate.name,
         fatherName: candidate.fatherName,
-        email: candidate.email,
-        phone: candidate.phone,
-        universityRoll: education.universityRoll,
+        mjcSubject: education.mjcSubject,
+        internshipDomain: education.domainOrMainSubject,
         collegeRoll: education.collegeRoll,
-        collegeName: education.college.name,
-        session: education.collegeSession.name,
-        course: education.mjcSubject,
-        duration: education.duration,
-        domain: education.domainOrMainSubject,
       },
     };
-  } catch (error) {
-    console.log(error);
-    return { success: false, message: "Failed to fetch payment receipt" };
+  } catch {
+    return { success: false, message: "Failed to fetch offer letter data" };
   }
 }
