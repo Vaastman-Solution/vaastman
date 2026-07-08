@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 
-type RegisteredStudentRow = {
+export type CollegeStudentRow = {
   candidateId: string;
   name: string;
   profilePhoto: string;
@@ -18,19 +18,19 @@ type RegisteredStudentRow = {
   domainOrMainSubject: string;
   mjcSubject: string;
   duration: string;
-  collegeFee: string;
-  paymentStatus: string;
 };
 
-export async function getRegisteredStudentsByCollege(collegeId: string) {
+export async function getCollegeStudents() {
   const session = await auth.api.getSession({ headers: await headers() });
 
-  if (!session) {
-    return { success: false, message: "Unauthorized" };
+  if (!session || session.user.role !== "COLLEGE") {
+    return { success: false as const, message: "Unauthorized" };
   }
 
-  if (!collegeId || !collegeId.trim()) {
-    return { success: false, message: "Invalid college id" };
+  const collegeId = session.user.collegeId;
+
+  if (!collegeId) {
+    return { success: false as const, message: "No college linked to account" };
   }
 
   try {
@@ -40,26 +40,21 @@ export async function getRegisteredStudentsByCollege(collegeId: string) {
         id: true,
         name: true,
         code: true,
+        university: { select: { name: true } },
         sessions: {
-          select: {
-            id: true,
-            name: true,
-          },
-          orderBy: {
-            name: "asc",
-          },
+          select: { id: true, name: true },
+          orderBy: { name: "asc" },
         },
       },
     });
 
     if (!college) {
-      return { success: false, message: "College not found" };
+      return { success: false as const, message: "College not found" };
     }
 
+    // Fetch candidate educations — NO payment data is selected
     const candidates = await prisma.candidate_Education.findMany({
-      where: {
-        collegeId: college.id,
-      },
+      where: { collegeId: college.id },
       include: {
         candidate: {
           select: {
@@ -71,48 +66,23 @@ export async function getRegisteredStudentsByCollege(collegeId: string) {
             fatherName: true,
             gender: true,
             dateOfBirth: true,
-            candidatePayments: {
-              select: {
-                status: true,
-              },
-            },
+            // candidatePayments is intentionally NOT selected
           },
         },
         collegeSession: {
-          select: {
-            id: true,
-            name: true,
-          },
+          select: { id: true, name: true },
         },
       },
     });
 
     // Group by session ID (not name) to handle duplicate session names
-    const candidatesBySessionId = new Map<string, RegisteredStudentRow[]>();
+    const candidatesBySessionId = new Map<string, CollegeStudentRow[]>();
 
     for (const candidate of candidates) {
       const sessionId = candidate.collegeSession.id;
-      const groupedCandidates = candidatesBySessionId.get(sessionId) ?? [];
+      const grouped = candidatesBySessionId.get(sessionId) ?? [];
 
-      // Determine the most relevant payment status from all attempts.
-      // Priority 1: If any attempt is VERIFIED, the overall status is VERIFIED.
-      // Priority 2: If no attempt is VERIFIED, but one is pending (CREATED), show CREATED.
-      // Priority 3: If all attempts failed, show FAILED.
-      // Priority 4: If there are no attempts at all, show N/A.
-      const paymentStatuses = candidate.candidate.candidatePayments.map(
-        (p) => p.status,
-      );
-      let finalPaymentStatus = "N/A";
-
-      if (paymentStatuses.includes("VERIFIED")) {
-        finalPaymentStatus = "VERIFIED";
-      } else if (paymentStatuses.includes("CREATED")) {
-        finalPaymentStatus = "CREATED";
-      } else if (paymentStatuses.includes("FAILED")) {
-        finalPaymentStatus = "FAILED";
-      }
-
-      groupedCandidates.push({
+      grouped.push({
         candidateId: candidate.candidate.id,
         name: candidate.candidate.name,
         profilePhoto: candidate.candidate.profilePhoto,
@@ -126,18 +96,18 @@ export async function getRegisteredStudentsByCollege(collegeId: string) {
         domainOrMainSubject: candidate.domainOrMainSubject,
         mjcSubject: candidate.mjcSubject,
         duration: candidate.duration,
-        collegeFee: candidate.collegeFee,
-        paymentStatus: finalPaymentStatus,
       });
 
-      candidatesBySessionId.set(sessionId, groupedCandidates);
+      candidatesBySessionId.set(sessionId, grouped);
     }
 
-    for (const [sessionId, sessionCandidates] of candidatesBySessionId) {
-      sessionCandidates.sort((a, b) => a.name.localeCompare(b.name));
-      candidatesBySessionId.set(sessionId, sessionCandidates);
+    // Sort students alphabetically within each session
+    for (const [sessionId, students] of candidatesBySessionId) {
+      students.sort((a, b) => a.name.localeCompare(b.name));
+      candidatesBySessionId.set(sessionId, students);
     }
 
+    // Build ordered session list using IDs (configured first, then extras)
     const configuredIds = college.sessions.map((s) => s.id);
     const extraIds = Array.from(candidatesBySessionId.keys())
       .filter((id) => !configuredIds.includes(id))
@@ -150,22 +120,23 @@ export async function getRegisteredStudentsByCollege(collegeId: string) {
     );
 
     return {
-      success: true,
+      success: true as const,
       data: {
         college: {
           id: college.id,
           name: college.name,
           code: college.code,
+          universityName: college.university.name.replace(/_/g, " "),
         },
         sessions: sessionIds.map((id) => ({
           id,
           name: sessionNameById.get(id) ?? id,
-          candidates: candidatesBySessionId.get(id) ?? [],
+          students: candidatesBySessionId.get(id) ?? [],
         })),
       },
     };
   } catch (error) {
-    console.log(error);
-    return { success: false, message: "Failed to fetch registered students" };
+    console.error("getCollegeStudents error:", error);
+    return { success: false as const, message: "Failed to fetch students" };
   }
 }

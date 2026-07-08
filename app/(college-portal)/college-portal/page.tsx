@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { StudentListing } from "./_components/student-listing";
 import { CollegePortalLogout } from "./_components/logout-button";
 
 export default async function CollegePortalPage() {
@@ -25,7 +26,7 @@ export default async function CollegePortalPage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b bg-card">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
+        <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <IconSchoolFilled className="size-5" />
@@ -42,16 +43,14 @@ export default async function CollegePortalPage() {
       </header>
 
       {/* Main content */}
-      <main className="mx-auto max-w-5xl px-4 py-8">
-        <div className="rounded-xl border bg-card p-6 text-center">
-          <IconSchoolFilled className="mx-auto size-12 text-primary/30" />
-          <h2 className="mt-4 text-xl font-semibold">
-            Welcome to the College Portal
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Student records and more features will be available here soon.
+      <main className="px-6 py-8">
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold">Registered Students</h2>
+          <p className="text-sm text-muted-foreground">
+            View and export students registered under your college.
           </p>
         </div>
+        <StudentListing />
       </main>
     </div>
   );

@@ -78,12 +78,12 @@ export function RegisteredStudents({ collegeId }: RegisteredStudentsProps) {
         <p className="text-sm text-muted-foreground">Registered students</p>
       </div>
 
-      <Tabs defaultValue={data.sessions[0].name} className="gap-4">
+      <Tabs defaultValue={data.sessions[0].id} className="gap-4">
         <TabsList className="h-auto w-full flex-wrap justify-start rounded-2xl p-1">
           {data.sessions.map((session) => (
             <TabsTrigger
-              key={session.name}
-              value={session.name}
+              key={session.id}
+              value={session.id}
               className="px-3"
             >
               {session.name} ({session.candidates.length})
@@ -92,7 +92,7 @@ export function RegisteredStudents({ collegeId }: RegisteredStudentsProps) {
         </TabsList>
 
         {data.sessions.map((session) => (
-          <TabsContent key={session.name} value={session.name} className="mt-0">
+          <TabsContent key={session.id} value={session.id} className="mt-0">
             <div className="mb-3 flex justify-end">
               <Button
                 type="button"
