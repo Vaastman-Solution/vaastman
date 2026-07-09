@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   type HTMLMotionProps,
@@ -6,17 +6,17 @@ import {
   type Transition,
   type UseInViewOptions,
   useInView,
-} from "motion/react"
-import * as React from "react"
-import { cn } from "@/lib/utils"
+} from "motion/react";
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 type HighlightTextProps = HTMLMotionProps<"span"> & {
-  text: string
-  inView?: boolean
-  inViewMargin?: UseInViewOptions["margin"]
-  inViewOnce?: boolean
-  transition?: Transition
-}
+  text: string;
+  inView?: boolean;
+  inViewMargin?: UseInViewOptions["margin"];
+  inViewOnce?: boolean;
+  transition?: Transition;
+};
 
 function HighlightText({
   ref,
@@ -28,14 +28,17 @@ function HighlightText({
   transition = { duration: 2, ease: "easeInOut" },
   ...props
 }: HighlightTextProps) {
-  const localRef = React.useRef<HTMLSpanElement>(null)
-  React.useImperativeHandle(ref as any, () => localRef.current as HTMLSpanElement)
+  const localRef = React.useRef<HTMLSpanElement>(null);
+  React.useImperativeHandle(
+    ref as any,
+    () => localRef.current as HTMLSpanElement,
+  );
 
   const inViewResult = useInView(localRef, {
     once: inViewOnce,
     margin: inViewMargin,
-  })
-  const isInView = !inView || inViewResult
+  });
+  const isInView = !inView || inViewResult;
 
   return (
     <motion.span
@@ -59,8 +62,8 @@ function HighlightText({
     >
       {text}
     </motion.span>
-  )
+  );
 }
 
-export { HighlightText, type HighlightTextProps }
-export default HighlightText
+export { HighlightText, type HighlightTextProps };
+export default HighlightText;

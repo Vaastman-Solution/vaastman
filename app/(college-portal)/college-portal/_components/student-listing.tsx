@@ -55,11 +55,7 @@ export function StudentListing() {
     <Tabs defaultValue={data.sessions[0].id} className="gap-4">
       <TabsList className="h-auto w-full flex-wrap justify-start rounded-2xl p-1">
         {data.sessions.map((session) => (
-          <TabsTrigger
-            key={session.id}
-            value={session.id}
-            className="px-3"
-          >
+          <TabsTrigger key={session.id} value={session.id} className="px-3">
             {session.name} ({session.students.length})
           </TabsTrigger>
         ))}

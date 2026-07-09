@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Inter } from "next/font/google";
+import { Geist_Mono, Inter, Geist } from "next/font/google";
 import "./globals.css";
 import "./typography.css";
-import { Toaster } from "sonner";
+import Providers from "@/components/providers/progressbar-provider";
 import { QueryProviders } from "@/components/query-provider";
 import { ThemeProvider } from "@/components/theme-provider";
-import Providers from "@/components/providers/progressbar-provider";
+import { CustomeToast } from "@/components/toast-provider";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -14,8 +15,8 @@ const inter = Inter({
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  weight: ["500"],
+  variable: "--font-mono",
+  weight: ["500", "600", "700", "800", "900"],
   subsets: ["latin"],
 });
 
@@ -39,7 +40,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", geistMono.variable, "font-sans", inter.variable)}
     >
       <body className="min-h-full flex flex-col font-sans">
         <Providers>
@@ -54,14 +55,7 @@ export default function RootLayout({
             </QueryProviders>
           </ThemeProvider>
         </Providers>
-        <Toaster
-          position="top-right"
-          richColors
-          closeButton
-          theme="light"
-          offset={{ top: "8px" }}
-          mobileOffset={{ top: "6px" }}
-        />
+        <CustomeToast />
       </body>
     </html>
   );

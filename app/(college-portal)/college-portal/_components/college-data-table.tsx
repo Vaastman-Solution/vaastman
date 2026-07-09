@@ -58,9 +58,7 @@ export function CollegeDataTable<TData, TValue>({
           unique.add(value);
         }
       }
-      result[columnId] = Array.from(unique).sort((a, b) =>
-        a.localeCompare(b),
-      );
+      result[columnId] = Array.from(unique).sort((a, b) => a.localeCompare(b));
     }
     return result;
   }, [data, filterableColumns]);

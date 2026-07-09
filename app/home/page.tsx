@@ -3,6 +3,7 @@ import { Achievements } from "@/components/home/achievements";
 import { Clients } from "@/components/home/clients";
 import { Hero } from "@/components/home/hero";
 import { Services } from "@/components/home/services";
+import { WhyICanBeTrusted } from "@/components/why-i-can-be-trusted";
 
 const SITE_URL = "https://vaastman.com";
 
@@ -62,7 +63,7 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Hero />
-      <Achievements />
+      <WhyICanBeTrusted />
       <Services />
       <Clients />
     </>

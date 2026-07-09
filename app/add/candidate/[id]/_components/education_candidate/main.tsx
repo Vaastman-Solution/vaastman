@@ -24,7 +24,6 @@ export function AddCandidateEducationForm({
 }: {
   candidateId: string;
 }) {
-
   const form = useForm<AddCandidateEducationSchema>({
     resolver: zodResolver(addCandidateEducationSchema),
     defaultValues: {
@@ -41,8 +40,11 @@ export function AddCandidateEducationForm({
     },
   });
 
-  const { mutateAsync: addCandidateEducation, isPending, isSuccess } =
-    useAddCandidateEducation({ candidateId });
+  const {
+    mutateAsync: addCandidateEducation,
+    isPending,
+    isSuccess,
+  } = useAddCandidateEducation({ candidateId });
 
   const isDisabled = isPending || isSuccess;
 

@@ -51,9 +51,7 @@ export function TableFilter<TData>({
               type="button"
               onClick={() => column.setFilterValue(undefined)}
               className={`w-full rounded-sm px-2 py-1.5 text-left text-sm transition-colors ${
-                !selectedValue
-                  ? "bg-primary/10 text-primary"
-                  : "hover:bg-muted"
+                !selectedValue ? "bg-primary/10 text-primary" : "hover:bg-muted"
               }`}
             >
               All

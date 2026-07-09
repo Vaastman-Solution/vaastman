@@ -1,20 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
 import {
-  IconCodeCircle2Filled,
   IconBulbFilled,
   IconCloudComputingFilled,
+  IconCodeCircle2Filled,
   IconLayout2Filled,
   IconStarFilled,
 } from "@tabler/icons-react";
+import { Building2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import Highlight from "@/components/animate-text";
-import LayoutTextFlipDemo from "../layout-text-flip-demo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
 import { Card } from "@/components/ui/card";
-import { Building2 } from "lucide-react";
+import LayoutTextFlipDemo from "../layout-text-flip-demo";
 
 const companies = [
   "NEXOVA TECH",
@@ -24,7 +24,6 @@ const companies = [
   "FORGEWAVE",
   "PIXEL LABS",
 ];
-
 
 const focusWords = ["Websites", "Web Apps", "Mobile Apps", "Platforms"];
 
@@ -44,7 +43,7 @@ function useCountUp(target: number, durationMs = 1400, startDelay = 300) {
       const step = (t: number) => {
         if (!start) start = t;
         const progress = Math.min((t - start) / durationMs, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
+        const eased = 1 - (1 - progress) ** 3;
         setValue(Math.round(target * eased));
         if (progress < 1) raf = requestAnimationFrame(step);
       };
@@ -113,14 +112,17 @@ export function Hero() {
         <div className="mx-auto max-w-3xl py-20 text-center">
           <h1>Vaastman Solutions Pvt Ltd</h1>
           <p>
-            We build custom-tailored, high-performance websites, web apps, mobile apps, and platforms
-            combining premium design with rock-solid engineering to deliver measurable impact.
+            We build custom-tailored, high-performance websites, web apps,
+            mobile apps, and platforms combining premium design with rock-solid
+            engineering to deliver measurable impact.
           </p>
           <p>
-            Our core expertise: Web &amp; Mobile Development, AI &amp; Automation,
-            Cloud &amp; DevOps, and Product Strategy.
+            Our core expertise: Web &amp; Mobile Development, AI &amp;
+            Automation, Cloud &amp; DevOps, and Product Strategy.
           </p>
-          <p>50+ projects shipped · 95% client retention · 20+ active clients</p>
+          <p>
+            50+ projects shipped · 95% client retention · 20+ active clients
+          </p>
         </div>
       </noscript>
       <style>{`
@@ -180,13 +182,24 @@ export function Hero() {
 
       <div className="relative flex w-full max-w-5xl flex-col items-center gap-8 text-center md:gap-10">
         {/* ── Corner registration marks — drafting-studio signature ── */}
-        <span className="vs-corner absolute -left-4 -top-4 size-4 border-l border-t border-foreground/20 sm:-left-8 sm:-top-8" style={{ animationDelay: "150ms" }} />
-        <span className="vs-corner absolute -right-4 -top-4 size-4 border-r border-t border-foreground/20 sm:-right-8 sm:-top-8" style={{ animationDelay: "250ms" }} />
-        <span className="vs-corner absolute -bottom-4 -left-4 size-4 border-b border-l border-foreground/20 sm:-bottom-8 sm:-left-8" style={{ animationDelay: "350ms" }} />
-        <span className="vs-corner absolute -bottom-4 -right-4 size-4 border-b border-r border-foreground/20 sm:-bottom-8 sm:-right-8" style={{ animationDelay: "450ms" }} />
+        <span
+          className="vs-corner absolute -left-4 -top-4 size-4 border-l border-t border-foreground/20 sm:-left-8 sm:-top-8"
+          style={{ animationDelay: "150ms" }}
+        />
+        <span
+          className="vs-corner absolute -right-4 -top-4 size-4 border-r border-t border-foreground/20 sm:-right-8 sm:-top-8"
+          style={{ animationDelay: "250ms" }}
+        />
+        <span
+          className="vs-corner absolute -bottom-4 -left-4 size-4 border-b border-l border-foreground/20 sm:-bottom-8 sm:-left-8"
+          style={{ animationDelay: "350ms" }}
+        />
+        <span
+          className="vs-corner absolute -bottom-4 -right-4 size-4 border-b border-r border-foreground/20 sm:-bottom-8 sm:-right-8"
+          style={{ animationDelay: "450ms" }}
+        />
 
         {/* ── Stars Rating & Badge ────────────────────────────────────────── */}
-       
 
         <h1 className="flex flex-wrap items-baseline justify-center gap-y-1.5 text-5xl font-extrabold leading-[1.05] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
           <span className="vs-fade-up" style={{ animationDelay: "80ms" }}>
@@ -238,7 +251,7 @@ export function Hero() {
         </p> */}
         <LayoutTextFlipDemo />
 
-         <div
+        <div
           className="vs-fade-up flex items-center gap-3 rounded-full border border-border/60 bg-muted/30 py-1 pl-3.5 pr-1.5"
           style={{ animationDelay: "0ms" }}
         >
@@ -259,9 +272,17 @@ export function Hero() {
 
           <div className="flex -space-x-1.5">
             {["dshamshee", "devashishkr3", "amitkys"].map((username) => (
-              <Avatar key={username} className="size-6 border border-background">
-                <AvatarImage src={`https://github.com/${username}.png`} alt={username} />
-                <AvatarFallback className="text-[8px]">{username.substring(0, 2).toUpperCase()}</AvatarFallback>
+              <Avatar
+                key={username}
+                className="size-6 border border-background"
+              >
+                <AvatarImage
+                  src={`https://github.com/${username}.png`}
+                  alt={username}
+                />
+                <AvatarFallback className="text-[8px]">
+                  {username.substring(0, 2).toUpperCase()}
+                </AvatarFallback>
               </Avatar>
             ))}
           </div>
@@ -271,7 +292,10 @@ export function Hero() {
           className="vs-fade-up flex items-center gap-3 pt-1"
           style={{ animationDelay: "420ms" }}
         >
-          <Button size="lg" className="rounded-full px-8 font-semibold transition-transform hover:-translate-y-0.5">
+          <Button
+            size="lg"
+            className="rounded-full px-8 font-semibold transition-transform hover:-translate-y-0.5"
+          >
             Get a quote
           </Button>
           <Button
@@ -284,34 +308,34 @@ export function Hero() {
         </div>
 
         {/* ── Trusted Brands / Client Logos ───────────────────────────────── */}
-         <div
-  className="vs-fade-up mt-6 flex flex-col items-center gap-4"
-  style={{ animationDelay: "480ms" }}
->
-  <span className="relative inline-block pb-1.5 font-mono text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
-    Trusted by Companies
-    <svg
-      className="vs-underline absolute -bottom-0.5 left-0 h-1.5 w-full"
-      viewBox="0 0 100 8"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M1 5 C 20 2, 80 2, 99 5"
-        fill="none"
-        stroke="#eab308"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        pathLength="1"
-      />
-    </svg>
-  </span>
+        <div
+          className="vs-fade-up mt-6 flex flex-col items-center gap-4"
+          style={{ animationDelay: "480ms" }}
+        >
+          <span className="relative inline-block pb-1.5 font-mono text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+            Trusted by Companies
+            <svg
+              className="vs-underline absolute -bottom-0.5 left-0 h-1.5 w-full"
+              viewBox="0 0 100 8"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M1 5 C 20 2, 80 2, 99 5"
+                fill="none"
+                stroke="#eab308"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                pathLength="1"
+              />
+            </svg>
+          </span>
 
- <div className="mt-8 flex flex-wrap justify-center gap-4">
-  {companies.map((company) => (
-    <div
-      key={company}
-      className="
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            {companies.map((company) => (
+              <div
+                key={company}
+                className="
         flex
         h-14
         min-w-[160px]
@@ -333,28 +357,31 @@ export function Hero() {
         hover:shadow-md
         hover:shadow-primary/5
       "
-    >
-      <span className="font-semibold tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground">
-        {company}
-      </span>
-    </div>
-  ))}
-</div>
-</div>
+              >
+                <span className="font-semibold tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground">
+                  {company}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          {/* ── Core Expertise Grid ─────────────────────────────────────────── */}
-          <h2 className="sr-only">Our Core Expertise</h2>
-          <div
-            className="vs-fade-up mt-6 grid w-full grid-cols-1 gap-4 text-left sm:grid-cols-2 lg:grid-cols-4"
+        {/* ── Core Expertise Grid ─────────────────────────────────────────── */}
+        <h2 className="sr-only">Our Core Expertise</h2>
+        <div
+          className="vs-fade-up mt-6 grid w-full grid-cols-1 gap-4 text-left sm:grid-cols-2 lg:grid-cols-4"
           style={{ animationDelay: "560ms" }}
         >
           <div className="group rounded-2xl border border-border/80 bg-card/45 p-5 backdrop-blur-sm transition-all duration-300 hover:border-primary/45 hover:bg-card">
             <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
               <IconCodeCircle2Filled className="size-5" />
             </div>
-            <h3 className="text-sm font-bold text-foreground">Web &amp; Mobile</h3>
+            <h3 className="text-sm font-bold text-foreground">
+              Web &amp; Mobile
+            </h3>
             <p className="mt-1.5 text-xs leading-normal text-muted-foreground">
-              Fast, responsive Next.js websites and native iOS/Android mobile apps.
+              Fast, responsive Next.js websites and native iOS/Android mobile
+              apps.
             </p>
           </div>
 
@@ -362,9 +389,12 @@ export function Hero() {
             <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
               <IconBulbFilled className="size-5" />
             </div>
-            <h3 className="text-sm font-bold text-foreground">AI &amp; Automation</h3>
+            <h3 className="text-sm font-bold text-foreground">
+              AI &amp; Automation
+            </h3>
             <p className="mt-1.5 text-xs leading-normal text-muted-foreground">
-              Intelligent LLM integrations, custom AI agents, and smart IVR automation.
+              Intelligent LLM integrations, custom AI agents, and smart IVR
+              automation.
             </p>
           </div>
 
@@ -372,9 +402,12 @@ export function Hero() {
             <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
               <IconCloudComputingFilled className="size-5" />
             </div>
-            <h3 className="text-sm font-bold text-foreground">Cloud &amp; DevOps</h3>
+            <h3 className="text-sm font-bold text-foreground">
+              Cloud &amp; DevOps
+            </h3>
             <p className="mt-1.5 text-xs leading-normal text-muted-foreground">
-              Auto-scaling AWS infrastructure, secure pipelines, and reliable hosting.
+              Auto-scaling AWS infrastructure, secure pipelines, and reliable
+              hosting.
             </p>
           </div>
 
@@ -382,9 +415,12 @@ export function Hero() {
             <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
               <IconLayout2Filled className="size-5" />
             </div>
-            <h3 className="text-sm font-bold text-foreground">Product Strategy</h3>
+            <h3 className="text-sm font-bold text-foreground">
+              Product Strategy
+            </h3>
             <p className="mt-1.5 text-xs leading-normal text-muted-foreground">
-              Figma-first design systems and technical consulting before writing code.
+              Figma-first design systems and technical consulting before writing
+              code.
             </p>
           </div>
         </div>

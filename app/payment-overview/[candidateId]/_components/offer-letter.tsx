@@ -137,8 +137,8 @@ export function OfferLetter({ data }: OfferLetterProps) {
         </li>
         <li>
           Successful completion of the internship, including submission of all
-          required reports and assignments, shall make the intern eligible for an
-          Internship Completion Certificate.
+          required reports and assignments, shall make the intern eligible for
+          an Internship Completion Certificate.
         </li>
       </ol>
 
@@ -159,11 +159,7 @@ export function OfferLetter({ data }: OfferLetterProps) {
           <p>Vaastman Solutions Pvt. Ltd.</p>
         </div>
         <div className="flex flex-col items-center">
-          <QRCodeSVG
-            value={`https://google.com`}
-            size={64}
-            level="L"
-          />
+          <QRCodeSVG value={`https://google.com`} size={64} level="L" />
           <p className="mt-1 text-[9px] uppercase tracking-widest text-black">
             Scan to join community
           </p>
@@ -218,9 +214,7 @@ function DetailRow({
 }) {
   return (
     <tr className={last ? "" : "border-b border-black"}>
-      <td className="w-1/3 px-4 py-2 font-medium">
-        {label}
-      </td>
+      <td className="w-1/3 px-4 py-2 font-medium">{label}</td>
       <td className="px-4 py-2">{value}</td>
     </tr>
   );

@@ -45,9 +45,7 @@ export function downloadCollegeStudentsCsv({
     .join(",");
 
   const rows = students.map((student) =>
-    csvColumns
-      .map((col) => `"${toCsvValue(student[col.key])}"`)
-      .join(","),
+    csvColumns.map((col) => `"${toCsvValue(student[col.key])}"`).join(","),
   );
 
   const csvContent = [header, ...rows].join("\n");
