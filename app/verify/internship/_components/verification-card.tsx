@@ -1,17 +1,17 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import {
-  IconRosetteDiscountCheckFilled,
-  IconCertificate,
-  IconCalendar,
-  IconClock,
   IconAward,
-  IconCheck,
   IconBuilding,
+  IconCalendar,
+  IconCertificate,
+  IconCheck,
+  IconClock,
+  IconRosetteDiscountCheckFilled,
   IconSearch,
 } from "@tabler/icons-react";
+import Image from "next/image";
+import Link from "next/link";
 import type { VerificationResultData } from "../lib/actions";
 
 type VerificationCardProps = {

@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { IconAlertTriangleFilled, IconSearch } from "@tabler/icons-react";
+import Link from "next/link";
 
 type VerificationNotFoundProps = {
   certificateNo?: string;

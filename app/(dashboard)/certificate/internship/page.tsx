@@ -11,6 +11,7 @@ import {
 import { jsPDF } from "jspdf";
 import { domToJpeg } from "modern-screenshot";
 import { useRef, useState } from "react";
+import { useGetOldStudents } from "@/app/(dashboard)/lib/old-student/query/use-get-old-students";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -37,7 +38,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetOldStudents } from "@/app/(dashboard)/lib/old-student/query/use-get-old-students";
 import {
   type CertificateData,
   InternshipCertificate,
@@ -57,6 +57,11 @@ export default function CertificatePage() {
     try {
       setIsDownloading(true);
 
+      // Ensure all fonts are fully loaded before capturing
+      if (typeof window !== "undefined" && "fonts" in document) {
+        await document.fonts.ready;
+      }
+
       const certElement = (target.firstElementChild as HTMLElement) || target;
 
       const dataUrl = await domToJpeg(certElement, {
@@ -64,7 +69,6 @@ export default function CertificatePage() {
         quality: 0.85,
         width: 1123,
         height: 794,
-        font: false,
       });
 
       // A4 Landscape orientation: 297mm x 210mm

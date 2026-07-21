@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getCertificateVerification } from "../lib/actions";
 import { VerificationCard } from "../_components/verification-card";
 import { VerificationNotFound } from "../_components/verification-not-found";
+import { getCertificateVerification } from "../lib/actions";
 
 type VerifyParams = {
   params: Promise<{

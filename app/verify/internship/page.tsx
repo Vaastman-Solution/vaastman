@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
-  IconRosetteDiscountCheckFilled,
   IconCertificate,
+  IconRosetteDiscountCheckFilled,
   IconSearch,
   IconShieldCheckFilled,
 } from "@tabler/icons-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function VerifyInternshipSearchPage() {
   const [certNo, setCertNo] = useState("");

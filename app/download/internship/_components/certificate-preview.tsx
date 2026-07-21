@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { IconArrowLeft, IconDownload, IconLoader2 } from "@tabler/icons-react";
 import { jsPDF } from "jspdf";
 import { domToJpeg } from "modern-screenshot";
-import { IconDownload, IconLoader2, IconArrowLeft } from "@tabler/icons-react";
-import { InternshipCertificate } from "@/app/(dashboard)/certificate/internship/_components/internship-certificate";
+import { useRef, useState } from "react";
 import type { CertificateData } from "@/app/(dashboard)/certificate/internship/_components/internship-certificate";
+import { InternshipCertificate } from "@/app/(dashboard)/certificate/internship/_components/internship-certificate";
 
 type CertificatePreviewProps = {
   data: CertificateData;
@@ -22,6 +22,11 @@ export function CertificatePreview({ data, onBack }: CertificatePreviewProps) {
     try {
       setIsDownloading(true);
 
+      // Ensure all fonts are fully loaded before capturing
+      if (typeof window !== "undefined" && "fonts" in document) {
+        await document.fonts.ready;
+      }
+
       const certElement = (target.firstElementChild as HTMLElement) || target;
 
       const dataUrl = await domToJpeg(certElement, {
@@ -29,7 +34,6 @@ export function CertificatePreview({ data, onBack }: CertificatePreviewProps) {
         quality: 0.85,
         width: 1123,
         height: 794,
-        font: false,
       });
 
       // A4 Landscape orientation: 297mm x 210mm

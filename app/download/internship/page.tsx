@@ -1,17 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import {
+  IconAlertTriangleFilled,
   IconDownload,
   IconRosetteDiscountCheckFilled,
-  IconAlertTriangleFilled,
 } from "@tabler/icons-react";
-import { lookupCertificateForDownload } from "./lib/actions";
-import type { DownloadCertificateData } from "./lib/actions";
-import { DownloadForm } from "./_components/download-form";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 import { CertificatePreview } from "./_components/certificate-preview";
+import { DownloadForm } from "./_components/download-form";
+import type { DownloadCertificateData } from "./lib/actions";
+import { lookupCertificateForDownload } from "./lib/actions";
 
 export default function DownloadInternshipPage() {
   const [certificateData, setCertificateData] =

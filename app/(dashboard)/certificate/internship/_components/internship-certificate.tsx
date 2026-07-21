@@ -1,6 +1,6 @@
 "use client";
 
-import { Cinzel, Alice, Noto_Serif, EB_Garamond } from "next/font/google";
+import { Alice, Cinzel, EB_Garamond, Noto_Serif } from "next/font/google";
 import Image from "next/image";
 import { QRCodeSVG } from "qrcode.react";
 
@@ -12,7 +12,7 @@ const cinzel = Cinzel({
   display: "swap",
 });
 
-const alice = Alice({
+const _alice = Alice({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
