@@ -6,7 +6,7 @@ Read the relevant guide in `node_modules/next/dist/docs/` before writing or chan
 Heed deprecation notices and prefer current project conventions over remembered defaults.
 <!-- END:nextjs-agent-rules -->
 
-# Project Stack
+# Project Stacks
 
 - Use Bun for everything: installing dependencies, running scripts, and invoking project tooling.
 - This repo uses the App Router under `app/`.
