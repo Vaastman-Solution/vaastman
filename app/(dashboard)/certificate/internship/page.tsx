@@ -119,11 +119,7 @@ export default function CertificatePage() {
 
       // ── Page 1: Certificate (landscape) ──────────────────
       const certElement = (target.firstElementChild as HTMLElement) || target;
-      const certImg = await captureElement(
-        certElement,
-        CERT_PX.w,
-        CERT_PX.h,
-      );
+      const certImg = await captureElement(certElement, CERT_PX.w, CERT_PX.h);
       pdf.addImage(
         certImg,
         "JPEG",
@@ -154,7 +150,6 @@ export default function CertificatePage() {
           "FAST",
         );
       }
-
 
       const fileName = `Certificate_${selected?.name ? selected.name.replace(/\s+/g, "_") : "Student"}.pdf`;
       pdf.save(fileName);

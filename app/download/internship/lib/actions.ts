@@ -54,7 +54,6 @@ export async function lookupCertificateForDownload(
       };
     }
 
-
     // Validate father name match (case-insensitive)
     if (record.fatherName.trim().toLowerCase() !== cleanFather) {
       return {

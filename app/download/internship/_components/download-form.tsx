@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  IconId,
-  IconLoader2,
-  IconSearch,
-  IconUser,
-} from "@tabler/icons-react";
+import { IconId, IconLoader2, IconSearch, IconUser } from "@tabler/icons-react";
 import { useState } from "react";
 
 type DownloadFormProps = {
@@ -31,10 +26,7 @@ export function DownloadForm({ onResult, lookupAction }: DownloadFormProps) {
 
     setIsLoading(true);
     try {
-      const result = await lookupAction(
-        identifier.trim(),
-        fatherName.trim(),
-      );
+      const result = await lookupAction(identifier.trim(), fatherName.trim());
       onResult(result);
     } catch {
       onResult({
@@ -69,7 +61,6 @@ export function DownloadForm({ onResult, lookupAction }: DownloadFormProps) {
           required
         />
       </div>
-
 
       {/* Father's Name */}
       <div className="space-y-2">

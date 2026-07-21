@@ -137,6 +137,10 @@ export function AttendanceSheet({ data }: { data: AttendanceSheetData }) {
         wish {object} continued success in all future academic and professional
         endeavors.
       </div>
+      <br />
+      <br />
+      <br />
+      
 
       {/* ── Section title ─────────────────────────────────── */}
       <div
@@ -270,13 +274,22 @@ export function AttendanceSheet({ data }: { data: AttendanceSheetData }) {
       <div
         style={{
           position: "absolute",
-          bottom: "16px",
+          bottom: "15px",
           right: "40px",
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
-          gap: "14px",
+          gap: "4px",
         }}
       >
+        <Image
+          src="/certificate/stamp.png"
+          alt="Company Stamp"
+          width={300}
+          height={300}
+          style={{ objectFit: "contain", height: "auto" }}
+          unoptimized
+        />
         <span
           style={{
             fontSize: "17px",
@@ -285,18 +298,11 @@ export function AttendanceSheet({ data }: { data: AttendanceSheetData }) {
             color: "#111",
             fontFamily: notoSerif.style.fontFamily,
             whiteSpace: "nowrap",
+            marginTop: "-40px",
           }}
         >
           Vaastman Solutions Pvt. Ltd.
         </span>
-        <Image
-          src="/certificate/stamp.png"
-          alt="Company Stamp"
-          width={110}
-          height={110}
-          style={{ objectFit: "contain", height: "auto" }}
-          unoptimized
-        />
       </div>
     </div>
   );

@@ -147,4 +147,3 @@ export const ONLINE_ACTIVITIES: ActivityLink[] = [
     url: "https://forms.gle/Pqq9uQinzTc8CABR8",
   },
 ];
-

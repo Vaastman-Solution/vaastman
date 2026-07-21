@@ -7,10 +7,7 @@ import { useRef, useState } from "react";
 import type { CertificateData } from "@/app/(dashboard)/certificate/internship/_components/internship-certificate";
 import { InternshipCertificate } from "@/app/(dashboard)/certificate/internship/_components/internship-certificate";
 import { useDownloadStatus } from "@/lib/hooks/use-download-status";
-import {
-  AttendanceSheet,
-  type AttendanceSheetData,
-} from "./attendance-sheet";
+import { AttendanceSheet, type AttendanceSheetData } from "./attendance-sheet";
 
 type CertificatePreviewProps = {
   data: CertificateData;
@@ -80,8 +77,7 @@ export function CertificatePreview({ data, onBack }: CertificatePreviewProps) {
 
       // ── Page 1: Certificate (landscape) ──────────────────
       const certEl =
-        (certRef.current?.firstElementChild as HTMLElement) ??
-        certRef.current;
+        (certRef.current?.firstElementChild as HTMLElement) ?? certRef.current;
       if (certEl) {
         const certImg = await captureElement(certEl, CERT_PX.w, CERT_PX.h);
         pdf.addImage(
