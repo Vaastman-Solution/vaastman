@@ -43,6 +43,32 @@ import {
   type CertificateData,
   InternshipCertificate,
 } from "./_components/internship-certificate";
+import {
+  AttendanceSheet,
+  type AttendanceSheetData,
+} from "@/app/download/internship/_components/attendance-sheet";
+
+/** A4 dimensions in mm */
+const A4_LANDSCAPE = { w: 297, h: 210 };
+const A4_PORTRAIT = { w: 210, h: 297 };
+
+/** Pixel sizes for rendering */
+const CERT_PX = { w: 1123, h: 794 };
+const ATTENDANCE_PX = { w: 794, h: 1123 };
+
+/** Captures a DOM element as a JPEG data URL */
+async function captureElement(
+  el: HTMLElement,
+  width: number,
+  height: number,
+): Promise<string> {
+  return domToJpeg(el, {
+    scale: 1.5,
+    quality: 0.85,
+    width,
+    height,
+  });
+}
 
 export default function CertificatePage() {
   const { data: students, isPending, isError, error } = useGetOldStudents();
@@ -50,8 +76,22 @@ export default function CertificatePage() {
   const [selected, setSelected] = useState<CertificateData | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
   const downloadStatus = useDownloadStatus(isDownloading);
-  const printRef = useRef<HTMLDivElement>(null);
+
+  // Refs for off-screen elements
   const exportRef = useRef<HTMLDivElement>(null);
+  const printRef = useRef<HTMLDivElement>(null);
+  const attendanceRef = useRef<HTMLDivElement>(null);
+
+  const attendanceData: AttendanceSheetData | null = selected
+    ? {
+        name: selected.name,
+        registrationNo: selected.registrationNo,
+        honoursSubject: selected.honoursSubject,
+        courseName: selected.courseName,
+        universityRollNo: selected.universityRollNo,
+        gender: selected.gender,
+      }
+    : null;
 
   const handleDownload = async () => {
     const target = exportRef.current || printRef.current;
@@ -64,23 +104,50 @@ export default function CertificatePage() {
         await document.fonts.ready;
       }
 
-      const certElement = (target.firstElementChild as HTMLElement) || target;
-
-      const dataUrl = await domToJpeg(certElement, {
-        scale: 1.5,
-        quality: 0.85,
-        width: 1123,
-        height: 794,
-      });
-
-      // A4 Landscape orientation: 297mm x 210mm
       const pdf = new jsPDF({
         orientation: "landscape",
         unit: "mm",
         format: "a4",
       });
 
-      pdf.addImage(dataUrl, "JPEG", 0, 0, 297, 210, undefined, "FAST");
+      // ── Page 1: Certificate (landscape) ──────────────────
+      const certElement = (target.firstElementChild as HTMLElement) || target;
+      const certImg = await captureElement(
+        certElement,
+        CERT_PX.w,
+        CERT_PX.h,
+      );
+      pdf.addImage(
+        certImg,
+        "JPEG",
+        0,
+        0,
+        A4_LANDSCAPE.w,
+        A4_LANDSCAPE.h,
+        undefined,
+        "FAST",
+      );
+
+      // ── Page 2: Attendance Sheet (portrait) ──────────────
+      if (attendanceRef.current) {
+        pdf.addPage("a4", "portrait");
+        const attImg = await captureElement(
+          attendanceRef.current,
+          ATTENDANCE_PX.w,
+          ATTENDANCE_PX.h,
+        );
+        pdf.addImage(
+          attImg,
+          "JPEG",
+          0,
+          0,
+          A4_PORTRAIT.w,
+          A4_PORTRAIT.h,
+          undefined,
+          "FAST",
+        );
+      }
+
 
       const fileName = `Certificate_${selected?.name ? selected.name.replace(/\s+/g, "_") : "Student"}.pdf`;
       pdf.save(fileName);
@@ -340,22 +407,40 @@ export default function CertificatePage() {
         </DialogContent>
       </Dialog>
 
-      {/* Off-screen container for high-resolution PDF download (unscaled) */}
-      {selected && (
+      {/* Off-screen containers for high-resolution PDF download (unscaled) */}
+      {selected && attendanceData && (
         <div
           style={{
             position: "fixed",
             left: "-9999px",
             top: "-9999px",
-            width: "1123px",
-            height: "794px",
-            overflow: "hidden",
             pointerEvents: "none",
             zIndex: -9999,
           }}
         >
-          <div ref={exportRef}>
-            <InternshipCertificate data={selected} />
+          {/* Certificate */}
+          <div
+            style={{
+              width: `${CERT_PX.w}px`,
+              height: `${CERT_PX.h}px`,
+              overflow: "hidden",
+            }}
+          >
+            <div ref={exportRef}>
+              <InternshipCertificate data={selected} />
+            </div>
+          </div>
+
+          {/* Attendance Sheet */}
+          <div
+            ref={attendanceRef}
+            style={{
+              width: `${ATTENDANCE_PX.w}px`,
+              height: `${ATTENDANCE_PX.h}px`,
+              overflow: "hidden",
+            }}
+          >
+            <AttendanceSheet data={attendanceData} />
           </div>
         </div>
       )}
