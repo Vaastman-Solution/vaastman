@@ -7,7 +7,7 @@ model Old_Student_Record {
   courseName       String // BA, BSc, BCom etc.
   universityRollNo String   @unique
   marks            Float?
-  registrationNo   String
+  registrationNo   String   @unique
   collegeName      String
   shortCollegeName String // used in certificate_no format
   mobileNo         String

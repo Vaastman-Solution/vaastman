@@ -210,7 +210,7 @@ export function InternshipCertificate({ data }: InternshipCertificateProps) {
             <strong>{data.courseName}</strong> (MJC Subject -{" "}
             <strong>{data.honoursSubject}</strong>) four-year degree course of{" "}
             <strong>{getSemesterLabel(data.semester)} Semester</strong> having
-            University Roll No. <strong>{data.universityRollNo}</strong> of{" "}
+            Registration No. <strong>{data.registrationNo}</strong> of{" "}
             <strong>{data.collegeName}</strong>. {subject} has successfully
             completed {possessive} <strong>{data.programHrs} hours</strong>{" "}
             internship program on topic of{" "}
@@ -251,10 +251,6 @@ export function InternshipCertificate({ data }: InternshipCertificateProps) {
           >
             <span>
               Certificate No. : <strong>{data.certificateNo}</strong>
-            </span>
-            <span style={{ margin: "0 20px" }}>|</span>
-            <span>
-              Reg. No. : <strong>{data.registrationNo}</strong>
             </span>
             <span style={{ margin: "0 20px" }}>|</span>
             <span>

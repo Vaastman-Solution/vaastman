@@ -6,6 +6,7 @@ import { domToJpeg } from "modern-screenshot";
 import { useRef, useState } from "react";
 import type { CertificateData } from "@/app/(dashboard)/certificate/internship/_components/internship-certificate";
 import { InternshipCertificate } from "@/app/(dashboard)/certificate/internship/_components/internship-certificate";
+import { useDownloadStatus } from "@/lib/hooks/use-download-status";
 
 type CertificatePreviewProps = {
   data: CertificateData;
@@ -14,6 +15,7 @@ type CertificatePreviewProps = {
 
 export function CertificatePreview({ data, onBack }: CertificatePreviewProps) {
   const [isDownloading, setIsDownloading] = useState(false);
+  const downloadStatus = useDownloadStatus(isDownloading);
   const exportRef = useRef<HTMLDivElement>(null);
 
   const handleDownload = async () => {
@@ -76,7 +78,7 @@ export function CertificatePreview({ data, onBack }: CertificatePreviewProps) {
           {isDownloading ? (
             <>
               <IconLoader2 className="size-4 animate-spin" />
-              Downloading...
+              {downloadStatus}
             </>
           ) : (
             <>

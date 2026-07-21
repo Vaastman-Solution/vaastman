@@ -38,6 +38,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useDownloadStatus } from "@/lib/hooks/use-download-status";
 import {
   type CertificateData,
   InternshipCertificate,
@@ -48,6 +49,7 @@ export default function CertificatePage() {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState<CertificateData | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const downloadStatus = useDownloadStatus(isDownloading);
   const printRef = useRef<HTMLDivElement>(null);
   const exportRef = useRef<HTMLDivElement>(null);
 
@@ -307,7 +309,7 @@ export default function CertificatePage() {
                 ) : (
                   <IconDownload className="size-4 mr-1" />
                 )}
-                Download
+                {isDownloading ? downloadStatus : "Download"}
               </Button>
             </DialogTitle>
             <DialogDescription className="sr-only">

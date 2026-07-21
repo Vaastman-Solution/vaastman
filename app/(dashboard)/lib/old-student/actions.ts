@@ -70,36 +70,75 @@ export async function uploadOldStudents(payload: UploadPayloadSchema) {
       };
     }
 
-    // ── Get current max serial for certificate_no ──────────────
-    const maxRecord = await prisma.old_Student_Record.findFirst({
-      orderBy: { createdAt: "desc" },
-      select: { certificateNo: true },
+    // ── Check for duplicate registration_no in DB ─────────────
+    const regNos = rows.map((r) => r.registration_no);
+    const existingRegs = await prisma.old_Student_Record.findMany({
+      where: { registrationNo: { in: regNos } },
+      select: { registrationNo: true },
     });
 
-    let currentSerial = 0;
-    if (maxRecord?.certificateNo) {
-      // Format: VSPL/<shortCollegeName>/<serial>/<year>
-      const parts = maxRecord.certificateNo.split("/");
-      const serialPart = parts[2];
-      if (serialPart) {
-        const parsed = Number.parseInt(serialPart, 10);
-        if (!Number.isNaN(parsed)) {
-          currentSerial = parsed;
-        }
-      }
+    if (existingRegs.length > 0) {
+      const dupes = existingRegs.map((e) => e.registrationNo).join(", ");
+      return {
+        success: false,
+        message: `Duplicate registration numbers already exist in database: ${dupes}`,
+      };
     }
 
-    // Also count total records as fallback to ensure serial is always correct
-    const totalCount = await prisma.old_Student_Record.count();
-    if (totalCount > currentSerial) {
-      currentSerial = totalCount;
+    // ── Also check for duplicate registration_no within CSV ───
+    const regNoSet = new Set<string>();
+    const csvRegDupes: string[] = [];
+    for (const r of rows) {
+      if (regNoSet.has(r.registration_no)) {
+        csvRegDupes.push(r.registration_no);
+      }
+      regNoSet.add(r.registration_no);
+    }
+    if (csvRegDupes.length > 0) {
+      return {
+        success: false,
+        message: `Duplicate registration numbers found within CSV: ${csvRegDupes.join(", ")}`,
+      };
+    }
+
+    // ── Get max serial per college short name ─────────────────
+    // Collect unique college short names from the CSV
+    const uniqueColleges = [
+      ...new Set(rows.map((r) => r.short_clg_name_for_certificate)),
+    ];
+
+    // For each college, find the current max serial from existing DB records
+    const collegeSerialMap = new Map<string, number>();
+
+    for (const collegeName of uniqueColleges) {
+      // Find the highest serial for this college in the DB
+      // Certificate format: VSPL/<shortCollegeName>/<serial>/<year>
+      const existingRecords = await prisma.old_Student_Record.findMany({
+        where: { shortCollegeName: collegeName },
+        select: { certificateNo: true },
+      });
+
+      let maxSerial = 0;
+      for (const rec of existingRecords) {
+        const parts = rec.certificateNo.split("/");
+        const serialPart = parts[2];
+        if (serialPart) {
+          const parsed = Number.parseInt(serialPart, 10);
+          if (!Number.isNaN(parsed) && parsed > maxSerial) {
+            maxSerial = parsed;
+          }
+        }
+      }
+
+      collegeSerialMap.set(collegeName, maxSerial);
     }
 
     const uploadYear = new Date().getFullYear();
+    const shortYear = String(uploadYear).slice(-2); // 2-digit year
     const issueDate = new Date(uploadYear, 6, 13); // July 13
 
     // ── Build records ──────────────────────────────────────────
-    const records = rows.map((row, index) => {
+    const records = rows.map((row) => {
       // Convert marks string to number | null
       const marksTrimmed = row.marks.trim();
       const marksValue =
@@ -113,8 +152,14 @@ export async function uploadOldStudents(payload: UploadPayloadSchema) {
       const emailValue =
         row.email_id.trim() === "" ? null : row.email_id.trim();
 
-      const serial = currentSerial + index + 1;
-      const certificateNo = `VSPL/${row.short_clg_name_for_certificate}/${serial}/${uploadYear}`;
+      // Increment the per-college serial
+      const collegeName = row.short_clg_name_for_certificate;
+      const currentSerial = (collegeSerialMap.get(collegeName) ?? 0) + 1;
+      collegeSerialMap.set(collegeName, currentSerial);
+
+      // Zero-pad serial to 3 digits (001, 002, …)
+      const paddedSerial = String(currentSerial).padStart(3, "0");
+      const certificateNo = `VSPL/${collegeName}/${paddedSerial}/${shortYear}`;
 
       return {
         name: row.name,
