@@ -13,6 +13,7 @@ CSV Column Headers (exact match required):
 (c)dob
 (c)gender
 (c)honours_subject
+(c)issue_date
 
 Auto-generated / Fixed fields:
 
@@ -21,5 +22,4 @@ Auto-generated / Fixed fields:
 (f)program_hrs (120) fixed
 (a)is_printable   (based on marks, if not provided, then make it false), otherwise true
 (a)attendance (auto generated between 85-95%)
-(f)issue_date (13 july)
 (a)certificate_no (format: 'VSPL/<short_clg_name_for_certificate>/<GLOBAL_MAX_SERIAL_NO>/<UPLOAD_YEAR>')

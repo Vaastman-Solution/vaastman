@@ -25,7 +25,7 @@ model Old_Student_Record {
   // Fixed values
   semester   Int      @default(5)
   programHrs Int      @default(120)
-  issueDate  DateTime // 13 July of upload year
+  issueDate  DateTime // From CSV
 
   // Auto-generated certificate number
   certificateNo String @unique // VSPL/<shortCollegeName>/<serial>/<year>

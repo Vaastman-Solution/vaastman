@@ -9,6 +9,7 @@ import {
   computeIsPrintable,
   generateAttendance,
   getTopicForCourse,
+  parseCsvDate,
 } from "./csv-helpers";
 import {
   type UploadPayloadSchema,
@@ -136,7 +137,6 @@ export async function uploadOldStudents(payload: UploadPayloadSchema) {
 
     const uploadYear = new Date().getFullYear();
     const shortYear = String(uploadYear).slice(-2); // 2-digit year
-    const issueDate = new Date(uploadYear, 6, 13); // July 13
 
     // ── Build records ──────────────────────────────────────────
     const records = rows.map((row) => {
@@ -181,7 +181,7 @@ export async function uploadOldStudents(payload: UploadPayloadSchema) {
 
         isPrintable: computeIsPrintable(marksValue),
         attendance: generateAttendance(),
-        issueDate,
+        issueDate: parseCsvDate(row.issue_date),
         certificateNo,
       };
     });

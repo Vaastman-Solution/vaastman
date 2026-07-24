@@ -3,7 +3,7 @@
  */
 
 /**
- * The 13 exact CSV column headers we expect (after sanitization).
+ * The 14 exact CSV column headers we expect (after sanitization).
  */
 export const EXPECTED_HEADERS = [
   "name",
@@ -19,7 +19,36 @@ export const EXPECTED_HEADERS = [
   "dob",
   "gender",
   "honours_subject",
+  "issue_date",
 ] as const;
+
+/**
+ * Parse an issue date string from CSV into a Date object.
+ * Strictly expects DD/MM/YYYY or DD-MM-YYYY format (e.g. 21/07/2026 or 15-08-2025).
+ */
+export function parseCsvDate(dateStr: string): Date {
+  const trimmed = dateStr.trim();
+  if (!trimmed) {
+    throw new Error("Issue date is required");
+  }
+
+  // Check DD/MM/YYYY or DD-MM-YYYY
+  const dmyMatch = trimmed.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);
+  if (dmyMatch) {
+    const day = Number.parseInt(dmyMatch[1], 10);
+    const month = Number.parseInt(dmyMatch[2], 10) - 1;
+    const year = Number.parseInt(dmyMatch[3], 10);
+
+    if (day >= 1 && day <= 31 && month >= 0 && month <= 11 && year > 1900) {
+      const date = new Date(year, month, day);
+      if (!Number.isNaN(date.getTime())) return date;
+    }
+  }
+
+  throw new Error(
+    `Invalid issue date format "${dateStr}". Expected DD/MM/YYYY or DD-MM-YYYY format.`,
+  );
+}
 
 /**
  * Allowed courses for old student CSV upload

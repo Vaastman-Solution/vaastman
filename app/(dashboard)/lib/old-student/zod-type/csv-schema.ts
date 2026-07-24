@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { parseCsvDate } from "../csv-helpers";
 
 /**
  * Zod schema for validating a raw CSV row (all string values).
@@ -44,6 +45,23 @@ export const csvRowSchema = z.object({
   dob: z.string().min(1, "Date of birth is required"),
   gender: z.string().min(1, "Gender is required"),
   honours_subject: z.string().min(1, "Honours subject is required"),
+  issue_date: z
+    .string()
+    .min(1, "Issue date is required")
+    .refine(
+      (val) => {
+        try {
+          parseCsvDate(val);
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      {
+        message:
+          "Invalid issue date format. Expected DD/MM/YYYY or DD-MM-YYYY (e.g. 21/07/2026 or 15-08-2025).",
+      },
+    ),
 });
 
 export type CsvRowInput = z.infer<typeof csvRowSchema>;
